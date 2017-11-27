@@ -13,7 +13,19 @@
     selector = '[data-type="active-form"]';
 
     // Plugin default options.
-    defaultOptions = {};
+    defaultOptions = {
+        locale: $('html').attr('lang') || 'en-US',
+    };
+
+    // i18n
+    let i18n = {
+        'en-US': {
+            'VALIDATION_ERRORS_MESSAGE': 'Some fields have invalid values. Check them and try again.',
+        },
+        'ru-RU': {
+            'VALIDATION_ERRORS_MESSAGE': 'Некоторые поля содержат ошибки. Пожалуйста, исправьте их.',
+        }
+    };
 
     Form = (function () {
         function Form(handler, options) {
@@ -78,8 +90,7 @@
                         }
                     }
 
-                    //$form.find('.modal__alert.alert_error').toggleClass('hidden', false);
-                    let message = 'Some fields have invalid values. Check them and try again.',
+                    let message = i18n[defaultOptions.locale]['VALIDATION_ERRORS_MESSAGE'],
                         button = '<i class="material-icons">close</i>';
 
                     let alert = $('<div>').attr({'class': 'modal__alert alert alert_error', 'data-validation': 'false'})
