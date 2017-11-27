@@ -14,6 +14,7 @@ return [
     'value',
     [
         'attribute' => 'sort',
+        'label' => Yii::t('fields', 'Sort.'),
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],

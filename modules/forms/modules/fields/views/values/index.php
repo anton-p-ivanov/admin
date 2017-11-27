@@ -31,8 +31,8 @@ $updateUrl = \yii\helpers\Url::to(['values/index', 'field_uuid' => $field_uuid])
     <?php else: ?>
         <div class="grid-view__empty">
             <div class="grid-view__empty-content">
-                <p>There are no values yet. You can add a new one by clicking a button below.</p>
-                <p><?= \yii\helpers\Html::a('Add new value', ['values/create', 'field_uuid' => $field_uuid], [
+                <p><?= Yii::t('fields', 'There are no values yet. You can add a new one by clicking a button below.'); ?></p>
+                <p><?= \yii\helpers\Html::a(Yii::t('fields', 'Add new value'), ['values/create', 'field_uuid' => $field_uuid], [
                         'class' => 'btn btn_primary',
                         'data-toggle' => 'modal',
                         'data-target' => '#values-modal',

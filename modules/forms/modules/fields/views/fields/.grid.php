@@ -25,6 +25,7 @@ return [
     ],
     [
         'attribute' => 'multiple',
+        'label' => Yii::t('fields', 'Mult.'),
         'options' => ['width' => 100],
         'contentOptions' => ['class' => 'field_multiple'],
         'headerOptions' => ['class' => 'text_center'],
@@ -35,6 +36,7 @@ return [
     ],
     [
         'attribute' => 'active',
+        'label' => Yii::t('fields', 'Act.'),
         'options' => ['width' => 100],
         'contentOptions' => ['class' => 'field_active'],
         'headerOptions' => ['class' => 'text_center'],
@@ -45,6 +47,7 @@ return [
     ],
     [
         'attribute' => 'sort',
+        'label' => Yii::t('fields', 'Sort.'),
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],

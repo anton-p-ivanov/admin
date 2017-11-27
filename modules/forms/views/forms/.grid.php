@@ -45,6 +45,7 @@ return [
     ],
     [
         'attribute' => 'results',
+        'label' => Yii::t('forms', 'Res.'),
         'options' => ['width' => 100],
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
@@ -59,6 +60,7 @@ return [
     ],
     [
         'attribute' => 'active',
+        'label' => Yii::t('forms', 'Use'),
         'options' => ['width' => 100],
         'contentOptions' => ['class' => 'form__in-use'],
         'headerOptions' => ['class' => 'text_center'],
@@ -69,6 +71,7 @@ return [
     ],
     [
         'attribute' => 'sort',
+        'label' => Yii::t('forms', 'Sort.'),
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],

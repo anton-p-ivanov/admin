@@ -74,7 +74,7 @@ class Field extends ActiveRecord
      */
     public static function t($message, $params = [])
     {
-        return \Yii::t('forms', $message, $params);
+        return \Yii::t('fields', $message, $params);
     }
 
     /**
@@ -187,7 +187,7 @@ class Field extends ActiveRecord
             ['code', 'string', 'max' => 50, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
             ['code', 'validateCode'],
             ['code', 'match', 'pattern' => '/^[a-z_\-\d]*$/i'],
-            ['code', UniqueCodeValidator::className(), 'message' => self::t('Web-form with code `{value}` is already exists.')],
+            ['code', UniqueCodeValidator::className(), 'message' => self::t('Field with code `{value}` is already exists.')],
             ['type', 'validateValues'],
             ['list', 'validateList'],
             ['options', JsonValidator::className()]

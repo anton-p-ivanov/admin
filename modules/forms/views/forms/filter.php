@@ -19,7 +19,7 @@ use yii\helpers\Html;
     <?= Html::hiddenInput('action', 'apply'); ?>
 
     <div class="modal__body">
-        <div class="modal__heading"><?= Yii::t('forms', 'Data filter'); ?></div>
+        <div class="modal__heading"><?= Yii::t('forms', 'Form`s filter'); ?></div>
 
         <?= $form->field($model, 'owner')->dropDownList(FormFilter::getOwners()); ?>
         <?= $form->field($model, 'title'); ?>

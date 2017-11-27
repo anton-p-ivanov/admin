@@ -84,11 +84,11 @@ class FormFilter extends Filter
     public function attributeLabels()
     {
         $labels = [
-            'owner' => self::t('Owner'),
-            'title' => self::t('Title'),
-            'code' => self::t('Code'),
-            'withResults' => self::t('With results'),
-            'inUse' => self::t('In use')
+            'owner' => 'Owner',
+            'title' => 'Title',
+            'code' => 'Code',
+            'withResults' => 'With results',
+            'inUse' => 'In use'
         ];
 
         return array_map('self::t', $labels);
@@ -100,7 +100,7 @@ class FormFilter extends Filter
     public function attributeHints()
     {
         $hints = [
-            'owner' => 'User who uploaded the file.',
+            'owner' => 'User who created the form.',
             'title' => 'Form title or its part.',
             'code' => 'Form unique code or its part.',
             'withResults' => 'Show forms with results only.',

@@ -25,6 +25,7 @@ return [
     ],
     [
         'attribute' => 'default',
+        'label' => Yii::t('forms', 'Def.'),
         'options' => ['width' => 100],
         'contentOptions' => ['class' => 'status__default'],
         'headerOptions' => ['class' => 'text_center'],
@@ -35,6 +36,7 @@ return [
     ],
     [
         'attribute' => 'active',
+        'label' => Yii::t('forms', 'Act.'),
         'options' => ['width' => 100],
         'contentOptions' => ['class' => 'status__active'],
         'headerOptions' => ['class' => 'text_center'],
@@ -45,6 +47,7 @@ return [
     ],
     [
         'attribute' => 'sort',
+        'label' => Yii::t('forms', 'Sort.'),
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
@@ -53,7 +56,7 @@ return [
     [
         'attribute' => 'workflow.modified_date',
         'format' => 'datetime',
-        'options' => ['width' => 250]
+        'options' => ['width' => 200]
     ],
     [
         'class' => \app\widgets\grid\ActionColumn::className(),
