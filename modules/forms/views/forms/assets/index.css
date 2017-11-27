@@ -13,6 +13,9 @@
 #confirm-modal .modal__container {
     width: 600px;
 }
+#fields-modal .modal__container {
+    width: 700px;
+}
 #validators-modal .modal__container,
 #values-modal .modal__container {
     width: 400px;
