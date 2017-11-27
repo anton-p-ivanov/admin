@@ -1,0 +1,20 @@
+{
+    "DOC": [
+        "application/pdf",
+        "application/vnd.ms-word",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ],
+    "XLS": [
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ],
+    "PRS": [
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    ],
+    "ARC": [
+        "application/x-rar-compressed",
+        "application/x-zip-compressed",
+        "application/zip"
+    ]
+}

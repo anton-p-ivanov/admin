@@ -1,0 +1,220 @@
+/* Date & time picker */
+.dt-picker {
+    color: #333333;
+    position: fixed;
+    z-index: 1100;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 9px 46px rgba(0, 0, 0, .12), 0 11px 15px rgba(0, 0, 0, .2);
+    padding: 0;
+    margin: 0;
+}
+.dt-picker__header {
+    background-color: #00aeef;
+    color: white;
+    padding: 12px;
+}
+.dt-header__date {
+    font-size: 20px;
+    text-align: center;
+}
+.dt-picker__body {
+    padding: 20px;
+}
+.dt-calendar {
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.dt-calendar > thead > tr > th,
+.dt-calendar > tbody > tr > td {
+    width: 40px;
+    height: 40px;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+}
+.dt-calendar > thead > tr > th,
+.dt-calendar .disabled {
+    color: #999999;
+}
+.dt-calendar .today > a {
+    color: #00aeef;
+    font-weight: 500;
+}
+.dt-calendar > tbody > tr > td > a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333333;
+}
+.dt-calendar > tbody > tr > td > a.selected,
+.dt-calendar > tbody > tr > td > a:hover {
+    background-color: #00aeef;
+    color: white;
+}
+.dt-picker__footer {
+    padding: 0 20px 10px 20px;
+    margin-top: -10px;
+    display: flex;
+    justify-content: space-between;
+}
+.dt-picker__footer .btn {
+    color: #333333;
+}
+.dt-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.dt-nav__title {
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 500;
+}
+.dt-nav__btn {
+    display: block;
+    background: transparent none;
+    border: none;
+    padding: 8px;
+    margin: 0;
+    cursor: pointer;
+}
+.dt-nav__btn:hover {
+    background-color: rgba(0,0,0,.06);
+}
+.dt-clock {
+    padding:20px;
+    width:340px;
+    height:340px;
+    position: relative;
+}
+.dt-clock__hours {
+    display: block;
+    width:300px;
+    height:300px;
+    border-radius:150px;
+    position: absolute;
+    padding:0;
+    margin:0;
+}
+.dt-clock__hours li {
+    display:block;
+    position:absolute;
+    width: 40px;
+    height: 40px;
+    top:130px;
+    left:130px;
+    text-align:center;
+    margin:0;
+    padding:0;
+    font-size: 20px;
+}
+.dt-clock__hours li:nth-child(1) { transform:translate(73px, -129px) }
+.dt-clock__hours li:nth-child(2) { transform:translate(129px, -75px) }
+.dt-clock__hours li:nth-child(3) { transform:translate(150px, 0) }
+.dt-clock__hours li:nth-child(4) { transform:translate(127px, 75px) }
+.dt-clock__hours li:nth-child(5) { transform:translate(73px, 129px) }
+.dt-clock__hours li:nth-child(6) { transform:translate(0, 150px) }
+.dt-clock__hours li:nth-child(7) { transform:translate(-73px, 129px) }
+.dt-clock__hours li:nth-child(8) { transform:translate(-127px, 75px) }
+.dt-clock__hours li:nth-child(9) { transform:translate(-150px, 0) }
+.dt-clock__hours li:nth-child(10) { transform:translate(-129px, -75px) }
+.dt-clock__hours li:nth-child(11) { transform:translate(-73px, -129px) }
+.dt-clock__hours li:nth-child(12) { transform:translate(0, -150px) }
+.dt-clock__hours li > a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333333;
+}
+.dt-clock__minutes li > a:hover,
+.dt-clock__hours li > a:hover,
+.dt-clock li > a.selected {
+    background-color: #00aeef;
+    color: white;
+}
+.dt-clock__minutes {
+    display: block;
+    width:240px;
+    height:240px;
+    border-radius:150px;
+    position: absolute;
+    padding:0;
+    margin:0;
+    background-color: rgba(0,0,0,.06);
+    left:50px;
+    top:50px;
+}
+.dt-clock__minutes li {
+    display:block;
+    position:absolute;
+    width: 40px;
+    height: 40px;
+    top:100px;
+    left:100px;
+    text-align:center;
+    margin:0;
+    padding:0;
+    font-size:16px;
+}
+.dt-clock__minutes.hidden li {
+    display: none;
+}
+.dt-clock__minutes li:nth-child(1) { transform:translate(49px, -86px) }
+.dt-clock__minutes li:nth-child(2) { transform:translate(86px, -50px) }
+.dt-clock__minutes li:nth-child(3) { transform:translate(100px, 0) }
+.dt-clock__minutes li:nth-child(4) { transform:translate(85px, 50px) }
+.dt-clock__minutes li:nth-child(5) { transform:translate(49px, 86px) }
+.dt-clock__minutes li:nth-child(6) { transform:translate(0, 100px) }
+.dt-clock__minutes li:nth-child(7) { transform:translate(-49px, 86px) }
+.dt-clock__minutes li:nth-child(8) { transform:translate(-85px, 50px) }
+.dt-clock__minutes li:nth-child(9) { transform:translate(-100px, 0) }
+.dt-clock__minutes li:nth-child(10) { transform:translate(-86px, -50px) }
+.dt-clock__minutes li:nth-child(11) { transform:translate(-49px, -86px) }
+.dt-clock__minutes li:nth-child(12) { transform:translate(0, -100px) }
+.dt-clock__minutes li > a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #666666;
+}
+.dt-clock__switch {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    top: 150px;
+}
+.dt-clock__switch li {
+    display: inline-block;
+}
+.dt-clock__switch li a {
+    display: inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #333333;
+    padding: 8px;
+}
+.dt-clock__switch li a.selected,
+.dt-clock__switch li a:hover {
+    color: #00aeef;
+    background-color: transparent;
+}

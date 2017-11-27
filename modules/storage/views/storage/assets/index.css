@@ -1,0 +1,92 @@
+input[type="file"] {
+    display: none;
+}
+/* Modals */
+#upload-modal,
+#confirm-modal {
+    z-index: 1100;
+}
+#upload-modal .modal__container,
+#confirm-modal .modal__container {
+    width: 600px;
+}
+#locations-modal .modal__container {
+    max-width: none;
+    width: 1000px;
+}
+#locations-modal .toolbar__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 800px;
+}
+#storage-modal .modal__container {
+    width: 900px;
+}
+#versions-pjax,
+#locations-pjax {
+    margin-left: -24px;
+    margin-right: -24px;
+}
+#settings-modal .modal__footer,
+#filter-modal .modal__footer {
+    padding: 12px;
+    justify-content: space-between;
+}
+.storage__title {
+    display: inline;
+}
+.storage__title > a,
+.storage__title > a:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+.grid-view__table_light .storage__title > a,
+.grid-view__table_light .storage__title > a:hover {
+    color: rgb(0, 174, 239);
+}
+.storage__title_f,
+.storage__title_d {
+    position: relative;
+    padding-left: 40px;
+}
+.storage__title_f::before,
+.storage__title_d::before {
+    content: "\e2c7";
+    font-family: "Material Icons", sans-serif;
+    font-size: 24px;
+    line-height: 1rem;
+    width: 24px;
+    height: 24px;
+    left: 0;
+    top: 2px;
+    position: absolute;
+    color: rgb(0, 174, 239);
+}
+.storage__title_f::before {
+    content: "\e24d";
+    color: inherit;
+}
+.storage__description {
+    display: inline;
+    padding-left: 12px;
+    color: #999;
+}
+.storage__download a,
+.storage__download a:hover {
+    text-decoration: none;
+}
+.storage__download .material-icons {
+    display: block;
+    margin: auto;
+}
+.upload-errors {
+    display: none;
+    list-style: none;
+    background: rgba(201, 36, 52, .2);
+    color: rgb(201, 36, 52);
+    padding: 1rem;
+    font-size: .9rem;
+}
+.version_active {
+    display: block;
+}

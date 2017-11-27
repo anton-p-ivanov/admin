@@ -1,0 +1,40 @@
+table > tbody > tr > td.action-column {
+    overflow: visible;
+}
+.action-column__container {
+    position: relative;
+}
+.action-column__toggle {
+    position: absolute;
+    left: -12px;
+    top: -24px;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    transition: background 0.15s ease-out,
+    color 0.15s ease-out,
+    border 0.15s ease-out;
+}
+.action-column__toggle::after {
+    content: "more_vert";
+    font-family: "Material Icons", sans-serif;
+    font-size: 24px;
+    padding: 12px;
+    position: absolute;
+}
+.action-column__toggle:hover,
+.action-column__toggle.active {
+    background-color: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+.action-column_right .dropdown {
+    left: auto;
+    right: 0;
+}
+/* region Light theme */
+.grid-view__table_light .action-column__toggle:hover,
+.grid-view__table_light .action-column__toggle.active {
+    background-color: rgba(0, 0, 0, .06);
+    color: #000;
+}
+/* endregion */

@@ -1,0 +1,481 @@
+@import url("//cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css");
+@import url("//fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,600,600i&subset=cyrillic");
+@import url("//fonts.googleapis.com/icon?family=Material+Icons");
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+*::before,
+*::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+*:focus {
+    outline: none;
+}
+html {
+    height: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body {
+    width: 100%;
+    position: relative;
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, .87);
+    background-color: #303030;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+}
+nav {
+    position: fixed;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #303030;
+    border-right: solid 1px rgba(255, 255, 255, .12);
+}
+header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    line-height: 64px;
+    background-color: #00aeef;
+    color: white;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .12), 0 1px 3px rgba(0, 0, 0, .20);
+    z-index: 100;
+}
+.app-logo {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 64px;
+    line-height: 64px;
+    border-bottom: solid 1px rgba(255, 255, 255, .12);
+    color: #00aeef;
+    padding: 0 16px;
+}
+.app-logo__logo {
+    font-size: 48px;
+    margin-right: 16px;
+}
+.app-logo__title {
+    font-size: 20px;
+}
+a {
+    color: #00aeef;
+    text-decoration: none;
+    transition: background 0.15s ease-out,
+    color 0.15s ease-out,
+    border 0.15s ease-out;
+}
+.grid {
+    display: flex;
+    justify-content: space-between;
+    margin-left: -12px;
+    margin-right: -12px;
+}
+.grid__item {
+    flex: 1 100%;
+    padding: 0 12px;
+}
+/* region Dropdowns */
+.dropdown {
+    list-style: none;
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    min-width: 250px;
+    z-index: 1000;
+    margin: 0;
+    padding: 8px 0;
+    background-color: rgb(255, 255, 255);
+    border-radius: 2px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .12), 0 1px 3px rgba(0, 0, 0, .20);
+}
+.dropdown_right {
+    right: 0;
+    left: auto;
+}
+.dropdown_wide {
+    right: 0;
+    left: 0;
+}
+.dropdown > li {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+.dropdown > li > a,
+.dropdown > li > span {
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;
+    margin: 0;
+    line-height: 32px;
+    padding: 0 24px;
+    color: rgba(0, 0, 0, .87);
+}
+.dropdown > li > span {
+    color: rgba(0, 0, 0, .24);
+}
+.dropdown > li > a:hover {
+    background-color: #00aeef;
+    color: #ffffff;
+}
+.dropdown > li.active {
+    background-color: rgba(0, 0, 0, .12);
+}
+.dropdown > .dropdown__divider {
+    position: relative;
+    display: block;
+    margin: 9px 0;
+    padding: 0;
+    height: 1px;
+    overflow: hidden;
+    background-color: #e0e0e0;
+}
+.dropdown::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+.dropdown::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .12);
+}
+/* endregion */
+/* region Buttons */
+.btn {
+    display: inline-block;
+    height: 48px;
+    line-height: 48px;
+    min-width: 64px;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0 12px;
+    color: #ffffff;
+    background: transparent none;
+    border: 0;
+    cursor: pointer;
+}
+.btn:hover {
+    background-color: rgba(255, 255, 255, .12);
+}
+.btn ~ .btn {
+    margin-left: 8px;
+}
+.btn_flat {
+    box-shadow: none;
+}
+.btn_raised {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .12), 0 1px 3px rgba(0, 0, 0, .20);
+}
+.btn_primary {
+    color: #00aeef;
+    background: transparent none;
+}
+.btn_primary:hover {
+    background-color: rgba(0, 174, 239, .24);
+}
+.btn_primary.btn_inverted {
+    background-color: #00aeef;
+    color: #ffffff !important;
+}
+.btn_primary:disabled,
+.btn_primary.disabled {
+    color: #ccc;
+    cursor: default;
+}
+.btn_primary:disabled:hover,
+.btn_primary.disabled:hover {
+    background-color: transparent;
+}
+/* endregion */
+/* region Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+    display: none;
+    overflow: hidden;
+    outline: 0;
+    background-color: rgba(0, 0, 0, .12);
+}
+.modal.opened {
+    display: flex;
+    align-items: center;
+}
+.modal__container {
+    width: 20%;
+    min-width: 600px;
+    max-width: 900px;
+    background-color: white;
+    color: rgba(0, 0, 0, .65);
+    margin: 0 auto;
+    position: relative;
+    border-radius: 2px;
+    box-shadow: 0 9px 46px rgba(0, 0, 0, .12), 0 11px 15px rgba(0, 0, 0, .2);
+}
+.modal__body {
+    padding: 24px;
+    overflow-y: auto;
+}
+.modal__heading {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
+}
+.modal__header {
+    padding: 24px 24px 0 24px;
+}
+.modal__footer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 12px;
+    height: 64px;
+}
+.modal .btn_default {
+    color: #333333;
+}
+.modal .btn_default:hover {
+    color: #000;
+    background-color: rgba(0, 0, 0, .06);
+}
+/* endregion */
+/* region Controls */
+input[type="checkbox"],
+input[type="radio"] {
+    display: block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: transparent none;
+    color: #fff;
+    position: relative;
+}
+input[type="checkbox"]:disabled,
+input[type="radio"]:disabled,
+input[type="checkbox"].disabled,
+input[type="radio"].disabled {
+    cursor: default;
+}
+input[type="checkbox"]::before,
+input[type="radio"]::before {
+    position: absolute;
+    content: "";
+    border-radius: 2px;
+    border: solid 2px #ccc;
+    width: 18px;
+    height: 18px;
+    top: 3px;
+    left: 3px;
+    transition: background 0.15s ease-out,
+        color 0.15s ease-out,
+        border 0.15s ease-out;
+}
+input[type="radio"]::before {
+    border-radius: 9px;
+}
+.modal input[type="checkbox"]::before,
+.modal input[type="radio"]::before {
+    border-color: #666;
+}
+input[type="checkbox"]:hover::before,
+input[type="radio"]:hover::before {
+    border-color: #00aeef;
+}
+input[type="checkbox"]:disabled::before,
+input[type="checkbox"].disabled::before,
+input[type="radio"]:disabled::before,
+input[type="radio"].disabled::before {
+    border-color: #666;
+}
+.modal input[type="checkbox"]:disabled::before,
+.modal input[type="checkbox"].disabled::before,
+.modal input[type="radio"]:disabled::before,
+.modal input[type="radio"].disabled::before {
+    border-color: #ccc;
+}
+input[type="checkbox"]:checked::before {
+    border-color: #00aeef;
+    background-color: #00aeef;
+}
+input[type="radio"]:checked::before {
+    border-color: #00aeef;
+}
+input[type="checkbox"]:checked::after {
+    position: absolute;
+    content: "check";
+    font-size: 20px;
+    left: 2px;
+    top: 2px;
+    font-family: "Material Icons", sans-serif;
+}
+input[type="radio"]:checked::after {
+    position: absolute;
+    content: "";
+    left: 7px;
+    top: 7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #00aeef;
+}
+/* endregion */
+/* region Progress bars */
+.progress-bar {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    position: relative;
+    height: 8px;
+    margin: 8px 0 16px 0;
+}
+.progress-bar_light {
+    background-color: rgba(0, 174, 239, .24);
+    color: #00aeef;
+}
+.progress-bar__filename {
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 100;
+}
+.progress-bar__status {
+    position: absolute;
+    height: 100%;
+    padding: 8px;
+    right: 0;
+    z-index: 1;
+}
+.progress-bar__ribbon {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    z-index: 1;
+    background-color: rgb(0, 174, 239);
+}
+/* endregion */
+@media only screen and (min-width: 480px) {
+
+}
+@media only screen and (min-width: 600px) {
+
+}
+@media only screen and (min-width: 840px) {
+
+}
+@media only screen and (min-width: 960px) {
+
+}
+@media only screen and (min-width: 1280px) {
+
+}
+@media only screen and (min-width: 1440px) {
+
+}
+@media only screen and (min-width: 1600px) {
+    body {
+        font-size: 18px;
+        line-height: 27.6923px;
+        padding-left: 400px;
+        padding-top: 64px;
+    }
+    nav {
+        width: 400px;
+    }
+    header {
+        left: 400px;
+    }
+}
+/* region Alerts */
+.alert {
+    padding: 12px;
+    position: relative;
+    line-height: 24px;
+}
+.alert_success {
+    background-color: #00a651;
+    color: white;
+}
+.alert_error {
+    background-color: #c92434;
+    color: white;
+}
+.alert__dismiss {
+    position: absolute;
+    padding: 12px;
+    color: inherit;
+    right: 0;
+    top: 0;
+    text-decoration: none;
+}
+.alert__dismiss > .material-icons {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.alert__dismiss:hover {
+    background-color: rgba(255, 255, 255, .12);
+}
+/* endregion */
+/* region Helpers */
+.hidden {
+    display: none;
+}
+.opened {
+    display: block;
+}
+.text_right {
+    text-align: right;
+}
+.text_center {
+    text-align: center;
+}
+.text_danger {
+    color: #c92434;
+}
+.text_warning {
+    color: #f7941e;
+}
+.text_success {
+    color: #00a651;
+}
+.text_info {
+    color: #00aeef;
+}
+.text_muted {
+    color: rgba(0, 0, 0, .5);
+}
+/* endregion */

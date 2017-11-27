@@ -1,0 +1,101 @@
+.grid-view__table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-weight: 400;
+    color: #ccc;
+}
+.grid-view__table thead th {
+    text-align: left;
+    font-weight: 400;
+    padding: 15px 24px;
+    border-bottom: solid 1px #505050;
+    color: #999;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.grid-view__table thead th.text_right {
+    text-align: right;
+}
+.grid-view__table thead th.text_center {
+    text-align: center;
+}
+.grid-view__table thead th a {
+    text-decoration: none;
+    color: #999;
+    display: block;
+    position: relative;
+}
+.grid-view__table_light thead th a {
+    color: #666;
+}
+.grid-view__table thead th a:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+.grid-view__table thead th a.asc,
+.grid-view__table thead th a.desc {
+    color: white;
+}
+.grid-view__table_light thead th a.asc,
+.grid-view__table_light thead th a.desc {
+    color: black;
+}
+.grid-view__table thead th a[data-sort]::before {
+    content: '';
+    font-size: 18px;
+    font-family: "Material Icons", sans-serif;
+    position: absolute;
+    top: 0;
+    left: -24px;
+}
+.grid-view__table thead th a[data-sort]:hover::before {
+    content: 'arrow_downward';
+}
+.grid-view__table thead th a.asc::before,
+.grid-view__table thead th a.desc:hover::before{
+    content: 'arrow_downward';
+}
+.grid-view__table thead th a.desc::before,
+.grid-view__table thead th a.asc:hover::before{
+    content: 'arrow_upward';
+}
+.grid-view__table tbody td {
+    padding: 15px 24px;
+    border-bottom: solid 1px #505050;
+}
+.grid-view__table tbody tr:hover td {
+    background-color: rgba(255, 255, 255, .04);
+}
+/* region Compact table */
+.grid-view__table_dense thead th,
+.grid-view__table_dense tbody td{
+    padding: 10px 24px;
+}
+/* endregion */
+/* region Fixed columns table */
+.grid-view__table_fixed {
+    table-layout: fixed;
+}
+.grid-view__table_fixed tbody td  {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+/* endregion */
+/* region Light Theme */
+.grid-view__table_light {
+    color: #666;
+}
+.grid-view__table_light thead th a:hover {
+    color: #00aeef;
+}
+.grid-view__table_light thead th,
+.grid-view__table_light tbody td {
+    border-color: rgba(0, 0, 0, .12);
+    color: #666;
+}
+.grid-view__table_light thead th {
+    color: #999;
+}
+/* endregion */

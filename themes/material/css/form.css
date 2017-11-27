@@ -1,0 +1,285 @@
+.form-group {
+    display: block;
+    position: relative;
+    padding-top: 32px;
+    padding-bottom: 16px;
+}
+.form-group__label {
+    display: block;
+    position: absolute;
+    font-size: 18px;
+    line-height: 18px;
+    top: 40px;
+    left: 0;
+    transition: all 0.1s ease-out;
+}
+.form-group.active .form-group__label {
+    font-size: 15px;
+    line-height: 15px;
+    top: 15px;
+}
+.form-group__action {
+    display: none;
+    border: none;
+    background: transparent none;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    top: 37px;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    z-index: 15;
+}
+.form-group_dropdown .form-group__action {
+    display: inline;
+}
+.form-group_dropdown .dropdown {
+    max-height: 176px;
+    overflow-y: auto;
+    top: 24px;
+    box-shadow: 0 2px 22px 4px rgba(0, 0, 0, .12), 0 7px 8px rgba(0, 0, 0, .20);
+}
+.form-group__action:hover {
+    color: #00aeef;
+}
+.form-group.active .form-group__action {
+    display: inline;
+}
+.form-group.focused {
+    color: #00aeef;
+}
+.form-group.focused .form-group__input {
+    border-color: #00aeef;
+}
+.form-group.error {
+    color: #c92434;
+}
+.form-group.error .form-group__input {
+    border-color: #c92434;
+}
+.form-group.error .form-group__hint {
+    display: none;
+}
+.form-group.error .form-group__error {
+    display: block;
+}
+.form-group.disabled .form-group__input {
+    border-bottom-style: dashed;
+    color: #999;
+}
+.form-group.disabled .form-group__action {
+    display: none;
+}
+.form-group.required .form-group__label::after {
+    content: '*';
+    position: relative;
+    margin-left: 4px;
+}
+.form-group__input {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 8px 40px 8px 0;
+    font-size: 18px;
+    font-family: inherit;
+    border: none;
+    border-bottom: solid 1px;
+    background: transparent none;
+    margin: 0;
+    z-index: 10;
+    color: black;
+}
+.form-group__input_multiline {
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    height: auto;
+    line-height: 24px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+.form-group__input_multiline::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+.form-group__input_multiline::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .12);
+}
+.form-group_text {
+    padding-top: 12px;
+}
+.form-group_text .form-group__label {
+    top: 36px;
+    left: 18px;
+}
+.form-group_text.active .form-group__label {
+    top: 13px;
+    background-color: white;
+    z-index: 1000;
+    left: 18px;
+    right: 18px;
+    padding: 8px 0;
+}
+.form-group_text .form-group__input {
+    border: solid 1px;
+    border-radius: 4px;
+    min-height: 10rem;
+    padding-left: 18px;
+    padding-top: 24px;
+    line-height: 24px;
+}
+.form-group_text.disabled .form-group__input {
+    border-style: dashed;
+    color: #999;
+}
+.form-group_switch input[type="checkbox"] {
+    float: right;
+    width: 44px;
+}
+.form-group_switch input[type="checkbox"]::before {
+    position: absolute;
+    content: '';
+    height: 18px;
+    width: 40px;
+    border-radius: 9px;
+    background-color: #666;
+    border: none;
+    top: 3px;
+    right: 0;
+}
+.form-group_switch.disabled input[type="checkbox"]::before {
+    background-color: #cccccc;
+}
+.form-group_switch input[type="checkbox"]::after {
+    position: absolute;
+    content: '';
+    height: 24px;
+    width: 24px;
+    border-radius: 12px;
+    background-color: #FAFAFA;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .12), 0 1px 3px rgba(0, 0, 0, .20);
+    border: none;
+    top: 0;
+    left: 0;
+}
+.form-group_switch input:checked::before {
+    background-color: rgba(0, 174, 239, .5);
+}
+.form-group_switch input:checked::after {
+    background-color: rgba(0, 174, 239, 1);
+    left: auto;
+    right: 0;
+}
+.form-group_switch .form-group__hint,
+.form-group_switch .form-group__error {
+    margin-right: 60px;
+}
+.form-group__hint,
+.form-group__error {
+    display: block;
+    font-size: 15px;
+    line-height: 20px;
+    margin-top: 6px;
+}
+.form-group__error {
+    display: none;
+}
+.form-group_checkbox label {
+    padding-left: 40px;
+    display: block;
+    position: relative;
+}
+.form-group_checkbox input {
+    position: absolute;
+    top: 1px;
+    margin-left: -40px;
+}
+.checkbox-group .form-group_checkbox:not(:first-child) {
+    padding-top: 0;
+}
+.form-group_list .list-group {
+    margin-top: 48px;
+    font-size: 15px;
+}
+.form-group_list .list-group > label {
+    display: block;
+    padding-left: 40px;
+    padding-bottom: 8px;
+    position: relative;
+}
+.form-group_list .list-group > label > input[type="checkbox"],
+.form-group_list .list-group > label > input[type="radio"] {
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+.form-group__range,
+.form-group__json {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 -12px;
+}
+.form-group__range .form-group {
+    margin-top: -32px;
+    padding-bottom: 0;
+}
+.form-group__range-item,
+.form-group__json-item {
+    flex: 1 100%;
+    padding: 0 12px;
+}
+.form-group__json-0 {
+    margin-top: 48px;
+}
+.form-group__json-item .form-group {
+    padding-top: 0;
+}
+.form-group__json .form-group__action {
+    top: 8px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+}
+.input-group__input {
+    display: block;
+}
+.input-group__buttons {
+    display: flex;
+    border-bottom: solid 1px #000;
+    margin-top: -1px;
+}
+.input-group__button {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    width: 40px;
+    text-align: center;
+    color: #666;
+    background: transparent none;
+    border: 0;
+    cursor: pointer;
+}
+.input-group__button:hover {
+    color: #00aeef;
+}
+.input-group__button .material-icons {
+    display: block;
+    line-height: 39px;
+}
