@@ -51,6 +51,7 @@ class m171127_182157_init_mail extends Migration
     public function safeDown()
     {
         $this->dropTable('{{%forms_mail}}');
+        $this->dropTable('{{%mail_templates_sites}}');
         $this->dropTable('{{%mail_templates}}');
     }
 }
