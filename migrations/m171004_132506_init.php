@@ -161,10 +161,23 @@ class m171004_132506_init extends Migration
             'created_at' => 'timestamp null default null',
             'PRIMARY KEY (`uuid`)',
         ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%sites}}', [
+            'uuid' => 'char(36) not null',
+            'active' => 'tinyint(1) not null default "1"',
+            'title' => 'varchar(255) not null',
+            'url' => 'varchar(255) not null',
+            'email' => 'varchar(255) not null',
+            'sort' => 'int(10) unsigned not null default "100"',
+            'code' => 'varchar(50) not null',
+            'PRIMARY KEY (`uuid`)',
+            'UNIQUE KEY `code` (`code`)'
+        ]);
     }
 
     public function safeDown()
     {
+        $this->dropTable('{{%sites}}');
         $this->dropTable('{{%filters}}');
 
         $this->dropForeignKey('{{%users_ibfk_1}}', '{{%users}}');
