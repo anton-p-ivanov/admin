@@ -4,11 +4,6 @@
  */
 return [
     [
-        'label' => Yii::t('forms', 'Results'),
-        'url' => ['results/index', 'form_uuid' => $model->uuid],
-    ],
-    ['options' => ['class' => 'dropdown__divider']],
-    [
         'label' => Yii::t('forms', 'Edit'),
         'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
