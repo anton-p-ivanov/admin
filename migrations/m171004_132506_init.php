@@ -65,6 +65,13 @@ class m171004_132506_init extends Migration
             'UNIQUE KEY `email` (`email`)',
         ], 'ENGINE InnoDB');
 
+        $this->insert('{{%users}}', [
+            'uuid' => 1,
+            'email' => 'guest.user@example.com',
+            'fname' => 'Guest',
+            'lname' => 'User'
+        ]);
+
         $this->createTable('{{%users_passwords}}', [
             'user_uuid' => 'char(36) not null',
             'password' => 'char(60) not null',
@@ -152,7 +159,7 @@ class m171004_132506_init extends Migration
             'query' => 'text',
             'hash' => 'char(32) not null',
             'created_at' => 'timestamp null default null',
-            'PRIMARY KEY `uuid`',
+            'PRIMARY KEY (`uuid`)',
         ], 'ENGINE InnoDB');
     }
 
