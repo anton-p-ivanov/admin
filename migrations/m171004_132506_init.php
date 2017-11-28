@@ -173,6 +173,29 @@ class m171004_132506_init extends Migration
             'PRIMARY KEY (`uuid`)',
             'UNIQUE KEY `code` (`code`)'
         ]);
+
+        $sites = [
+            [
+                'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+                'title' => 'Timber Industries',
+                'url' => 'https://www.timber-industries.com',
+                'email' => 'Timber Industries <noreply@timber-industries.com>',
+            ],
+            [
+                'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+                'title' => 'Jupiter Brews',
+                'url' => 'https://www.jupiter-brews.com',
+                'email' => 'Jupiter Brews <noreply@jupiter-brews.com>',
+            ],
+            [
+                'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+                'title' => 'Amazon Foods',
+                'url' => 'https://www.amazon-foods.com',
+                'email' => 'Amazon Foods <noreply@amazon-foods.com>',
+            ],
+        ];
+
+        $this->batchInsert('{{%sites}}', ['uuid','title','url','email'], $sites);
     }
 
     public function safeDown()
