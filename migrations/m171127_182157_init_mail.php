@@ -28,6 +28,14 @@ class m171127_182157_init_mail extends Migration
             'CONSTRAINT FOREIGN KEY (`workflow_uuid`) REFERENCES {{%workflow}} (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
+        $this->createTable('{{%mail_templates_sites}}', [
+            'template_uuid' => 'char(36) not null',
+            'site_uuid' => 'char(36) not null',
+            'PRIMARY KEY (`template_uuid`, `site_uuid`)',
+            'CONSTRAINT FOREIGN KEY (`template_uuid`) REFERENCES {{%mail_templates}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`site_uuid`) REFERENCES {{%sites}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
+
         $this->createTable('{{%forms_mail}}', [
             'form_uuid' => 'char(36) not null',
             'template_uuid' => 'char(36) not null',
