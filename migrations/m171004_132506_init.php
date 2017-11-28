@@ -180,22 +180,25 @@ class m171004_132506_init extends Migration
                 'title' => 'Timber Industries',
                 'url' => 'https://www.timber-industries.com',
                 'email' => 'Timber Industries <noreply@timber-industries.com>',
+                'code' => 'TIMBER_INDUSTRIES'
             ],
             [
                 'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
                 'title' => 'Jupiter Brews',
                 'url' => 'https://www.jupiter-brews.com',
                 'email' => 'Jupiter Brews <noreply@jupiter-brews.com>',
+                'code' => 'JUPITER_BREWS'
             ],
             [
                 'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
                 'title' => 'Amazon Foods',
                 'url' => 'https://www.amazon-foods.com',
                 'email' => 'Amazon Foods <noreply@amazon-foods.com>',
+                'code' => 'AMAZON FOODS'
             ],
         ];
 
-        $this->batchInsert('{{%sites}}', ['uuid','title','url','email'], $sites);
+        $this->batchInsert('{{%sites}}', ['uuid', 'title', 'url', 'email', 'code'], $sites);
     }
 
     public function safeDown()
