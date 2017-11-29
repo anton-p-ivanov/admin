@@ -166,7 +166,7 @@ class Type extends ActiveRecord
     }
 
     /**
-     * @return Type|bool
+     * @return Type
      */
     public function duplicate()
     {
@@ -186,6 +186,18 @@ class Type extends ActiveRecord
         $copy->code .= '_' . \Yii::$app->security->generateRandomString($appendixLength - 1);
 
         return $copy;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getList()
+    {
+        return self::find()
+            ->orderBy('title')
+            ->select('title')
+            ->indexBy('uuid')
+            ->column();
     }
 
     /**

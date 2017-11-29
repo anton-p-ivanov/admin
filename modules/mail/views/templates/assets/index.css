@@ -1,0 +1,38 @@
+#confirm-modal {
+    z-index: 1100;
+}
+.form-group_hidden {
+    display: none;
+}
+.extra {
+    margin-top: 36px;
+}
+.form-group_text .form-group__input {
+    min-height: 15em;
+}
+.modal__alert {
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+textarea.form-group__input {
+    font-family: monospace;
+    font-size: 17px;
+}
+#templates-modal .modal__container {
+    width: 900px;
+}
+#settings-modal .modal__footer,
+#filter-modal .modal__footer {
+    margin-left: -12px;
+    margin-right: -12px;
+}
+#settings-modal .modal__footer .grid__item:last-child,
+#filter-modal .modal__footer .grid__item:last-child {
+    text-align: right;
+}
+#settings-modal .modal__body,
+#filter-modal .modal__body {
+    overflow-y: visible;
+}
