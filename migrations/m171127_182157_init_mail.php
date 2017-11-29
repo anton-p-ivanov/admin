@@ -54,13 +54,19 @@ class m171127_182157_init_mail extends Migration
             'CONSTRAINT FOREIGN KEY (`type_uuid`) REFERENCES {{%mail_types}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%forms_mail}}', [
+        $this->createTable('{{%forms_mail_types}}', [
             'form_uuid' => 'char(36) not null',
-            'template_uuid' => 'char(36) not null',
-            'PRIMARY KEY (`form_uuid`, `template_uuid`)',
+            'type_uuid' => 'char(36) not null',
+            'PRIMARY KEY (`form_uuid`, `type_uuid`)',
             'CONSTRAINT FOREIGN KEY (`form_uuid`) REFERENCES {{%forms}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
-            'CONSTRAINT FOREIGN KEY (`template_uuid`) REFERENCES {{%mail_templates}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`type_uuid`) REFERENCES {{%mail_types}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
+
+        $this->addColumn('{{%forms}}', 'mail_template_uuid', 'char(36) null default null');
+        $this->addForeignKey('{{%forms_fk_mail_template_uuid}}', '{{%forms}}', 'mail_template_uuid', '{{%mail_templates}}', 'uuid', 'SET NULL', 'CASCADE');
+
+        $this->addColumn('{{%forms_statuses}}', 'mail_template_uuid', 'char(36) null default null');
+        $this->addForeignKey('{{%forms_statuses_fk_mail_template_uuid}}', '{{%forms_statuses}}', 'mail_template_uuid', '{{%mail_templates}}', 'uuid', 'SET NULL', 'CASCADE');
     }
 
     /**
@@ -68,7 +74,13 @@ class m171127_182157_init_mail extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%forms_mail}}');
+        $this->dropForeignKey('{{%forms_statuses_fk_mail_template_uuid}}', '{{%forms_statuses}}');
+        $this->dropForeignKey('{{%forms_fk_mail_template_uuid}}', '{{%forms}}');
+
+        $this->dropColumn('{{%forms_statuses}}', 'mail_template_uuid');
+        $this->dropColumn('{{%forms}}', 'mail_template_uuid');
+
+        $this->dropTable('{{%forms_mail_types}}');
         $this->dropTable('{{%mail_templates_types}}');
         $this->dropTable('{{%mail_templates_sites}}');
         $this->dropTable('{{%mail_types}}');
