@@ -211,6 +211,7 @@
 .form-group_list .list-group > label {
     display: block;
     padding-left: 40px;
+    padding-right: 40px;
     padding-bottom: 8px;
     position: relative;
 }
@@ -219,6 +220,10 @@
     position: absolute;
     left: 0;
     top: 1px;
+}
+.form-group_inline .list-group {
+    display: flex;
+    align-items: flex-start;
 }
 .form-group__range,
 .form-group__json {

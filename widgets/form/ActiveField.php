@@ -10,6 +10,10 @@ use yii\helpers\Html;
 class ActiveField extends \yii\widgets\ActiveField
 {
     /**
+     * @var bool
+     */
+    public $inline = false;
+    /**
      * @var array
      */
     public $options = ['class' => 'form-group'];
@@ -90,9 +94,28 @@ class ActiveField extends \yii\widgets\ActiveField
     public function radioList($items, $options = [])
     {
         $this->options['class'] .= ' form-group_list';
+        if ($this->inline) {
+            $this->options['class'] .= ' form-group_inline';
+        }
+
         $options['class'] = 'list-group';
 
         return parent::radioList($items, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function checkboxList($items, $options = [])
+    {
+        $this->options['class'] .= ' form-group_list';
+        if ($this->inline) {
+            $this->options['class'] .= ' form-group_inline';
+        }
+
+        $options['class'] = 'list-group';
+
+        return parent::checkboxList($items, $options);
     }
 
     /**
@@ -111,6 +134,15 @@ class ActiveField extends \yii\widgets\ActiveField
     {
         $options['autocomplete'] = 'off';
         return parent::textInput($options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function textarea($options = [])
+    {
+        $this->options['class'] .= ' form-group_text';
+        return parent::textarea($options);
     }
 
     /**

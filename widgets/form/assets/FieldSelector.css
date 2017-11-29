@@ -1,0 +1,6 @@
+.field-selector {
+    position: relative;
+}
+.field-selector .form-group__action {
+    display: inline;
+}
