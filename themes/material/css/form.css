@@ -35,8 +35,14 @@
     margin: 0;
     z-index: 15;
 }
+.form-group_dropdown .form-group__input {
+    padding-right: 60px;
+}
 .form-group_dropdown .form-group__action {
     display: inline;
+}
+.form-group_dropdown .form-group__action_clean {
+    right: 24px;
 }
 .form-group_dropdown .dropdown {
     max-height: 176px;

@@ -62,7 +62,7 @@
 
         Form.prototype.cleanField = function (e) {
             e.preventDefault();
-            $(this).parent().find('.form-group__input').val('').text('').trigger('blur');
+            $(this).parent().find('.form-group__input,input:hidden').val('').text('').trigger('blur');
         };
 
         Form.prototype.submit = function (e) {

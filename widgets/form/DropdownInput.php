@@ -45,11 +45,19 @@ class DropdownInput extends BaseInput
      */
     public function renderActionButtons()
     {
-        return Html::button('<i class="material-icons">arrow_drop_down</i>', [
+        $dropDownButton = Html::button('<i class="material-icons">arrow_drop_down</i>', [
             'class' => 'form-group__action',
             'encode' => false,
             'data-toggle' => 'dropdown'
-        ]) . $this->renderDropdown();
+        ]);
+
+        $clearButton = Html::button('<i class="material-icons">close</i>', [
+            'class' => 'form-group__action form-group__action_clean',
+            'encode' => false,
+            'data-toggle' => 'clean'
+        ]);
+
+        return $clearButton . $dropDownButton . $this->renderDropdown();
     }
 
     /**
