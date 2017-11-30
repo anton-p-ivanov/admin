@@ -28,7 +28,8 @@ class GridViewAsset extends AssetBundle
      * @var array
      */
     public $depends = [
-        'app\themes\material\assets\AppAsset'
+        'app\themes\material\assets\AppAsset',
+        'app\widgets\grid\PagerAsset'
     ];
 
 }
