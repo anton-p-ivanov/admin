@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \mail\models\TypeSettings $settings
+ * @var array $templates
  */
 use mail\models\Type;
 use yii\helpers\Html;
@@ -35,6 +36,21 @@ return [
             }
 
             return $title . $description;
+        }
+    ],
+    [
+        'attribute' => 'templates',
+        'label' => Yii::t('mail', 'Templates'),
+        'options' => ['width' => 150],
+        'contentOptions' => ['class' => 'text_right'],
+        'headerOptions' => ['class' => 'text_right'],
+        'format' => 'raw',
+        'value' => function (Type $type) use ($templates) {
+            if (array_key_exists($type->uuid, $templates)) {
+                return $templates[$type->uuid];
+            }
+
+            return 0;
         }
     ],
     [

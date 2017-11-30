@@ -5,6 +5,7 @@ namespace mail\controllers;
 use app\components\behaviors\ConfirmFilter;
 use app\models\User;
 use app\models\Workflow;
+use mail\models\TemplateType;
 use mail\models\Type;
 use mail\models\TypeFilter;
 use mail\models\TypeSettings;
@@ -90,6 +91,10 @@ class TypesController extends Controller
             'dataProvider' => $dataProvider,
             'settings' => $settings,
             'isFiltered' => $filter ? $filter->isActive : false,
+            'templates' => TemplateType::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('type_uuid')
+                ->indexBy('type_uuid')->column()
         ];
 
         if (\Yii::$app->request->isAjax) {
