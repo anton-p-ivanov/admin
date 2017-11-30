@@ -18,7 +18,7 @@ class DropdownInput extends BaseInput
     /**
      * @var array
      */
-    public $options = ['class' => 'form-group form-group_dropdown'];
+    public $options = [];//'class' => 'form-group form-group_dropdown'];
 
     /**
      * @return string
@@ -31,9 +31,13 @@ class DropdownInput extends BaseInput
             'value' => array_key_exists($value, $this->items) ? $this->items[$value] : null
         ]);
 
+        $hiddenOptions = ['value' => $value];
+        if (isset($this->options['hiddenInputOptions'])) {
+            $hiddenOptions = ArrayHelper::merge($hiddenOptions, $this->options['hiddenInputOptions']);
+        }
         return
             Html::activeTextInput($this->model, $this->attribute, $options) .
-            Html::activeHiddenInput($this->model, $this->attribute, ['value' => $value]);
+            Html::activeHiddenInput($this->model, $this->attribute, $hiddenOptions);
     }
 
     /**
