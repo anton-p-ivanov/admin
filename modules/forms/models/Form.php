@@ -43,6 +43,10 @@ class Form extends ActiveRecord
      * @var array
      */
     private $_delete = [];
+    /**
+     * @var \mail\models\Type
+     */
+    private $_event;
 
     /**
      * @return string
@@ -68,7 +72,8 @@ class Form extends ActiveRecord
             'template_active' => 'Use form template',
             'sort' => 'Sort',
             'workflow.modified_date' => 'Modified',
-            'results' => 'Results'
+            'results' => 'Results',
+            'event' => 'Mail event type'
         ];
 
         return array_map('self::t', $labels);
@@ -99,7 +104,7 @@ class Form extends ActiveRecord
      */
     public function rules()
     {
-        return [
+        $rules = [
             // Title validation rules
             ['title', 'required', 'message' => self::t('{attribute} is required.')],
             ['title', 'string', 'max' => 255, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
@@ -128,9 +133,20 @@ class Form extends ActiveRecord
                 'timestampAttribute' => 'active_dates',
                 'message' => self::t('Invalid date format.')
             ]],
-            ['active_dates', 'validateDateRange']
-
+            ['active_dates', 'validateDateRange'],
         ];
+
+        $className = '\forms\models\FormEvent';
+        if (class_exists($className)) {
+            $rules[] = [
+                'event',
+                'exist',
+                'targetClass' => $className,
+                'targetAttribute' => 'uuid'
+            ];
+        }
+
+        return $rules;
     }
 
     /**
@@ -207,6 +223,46 @@ class Form extends ActiveRecord
         }
 
         return $isValid;
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            if (class_exists('\forms\models\FormEvent')) {
+                $this->insertEvent();
+            }
+        }
+    }
+
+    /**
+     * Inserts a new mail type for current form.
+     */
+    protected function insertEvent()
+    {
+        $className = '\mail\models\Type';
+        if (class_exists($className)) {
+            /* @var \mail\models\Type $type */
+            $type = new $className([
+                'code' => 'MAIL_TYPE_' . $this->code,
+                'title' => sprintf('Web form `%s` mail event', $this->code),
+            ]);
+
+            if ($type->save()) {
+                $className = '\forms\models\FormEvent';
+                (new $className([
+                    'form_uuid' => $this->uuid,
+                    'type_uuid' => $type->uuid
+                ]))->{'insert'}();
+            }
+
+            $this->_event = $type->uuid;
+        }
     }
 
     /**
@@ -371,6 +427,30 @@ class Form extends ActiveRecord
     public function getStatuses()
     {
         return $this->hasMany(FormStatus::className(), ['form_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEvent()
+    {
+        if ($this->_event === null) {
+            $className = '\mail\models\Type';
+            if (class_exists($className)) {
+                $this->_event = $this->hasOne($className, ['uuid' => 'type_uuid'])
+                    ->viaTable('{{%forms_events}}', ['form_uuid' => 'uuid']);
+            }
+        }
+
+        return $this->_event;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setEvent($type)
+    {
+        $this->_event = $type;
     }
 
     /**

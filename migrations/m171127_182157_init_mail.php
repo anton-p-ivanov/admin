@@ -54,7 +54,7 @@ class m171127_182157_init_mail extends Migration
             'CONSTRAINT FOREIGN KEY (`type_uuid`) REFERENCES {{%mail_types}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%forms_mail_types}}', [
+        $this->createTable('{{%forms_events}}', [
             'form_uuid' => 'char(36) not null',
             'type_uuid' => 'char(36) not null',
             'PRIMARY KEY (`form_uuid`, `type_uuid`)',
