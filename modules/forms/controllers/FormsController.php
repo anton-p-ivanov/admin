@@ -121,9 +121,15 @@ class FormsController extends Controller
             throw new HttpException(500, 'Could not create new form.');
         }
 
+        // Refresh model with new data
+        $model->refresh();
+
+        // Format dates into human readable format
+        $model->formatDatesArray(['active_from_date', 'active_to_date']);
+
         \Yii::$app->session->setFlash('FORM_CREATED');
 
-        return $this->renderAjax('edit', [
+        return $this->renderPartial('edit', [
             'model' => $model,
             'workflow' => $model->workflow
         ]);
