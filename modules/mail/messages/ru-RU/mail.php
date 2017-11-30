@@ -61,4 +61,5 @@ return [
     'Invalid E-Mail.' => 'Неверный адрес E-Mail.',
     'Template with code `{value}` is already exist.' => 'Шаблон с кодом `{value}` уже существует.',
     'Invalid E-Mail or field code.' => 'Неверный адрес E-Mail или код поля.',
+    'View & edit template properties' => 'Изменить свойства шаблона',
 ];
