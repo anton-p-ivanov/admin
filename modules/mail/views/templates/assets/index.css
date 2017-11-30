@@ -36,3 +36,6 @@ textarea.form-group__input {
 #filter-modal .modal__body {
     overflow-y: visible;
 }
+#templates-pjax .material-icons {
+    display: block;
+}

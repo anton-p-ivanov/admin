@@ -86,6 +86,9 @@ a {
     color 0.15s ease-out,
     border 0.15s ease-out;
 }
+b, strong {
+    font-weight: 500;
+}
 .grid {
     display: flex;
     justify-content: space-between;
@@ -248,7 +251,6 @@ a {
 .modal__heading {
     font-size: 20px;
     font-weight: 500;
-    margin-bottom: 20px;
     color: rgb(0, 0, 0);
 }
 .modal__header {
