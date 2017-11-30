@@ -4,9 +4,11 @@
  * @var \forms\models\Form $model
  * @var \app\widgets\form\ActiveForm $form
  * @var \mail\models\Type $eventClassName
+ * @var \mail\models\Template $templateClassName
  */
 
 $eventClassName = '\mail\models\Type';
+$templateClassName = '\mail\models\Template';
 ?>
 
 <?= $form->field($model, 'template_active')->switch(); ?>
@@ -15,5 +17,16 @@ $eventClassName = '\mail\models\Type';
 <?= $this->render('.form.template.help.php'); ?>
 
 <?php if (class_exists($eventClassName)): ?>
-    <?= $form->field($model, 'event')->dropDownList($eventClassName::getList()); ?>
+<div class="grid">
+    <div class="grid__item">
+        <?= $form->field($model, 'event')
+            ->dropDownList($eventClassName::getList(), ['hiddenInputOptions' => [
+                'data-url' => \yii\helpers\Url::to(['templates'])
+            ]]); ?>
+    </div>
+    <div class="grid__item">
+        <?= $form->field($model, 'mail_template_uuid')
+            ->dropDownList($templateClassName::getList($model->{'event'})); ?>
+    </div>
+</div>
 <?php endif; ?>

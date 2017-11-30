@@ -21,6 +21,7 @@ use yii\db\ActiveRecord;
  * @property string $workflow_uuid
  *
  * @property Workflow $workflow
+ * @property Form $form
  *
  * @package forms\models
  */
@@ -55,7 +56,8 @@ class FormStatus extends ActiveRecord
             'default' => 'Default',
             'description' => 'Description',
             'sort' => 'Sort',
-            'workflow.modified_date' => 'Modified'
+            'workflow.modified_date' => 'Modified',
+            'mail_template_uuid' => 'Mail template',
         ];
 
         return array_map('self::t', $labels);
@@ -91,7 +93,7 @@ class FormStatus extends ActiveRecord
      */
     public function rules()
     {
-        return [
+        $rules = [
             ['title', 'required', 'message' => self::t('Title is required.')],
             ['title', 'string', 'max' => 255, 'tooLong' => self::t('Maximum {max} characters allowed.')],
             [['active', 'default'], 'boolean'],
@@ -106,6 +108,18 @@ class FormStatus extends ActiveRecord
                 'message' => self::t('Value must be a integer.')
             ],
         ];
+
+        $className = '\mail\models\Template';
+        if (class_exists($className)) {
+            $rules[] = [
+                'mail_template_uuid',
+                'exist',
+                'targetClass' => $className,
+                'targetAttribute' => 'uuid'
+            ];
+        }
+
+        return $rules;
     }
 
     /**
@@ -157,6 +171,14 @@ class FormStatus extends ActiveRecord
     protected static function prepareSearchQuery($form_uuid)
     {
         return self::find()->joinWith('workflow')->where(['form_uuid' => $form_uuid]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getForm()
+    {
+        return $this->hasOne(Form::className(), ['uuid' => 'form_uuid']);
     }
 
     /**

@@ -85,4 +85,5 @@ return [
     'New result' => 'Новый результат',
     'Copy result' => 'Копирование результата',
     'Mail event type' => 'Тип почтового события',
+    'Mail template' => 'Почтовый шаблон',
 ];

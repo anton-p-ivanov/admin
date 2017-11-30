@@ -73,7 +73,8 @@ class Form extends ActiveRecord
             'sort' => 'Sort',
             'workflow.modified_date' => 'Modified',
             'results' => 'Results',
-            'event' => 'Mail event type'
+            'event' => 'Mail event type',
+            'mail_template_uuid' => 'Mail template',
         ];
 
         return array_map('self::t', $labels);
@@ -136,12 +137,18 @@ class Form extends ActiveRecord
             ['active_dates', 'validateDateRange'],
         ];
 
-        $className = '\forms\models\FormEvent';
+        $className = '\mail\models\Type';
         if (class_exists($className)) {
             $rules[] = [
                 'event',
                 'exist',
                 'targetClass' => $className,
+                'targetAttribute' => 'uuid'
+            ];
+            $rules[] = [
+                'mail_template_uuid',
+                'exist',
+                'targetClass' => '\mail\models\Template',
                 'targetAttribute' => 'uuid'
             ];
         }

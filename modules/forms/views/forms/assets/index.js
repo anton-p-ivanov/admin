@@ -112,6 +112,33 @@ $(function () {
             $templateField.attr('disabled', !state).closest('.form-group').toggleClass('disabled', !state);
         });
 
+        $modal
+            .off('change', '#form-event:hidden')
+            .on('change', '#form-event:hidden', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    data: {'type_uuid': $(this).val()},
+                    success: function (response) {
+                        let input = $('#form-mail_template_uuid'),
+                            dropdown = input.closest('.form-group').find('ul.dropdown');
+
+                        // Clearing values
+                        input.val('');
+                        dropdown.find('li').remove();
+
+                        for (let i in response) {
+                            if (response.hasOwnProperty(i)) {
+                                dropdown.append($('<li>').append(
+                                    $('<a>').attr({'href': '#', 'data-value': i}).text(response[i])
+                                ));
+                            }
+                        }
+                    }
+                });
+            });
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#forms-form')
@@ -119,9 +146,6 @@ $(function () {
                 // Close modal window
                 $modal.Modal().hide();
             });
-
-        // DEBUGGING ONLY
-        // $modal.find('[data-target="#fields-modal"]:eq(1)').trigger('click');
     });
 
     // This handler will trigger after `#forms-modal` was hidden
@@ -295,7 +319,4 @@ $(function () {
 
         _pjaxUrls[selector] = $(selector).data('pjax-url');
     });
-
-    // DEBUGGING ONLY
-    // $('[data-target="#forms-modal"]:eq(1)').trigger('click');
 });

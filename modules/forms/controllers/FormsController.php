@@ -8,7 +8,9 @@ use forms\models\Form;
 use forms\models\FormFilter;
 use forms\models\FormResult;
 use forms\models\FormSettings;
+use yii\base\InvalidConfigException;
 use yii\filters\AjaxFilter;
+use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -66,6 +68,13 @@ class FormsController extends Controller
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
             'except' => ['index']
+        ];
+        $behaviors['cn'] = [
+            'class' => ContentNegotiator::className(),
+            'only' => ['templates'],
+            'formats' => [
+                'application/json' => Response::FORMAT_JSON,
+            ]
         ];
 
         return $behaviors;
@@ -269,6 +278,23 @@ class FormsController extends Controller
         }
 
         return $this->renderAjax('settings', ['model' => $model]);
+    }
+
+    /**
+     * @param string $type_uuid
+     * @return array
+     * @throws InvalidConfigException
+     */
+    public function actionTemplates($type_uuid)
+    {
+        /* @var \mail\models\Template $className */
+        $className = '\mail\models\Template';
+
+        if (!class_exists($className)) {
+            throw new InvalidConfigException('Module `mail` seems to be missed.');
+        }
+
+        return $className::getList($type_uuid);
     }
 
     /**

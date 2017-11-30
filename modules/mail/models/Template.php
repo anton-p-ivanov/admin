@@ -317,6 +317,19 @@ class Template extends ActiveRecord
     }
 
     /**
+     * @param string $type_uuid
+     * @return array
+     */
+    public static function getList($type_uuid)
+    {
+        return self::find()->joinWith('type')
+            ->where(['{{%mail_types}}.[[uuid]]' => $type_uuid])
+            ->select('subject')
+            ->indexBy('uuid')
+            ->column();
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     protected static function prepareSearchQuery()

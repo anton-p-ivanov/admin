@@ -4,10 +4,12 @@
  * @var \forms\models\FormStatus $model
  * @var \app\models\Workflow $workflow
  * @var string $title
+ * @var \mail\models\Template $templateClassName
  */
 
 use yii\helpers\Html;
 
+$templateClassName = '\mail\models\Template';
 ?>
 <div class="modal__container">
 
@@ -33,6 +35,11 @@ use yii\helpers\Html;
         <?= $form->field($model, 'title'); ?>
         <?= $form->field($model, 'description')->multilineInput(); ?>
         <?= $form->field($model, 'sort'); ?>
+
+        <?php if (class_exists($templateClassName)): ?>
+            <?= $form->field($model, 'mail_template_uuid')
+                ->dropDownList($templateClassName::getList($model->form->{'event'})); ?>
+        <?php endif; ?>
 
         <div class="form-group__required form-group__hint">
             * <?= Yii::t('forms', 'Required fields'); ?>
