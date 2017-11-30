@@ -225,6 +225,10 @@ class Form extends ActiveRecord
                 $this->parseActiveDates();
             }
 
+            if ($this->hasAttribute('mail_template_uuid')) {
+                $this->{'mail_template_uuid'} = $this->{'mail_template_uuid'} && $this->_event ? $this->{'mail_template_uuid'} : null;
+            }
+
             // Make symbolic code uppercase
             $this->code = mb_strtoupper($this->code);
         }
@@ -243,6 +247,19 @@ class Form extends ActiveRecord
         if ($insert) {
             if (class_exists('\forms\models\FormEvent')) {
                 $this->insertEvent();
+            }
+        }
+        else {
+            /* @var ActiveRecord $className */
+            $className = '\forms\models\FormEvent';
+            if (class_exists($className)) {
+                $className::deleteAll(['form_uuid' => $this->uuid]);
+                if ($this->_event) {
+                    (new $className([
+                        'form_uuid' => $this->uuid,
+                        'type_uuid' => $this->_event
+                    ]))->{'insert'}();
+                }
             }
         }
     }
