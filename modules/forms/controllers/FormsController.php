@@ -191,7 +191,6 @@ class FormsController extends Controller
 
     /**
      * @return boolean
-     * @todo check whether fields, statuses and their workflow records are deleted with form.
      */
     public function actionDelete()
     {

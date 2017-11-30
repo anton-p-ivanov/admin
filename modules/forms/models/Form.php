@@ -528,7 +528,8 @@ class Form extends ActiveRecord
             // Collect relations` workflow to future delete
             $this->_delete = ArrayHelper::merge(
                 ArrayHelper::getColumn($this->statuses, 'workflow_uuid'),
-                ArrayHelper::getColumn($this->fields, 'workflow_uuid')
+                ArrayHelper::getColumn($this->fields, 'workflow_uuid'),
+                ArrayHelper::getColumn($this->results, 'workflow_uuid')
             );
         }
 
