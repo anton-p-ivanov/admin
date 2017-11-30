@@ -17,6 +17,7 @@ return [
         'value' => function (Template $data) {
             return Html::a($data->subject, ['edit', 'uuid' => $data->uuid], [
                 'title' => Yii::t('mail', 'View & edit template properties'),
+                'class' => 'template__title',
                 'data-toggle' => 'modal',
                 'data-target' => '#templates-modal',
                 'data-pjax' => 'false',

@@ -39,3 +39,6 @@ textarea.form-group__input {
 #templates-pjax .material-icons {
     display: block;
 }
+.template__title {
+    color: white;
+}
