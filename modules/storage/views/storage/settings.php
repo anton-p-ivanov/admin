@@ -18,8 +18,10 @@ use yii\helpers\Html;
 
     <?= Html::hiddenInput('action', 'apply'); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('storage', 'Settings'); ?></div>
+    </div>
+    <div class="modal__body">
         <div class="grid">
             <?= $form->field($model, 'sortBy')->dropDownList(StorageSettings::getSortFields()); ?>
             <?= $form->field($model, 'sortOrder')->dropDownList(StorageSettings::getSortOrder()); ?>

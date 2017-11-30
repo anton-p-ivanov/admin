@@ -4,8 +4,10 @@
  */
 ?>
 <div class="modal__container">
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading">Загрузка файлов <span class="hidden">завершена</span></div>
+    </div>
+    <div class="modal__body">
         <div>Загружается файл <span data-file-index="1">{index}</span> из <span data-file-total>{total}</span>:</div>
         <div class="progress-bar progress-bar_light" data-file="{file}">
             <div class="progress-bar__ribbon"></div>

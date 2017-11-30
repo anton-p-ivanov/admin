@@ -11,8 +11,10 @@ $updateUrl = \yii\helpers\Url::to(['locations', 'tree_uuid' => $tree_uuid]);
 ?>
 
 <div class="modal__container modal__container_locations">
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('storage', 'Select location'); ?></div>
+    </div>
+    <div class="modal__body">
         <div id="locations-pjax" data-pjax-container="true" data-pjax-url="<?= $updateUrl; ?>">
 
             <?= \yii\helpers\Html::hiddenInput('selection', \yii\helpers\Json::encode([

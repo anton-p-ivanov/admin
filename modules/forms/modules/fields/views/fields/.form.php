@@ -20,8 +20,10 @@ use yii\helpers\Html;
         ]
     ]); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('fields', $title); ?></div>
+    </div>
+    <div class="modal__body">
         <?php if (Yii::$app->session->getFlash('FIELD_CREATED')): ?>
         <div class="modal__alert alert alert_success" data-autoclose="10">
             <div class="alert__content">New field has been created. You can edit it attributes.</div>

@@ -18,8 +18,10 @@ $templateClassName = '\mail\models\Template';
         'data-type' => 'active-form',
     ]]); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('forms', $title); ?></div>
+    </div>
+    <div class="modal__body">
 
         <?= Html::activeHiddenInput($model, 'form_uuid'); ?>
 

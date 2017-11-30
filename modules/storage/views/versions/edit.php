@@ -15,8 +15,10 @@ use app\widgets\form\ActiveForm;
         'data-type' => 'active-form'
     ]]); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('storage', 'Rename file'); ?></div>
+    </div>
+    <div class="modal__body">
         <?= $form->field($model, 'name')->cleanButton(); ?>
         <div class="checkbox-group">
             <?= $form->field($model, 'useTranslit')->checkbox(); ?>

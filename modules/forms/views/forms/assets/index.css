@@ -4,9 +4,6 @@
 #forms-modal .modal__container {
     width: 900px;
 }
-#forms-modal .modal__body {
-    padding-top: 0;
-}
 #forms-modal .modal__body .modal__alert {
     margin-top: 0;
 }
@@ -89,7 +86,7 @@
 .modal__alert {
     padding-left: 24px;
     padding-right: 24px;
-    margin: -24px -24px 0 -24px;
+    margin: 0 -24px;
 }
 #statuses-pjax,
 #fields-pjax,

@@ -12,8 +12,10 @@
         'data-type' => 'active-form',
     ]]); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('fields', $title); ?></div>
+    </div>
+    <div class="modal__body">
 
         <?= $form->field($model, 'label'); ?>
         <?= $form->field($model, 'value'); ?>

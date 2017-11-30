@@ -17,8 +17,10 @@ use yii\helpers\Html;
 
     <?= Html::activeHiddenInput($model, 'type'); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= $title; ?></div>
+    </div>
+    <div class="modal__body">
 
         <?php $widget = \app\widgets\Tabs::begin(['items' => require_once ".form.tabs.php"]); ?>
         <?php foreach ($widget->items as $index => $item): ?>

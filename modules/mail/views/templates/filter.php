@@ -18,8 +18,10 @@ use yii\helpers\Html;
 
     <?= Html::hiddenInput('action', 'apply'); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('mail', 'Filter'); ?></div>
+    </div>
+    <div class="modal__body">
 
         <?= $form->field($model, 'owner')->dropDownList(TemplateFilter::getOwners()); ?>
         <?= $form->field($model, 'subject'); ?>

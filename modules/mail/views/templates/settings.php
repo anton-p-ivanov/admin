@@ -18,8 +18,10 @@ use yii\helpers\Html;
 
     <?= Html::hiddenInput('action', 'apply'); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('mail', 'Settings'); ?></div>
+    </div>
+    <div class="modal__body">
         <div class="grid">
             <div class="grid__item">
                 <?= $form->field($model, 'sortBy')->dropDownList(TemplateSettings::getSortFields()); ?>

@@ -18,8 +18,10 @@ use yii\helpers\Html;
 
     <?= Html::hiddenInput('action', 'apply'); ?>
 
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('storage', 'Data filter'); ?></div>
+    </div>
+    <div class="modal__body">
 
         <?= $form->field($model, 'owner')->dropDownList(StorageFilter::getOwners()); ?>
         <?= $form->field($model, 'size')->rangeInput([
