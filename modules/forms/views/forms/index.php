@@ -36,5 +36,5 @@ forms\assets\FormsAsset::register($this);
 </div>
 
 <div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
-    <?= $this->render('confirm'); ?>
+    <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>
