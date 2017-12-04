@@ -19,11 +19,11 @@ input[type="file"] {
     text-overflow: ellipsis;
     max-width: 800px;
 }
-#storage-file-modal .modal__container {
-    width: 900px;
-}
 #storage-file-modal .modal__body {
     min-height: 415px;
+}
+#storage-file-modal .tabs-pane {
+    min-height: 400px;
 }
 #versions-pjax,
 #locations-pjax {
@@ -92,4 +92,13 @@ input[type="file"] {
 }
 .version_active {
     display: block;
+}
+.version__description {
+    display: block;
+    font-size: 15px;
+    color: #999999;
+}
+#version-modal .modal__container {
+    width: 400px;
+    min-width: 400px;
 }

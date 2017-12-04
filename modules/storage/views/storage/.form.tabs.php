@@ -14,5 +14,6 @@ return [
         'title' => Yii::t('storage', 'Versions'),
         'url' => ['versions/index', 'storage_uuid' => $model->uuid],
         'visible' => !$model->isDirectory(),
+        'options' => ['data-remote' => 'true']
     ],
 ];

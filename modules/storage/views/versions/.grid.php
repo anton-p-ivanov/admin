@@ -3,7 +3,16 @@
 use storage\models\StorageVersion;
 
 return [
-    'file.name',
+    [
+        'attribute' => 'file.name',
+        'label' => Yii::t('storage', 'File'),
+        'format' => 'html',
+        'value' => function (StorageVersion $model) {
+            return '<b>' . $model->file->name . '</b><span class="version__description">'
+                . Yii::$app->formatter->asShortSize($model->file->size) . ' / '
+                . $model->file->type . '</span>';
+        }
+    ],
     [
         'attribute' => 'active',
         'header' => \yii\helpers\Html::tag('i', 'check', [
@@ -15,15 +24,6 @@ return [
         'value' => function (StorageVersion $model) {
             return $model->isActive() ? '<i class="material-icons text_success version_active">check</i>' : '';
         }
-    ],
-    [
-        'attribute' => 'file.size',
-        'format' => 'shortSize',
-        'options' => ['width' => 150],
-    ],
-    [
-        'attribute' => 'file.type',
-        'options' => ['width' => 200],
     ],
     [
         'attribute' => 'workflow.created_date',

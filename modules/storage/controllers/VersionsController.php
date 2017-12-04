@@ -76,7 +76,7 @@ class VersionsController extends Controller
 
         $dataProvider = new ActiveDataProvider([
             'query' => $model->getVersions(),
-            'pagination' => ['defaultPageSize' => 5],
+            'pagination' => ['defaultPageSize' => 3],
             'sort' => false
         ]);
 
