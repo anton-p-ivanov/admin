@@ -26,6 +26,9 @@
     display: block;
     position: relative;
 }
+.grid-view__table thead th .material-icons {
+    display: block;
+}
 .grid-view__table_light thead th a {
     color: #666;
 }
