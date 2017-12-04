@@ -77,12 +77,7 @@ $(function () {
             $templateField = $('#form-template'),
             $dtPickerFields = $('.field-form-active_dates input[type="text"]'),
             state = $active.is(':checked'),
-            dateTimeFormat = 'DD.MM.YYYY HH:mm',
-            maxHeight = Math.max.apply(Math, $modal.find('.tabs-pane').map(function () {
-                return $(this).outerHeight();
-            }));
-
-        $modal.find('.tabs-pane').css({'min-height': maxHeight + 'px'});
+            dateTimeFormat = 'DD.MM.YYYY HH:mm';
 
         // Enable interactive form
         $('#forms-form').Form();

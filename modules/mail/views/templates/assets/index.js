@@ -71,12 +71,7 @@ $(function () {
 
     // This handler will trigger after `#forms-modal` loads
     $(document).on('loaded.Modal', '#templates-modal', function (e) {
-        let $modal = $(e.currentTarget),
-            maxHeight = Math.max.apply(Math, $modal.find('.tabs-pane').map(function () {
-                return $(this).outerHeight();
-            }));
-
-        $modal.find('.tabs-pane').css({'min-height': maxHeight + 'px'});
+        let $modal = $(e.currentTarget);
 
         // Enable interactive form
         $('#templates-form').Form();

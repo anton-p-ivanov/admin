@@ -23,6 +23,9 @@ textarea.form-group__input {
 #templates-modal .modal__container {
     width: 900px;
 }
+#templates-modal .modal__body {
+    min-height: 510px;
+}
 #settings-modal .modal__footer,
 #filter-modal .modal__footer {
     margin-left: -12px;
