@@ -163,7 +163,7 @@ class StorageController extends Controller
             return $model->attributes;
         }
 
-        return $this->renderAjax('create', ['model' => $model, 'parent_uuid' => $parent_uuid]);
+        return $this->renderPartial('create', ['model' => $model, 'parent_uuid' => $parent_uuid]);
     }
 
     /**
@@ -305,7 +305,7 @@ class StorageController extends Controller
             return $model->attributes;
         }
 
-        return $this->renderAjax('settings', ['model' => $model]);
+        return $this->renderPartial('settings', ['model' => $model]);
     }
 
 }

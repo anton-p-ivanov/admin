@@ -31,7 +31,7 @@ return [
                 $title = Html::a($title, ['edit', 'uuid' => $data->storage_uuid], [
                     'title' => Yii::t('storage', 'View & edit file properties'),
                     'data-toggle' => 'modal',
-                    'data-target' => '#storage-modal',
+                    'data-target' => '#storage-file-modal',
                     'data-pjax' => 'false',
                     'data-reload' => 'true'
                 ]);

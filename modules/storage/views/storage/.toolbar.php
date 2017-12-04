@@ -19,7 +19,7 @@ return [
             'label' => Yii::t('storage', 'Create folder'),
             'options' => [
                 'data-toggle' => 'modal',
-                'data-target' => '#storage-modal',
+                'data-target' => '#storage-dir-modal',
                 'data-reload' => 'true'
             ],
             'url' => [

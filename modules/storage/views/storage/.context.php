@@ -14,7 +14,7 @@ return [
         'url' => ['edit', 'uuid' => $model->storage_uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#storage-modal',
+            'data-target' => $model->storage->isDirectory() ? '#storage-dir-modal' : '#storage-file-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true'
         ]),

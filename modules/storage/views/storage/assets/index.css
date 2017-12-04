@@ -19,8 +19,11 @@ input[type="file"] {
     text-overflow: ellipsis;
     max-width: 800px;
 }
-#storage-modal .modal__container {
+#storage-file-modal .modal__container {
     width: 900px;
+}
+#storage-file-modal .modal__body {
+    min-height: 415px;
 }
 #versions-pjax,
 #locations-pjax {

@@ -110,28 +110,25 @@ $(function () {
         }
     });
 
-    // This handler will trigger after `#storage-modal` loads
-    $(document).on('loaded.Modal', '#storage-modal', function (e) {
-        let $modal = $(e.currentTarget),
-            maxHeight = Math.max.apply(Math, $modal.find('.tabs-pane').map(function () {
-                return $(this).outerHeight();
-            }));
-
-        $modal.find('.tabs-pane').css({'min-height': maxHeight + 'px'});
+    // This handler will trigger after modal loads
+    $(document).on('loaded.Modal', '#storage-dir-modal, #storage-file-modal', function (e) {
+        let $modal = $(e.currentTarget);
 
         // Enable interactive form
-        $('#storage-form').Form();
+        $modal.find('#storage-form').Form();
 
         // Enable tabs
         $('[data-toggle="tab"]').tabs();
 
-        $(document).pjax('#versions-pjax a:not([data-pjax="false"])', {
-            container: '#versions-pjax',
-            fragment: '#versions-pjax',
-            push: false
-        });
+        if ($modal.id === 'storage-file-modal') {
+            $(document).pjax('#versions-pjax a:not([data-pjax="false"])', {
+                container: '#versions-pjax',
+                fragment: '#versions-pjax',
+                push: false
+            });
 
-        _pjaxUrls['#versions-pjax'] = $('#versions-pjax').data('pjax-url');
+            _pjaxUrls['#versions-pjax'] = $('#versions-pjax').data('pjax-url');
+        }
 
         // After submit form handler
         $modal
@@ -261,8 +258,8 @@ $(function () {
         $modal.find('.form-group__error').html('');
     });
 
-    // This handler will trigger after `#storage-modal` was hidden
-    $(document).on('hidden.Modal', '#storage-modal', function () {
+    // This handler will trigger after modal was hidden
+    $(document).on('hidden.Modal', '#storage-dir-modal, #storage-file-modal', function () {
         reloadGrid('#storage-pjax');
     });
 

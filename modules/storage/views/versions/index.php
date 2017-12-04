@@ -18,7 +18,7 @@ $updateUrl = \yii\helpers\Url::to(['versions/index', 'storage_uuid' => $storage_
     <?= \app\widgets\grid\GridView::widget([
         'id' => 'versions-grid',
         'dataProvider' => $dataProvider,
-        'layout' => '{items}',
+        'layout' => '{items}{pager}',
         'tableOptions' => ['class' => implode(' ', [
             'grid-view__table',
             'grid-view__table_dense',

@@ -22,20 +22,27 @@ use yii\helpers\Html;
     </div>
     <div class="modal__body">
 
-        <?php $widget = \app\widgets\Tabs::begin(['items' => require_once ".form.tabs.php"]); ?>
-        <?php foreach ($widget->items as $index => $item): ?>
-            <?= Html::beginTag('div', [
-                'class' => 'tabs-pane' . ($item['active'] === true ? ' active' : ''),
-                'id' => $item['id'],
-                'data-remote' => isset($item['options']['data-remote']) ? $item['id'] : null
+        <?php if ($model->isDirectory()): ?>
+            <?= $this->render('.form.properties.php', [
+                'model' => $model,
+                'form' => $form
             ]); ?>
-                <?= $this->render('.form.' . $item['id'] . '.php', [
-                    'model' => $model,
-                    'form' => $form
+        <?php else: ?>
+            <?php $widget = \app\widgets\Tabs::begin(['items' => require_once ".form.tabs.php"]); ?>
+            <?php foreach ($widget->items as $index => $item): ?>
+                <?= Html::beginTag('div', [
+                    'class' => 'tabs-pane' . ($item['active'] === true ? ' active' : ''),
+                    'id' => $item['id'],
+                    'data-remote' => isset($item['options']['data-remote']) ? $item['id'] : null
                 ]); ?>
-            <?= Html::endTag('div'); ?>
-        <?php endforeach; ?>
-        <?php \app\widgets\Tabs::end(); ?>
+                    <?= $this->render('.form.' . $item['id'] . '.php', [
+                        'model' => $model,
+                        'form' => $form
+                    ]); ?>
+                <?= Html::endTag('div'); ?>
+            <?php endforeach; ?>
+            <?php \app\widgets\Tabs::end(); ?>
+        <?php endif; ?>
 
     </div>
     <div class="modal__footer">
