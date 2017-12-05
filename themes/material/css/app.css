@@ -39,10 +39,10 @@ body {
 }
 nav {
     position: fixed;
-    width: 50%;
+    width: 400px;
     height: 100%;
     top: 0;
-    left: 0;
+    left: -400px;
     background-color: #303030;
     border-right: solid 1px rgba(255, 255, 255, .12);
 }
@@ -157,13 +157,22 @@ b, strong {
     overflow: hidden;
     background-color: #e0e0e0;
 }
+.dropdown .empty {
+    display: block;
+    margin: 0;
+    padding: 0 24px;
+    white-space: nowrap;
+    line-height: 32px;
+    color: #999999;
+}
 .dropdown::-webkit-scrollbar {
     width: 4px;
     background-color: transparent;
 }
 .dropdown::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .12);
+    background-color: #00aeef;
 }
+
 /* endregion */
 /* region Buttons */
 .btn {
@@ -237,12 +246,21 @@ b, strong {
     width: 20%;
     min-width: 600px;
     max-width: 900px;
+    max-height: 100%;
+    overflow-y: auto;
     background-color: white;
     color: rgba(0, 0, 0, .65);
     margin: 0 auto;
     position: relative;
     border-radius: 2px;
     box-shadow: 0 9px 46px rgba(0, 0, 0, .12), 0 11px 15px rgba(0, 0, 0, .2);
+}
+.modal__container::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+.modal__container::-webkit-scrollbar-thumb {
+    background-color: #00aeef;
 }
 .modal__body {
     padding: 24px;
@@ -399,7 +417,11 @@ input[type="radio"]:checked::after {
 
 }
 @media only screen and (min-width: 960px) {
-
+    body {
+        font-size: 18px;
+        line-height: 26px;
+        padding-top: 64px;
+    }
 }
 @media only screen and (min-width: 1280px) {
 
@@ -410,12 +432,13 @@ input[type="radio"]:checked::after {
 @media only screen and (min-width: 1600px) {
     body {
         font-size: 18px;
-        line-height: 27.6923px;
+        line-height: 26px;
         padding-left: 400px;
         padding-top: 64px;
     }
     nav {
         width: 400px;
+        left: 0;
     }
     header {
         left: 400px;
