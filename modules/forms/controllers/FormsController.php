@@ -38,7 +38,7 @@ class FormsController extends Controller
         $isValid = parent::beforeAction($action);
 
         if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(1));
+            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
         }
 
         if (\Yii::$app->request->isPost) {

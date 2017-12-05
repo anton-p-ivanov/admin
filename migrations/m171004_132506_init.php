@@ -66,7 +66,7 @@ class m171004_132506_init extends Migration
         ], 'ENGINE InnoDB');
 
         $this->insert('{{%users}}', [
-            'uuid' => 1,
+            'uuid' => new \yii\db\Expression('UUID()'),
             'email' => 'guest.user@example.com',
             'fname' => 'Guest',
             'lname' => 'User'
