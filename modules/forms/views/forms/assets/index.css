@@ -4,11 +4,8 @@
 #forms-modal .modal__container {
     width: 900px;
 }
-#forms-modal .modal__body {
-    min-height: 760px;
-}
-#forms-modal .modal__body .modal__alert {
-    margin-top: 0;
+#forms-modal .tabs-pane {
+    min-height: 665px;
 }
 #confirm-modal .modal__container {
     width: 600px;
