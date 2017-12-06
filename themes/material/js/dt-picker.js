@@ -72,6 +72,7 @@
             handler
                 .on('focus.DateTimePicker', function (e) {
                     let pos = $(this).offset(),
+                        top = pos.top + $(this).outerHeight(),
                         target = e.target;
 
                     __selectedDate = $(target).data('date') ? new Date($(target).data('date')) : __currentDate;
@@ -158,10 +159,20 @@
                     });
 
                     // Position picker to target input
-                    $picker.css({'left': pos.left, 'top': pos.top + $(this).outerHeight()});
+                    $picker.css({'left': pos.left, 'top': top});
 
                     // Display picker
                     $('body').append($picker);
+
+                    let height = $picker.height();
+
+                    // If picker is out of window bounds update it position
+                    if (top + height > $(window).height() && top - height > 0) {
+                        $picker.css({'top': top - height});
+                    }
+                    else {
+                        $picker.css({'top': 0});
+                    }
 
                     // Remove picker on outside click
                     $(document)
