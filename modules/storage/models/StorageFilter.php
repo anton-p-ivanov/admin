@@ -24,16 +24,24 @@ class StorageFilter extends Filter
      */
     public $owner;
     /**
-     * @var float[]|string[]
+     * @var array
      */
     public $size;
+    /**
+     * @var string
+     */
+    public $min;
+    /**
+     * @var string
+     */
+    public $max;
     /**
      * @var string
      */
     public $type;
 
     /**
-     * @inheritdoc
+     * @param \yii\db\ActiveQuery $query
      */
     public function buildQuery(&$query)
     {
@@ -117,6 +125,8 @@ class StorageFilter extends Filter
         $labels = [
             'owner' => 'Owner',
             'size' => 'Size',
+            'min' => 'Size (min)',
+            'max' => 'Size (max)',
             'type' => 'Type'
         ];
 

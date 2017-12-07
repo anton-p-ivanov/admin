@@ -5,6 +5,7 @@ namespace storage\controllers;
 use app\models\User;
 use storage\models\Storage;
 use storage\models\StorageTree;
+use yii\filters\AjaxFilter;
 use yii\web\Controller;
 
 /**
@@ -29,6 +30,19 @@ class LocationsController extends Controller
     }
 
     /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['ajax'] = [
+            'class' => AjaxFilter::className(),
+        ];
+
+        return $behaviors;
+    }
+
+    /**
      * @param string $tree_uuid
      * @return string
      */
@@ -40,7 +54,7 @@ class LocationsController extends Controller
         $dataProvider = StorageTree::search();
         $dataProvider->sort = false;
         $dataProvider->pagination->pageSize = 10;
-        $dataProvider->query->andFilterWhere(['type' => Storage::STORAGE_TYPE_DIR]);
+        $dataProvider->query->andFilterWhere(['{{%storage}}.[[type]]' => Storage::STORAGE_TYPE_DIR]);
 
         $params = [
             'dataProvider' => $dataProvider,

@@ -24,14 +24,11 @@ use yii\helpers\Html;
     <div class="modal__body">
 
         <?= $form->field($model, 'owner')->dropDownList(StorageFilter::getOwners()); ?>
-        <?= $form->field($model, 'size')->rangeInput([
-            'min' => Yii::t('storage', 'Size (min)'),
-            'max' => Yii::t('storage', 'Size (max)')
-        ]); ?>
+        <?= $form->field($model, 'size')->rangeInput(['min', 'max']); ?>
         <?= $form->field($model, 'type')->dropDownList(StorageFilter::getTypes()); ?>
 
     </div>
-    <div class="modal__footer grid">
+    <div class="modal__footer">
         <div class="grid-item">
             <?= Html::resetButton(Yii::t('app', 'Reset'), [
                 'value' => 'reset',

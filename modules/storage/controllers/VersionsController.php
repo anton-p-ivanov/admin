@@ -7,6 +7,7 @@ use storage\models\Storage;
 use storage\models\StorageFile;
 use storage\models\StorageVersion;
 use yii\data\ActiveDataProvider;
+use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
@@ -56,6 +57,9 @@ class VersionsController extends Controller
         $behaviors['confirm'] = [
             'class' => ConfirmFilter::className(),
             'actions' => ['delete', 'activate']
+        ];
+        $behaviors['ajax'] = [
+            'class' => AjaxFilter::className(),
         ];
 
         return $behaviors;

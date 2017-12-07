@@ -1,18 +1,7 @@
 $(function () {
     "use strict";
 
-    let _pjaxUrls = {'#storage-pjax': window.location.href};
-
-    // Enable PJAX for main storage grid
-    $(document).pjax('#storage-pjax a:not([data-pjax="false"])', {
-        container: '#storage-pjax',
-        fragment: '#storage-pjax',
-        push: true
-    });
-
-    $(document).on('pjax:success', function (e, a, b, c, d) {
-        _pjaxUrls[d.container] = d.url;
-    });
+    let grid = $('#storage-pjax').grid();
 
     /**
      * Formats file size to human readable format.
@@ -36,18 +25,6 @@ $(function () {
         return value.toFixed(2) + '&nbsp;' + units[position];
     }
 
-    /**
-     * Reloads file versions grid.
-     */
-    function reloadGrid(selector) {
-        $.pjax({
-            container: selector,
-            fragment: selector,
-            url: _pjaxUrls[selector],
-            push: false,
-        });
-    }
-
     // Activate file lookup
     $(document).on('click', '[data-toggle="upload"]', function (e) {
         e.preventDefault();
@@ -67,49 +44,6 @@ $(function () {
             .trigger('click');
     });
 
-    // This handler will trigger on-demand update of `pjax` containers
-    $(document).on('click', '[data-toggle="pjax"]', function (e) {
-        e.preventDefault();
-        reloadGrid($(this).data('target'));
-    });
-
-    // Toggle version activation
-    $(document).on('click', '[data-toggle="action"]', function (e) {
-        e.preventDefault();
-        let self = $(this),
-            $modal = $('#confirm-modal'),
-            formSelector = '#confirm-form',
-            container = '#' + self.parents('[data-pjax-container]').attr('id');
-
-        if (self.data('confirm')) {
-            // Showing confirmation modal
-            $modal.Modal().show();
-
-            // Remove previously appended selections
-            $(formSelector).find('[name="selection[]"]').remove();
-
-            // Append selected items to confirm form
-            let $selected = $(container).find('[name="selection[]"]:checked').clone();
-            $(formSelector).append($selected.prop('type', 'hidden'));
-
-            // Setting up confirmation form
-            $(formSelector).attr({
-                'method': self.data('http-method') || 'post',
-                'action': self.attr('href')
-            });
-
-            $modal
-                .off('afterSubmit.Form', formSelector)
-                .on('afterSubmit.Form', formSelector, function () {
-                    // Reload versions table content
-                    reloadGrid(container);
-
-                    // Close modal window
-                    $modal.Modal().hide();
-                });
-        }
-    });
-
     // This handler will trigger after modal loads
     $(document).on('loaded.Modal', '#storage-dir-modal, #storage-file-modal', function (e) {
         let $modal = $(e.currentTarget);
@@ -119,16 +53,6 @@ $(function () {
 
         // Enable tabs
         $('[data-toggle="tab"]').tabs();
-
-        if ($modal.id === 'storage-file-modal') {
-            $(document).pjax('#versions-pjax a:not([data-pjax="false"])', {
-                container: '#versions-pjax',
-                fragment: '#versions-pjax',
-                push: false
-            });
-
-            _pjaxUrls['#versions-pjax'] = $('#versions-pjax').data('pjax-url');
-        }
 
         // After submit form handler
         $modal
@@ -144,14 +68,7 @@ $(function () {
 
         let $modal = $(e.currentTarget);
 
-        // Enable PJAX support for data grid
-        $(document).pjax('#locations-pjax a:not([data-pjax="false"])', {
-            container: '#locations-pjax',
-            fragment: '#locations-pjax',
-            push: false
-        });
-
-        _pjaxUrls['#locations-pjax'] = e.url;
+        grid.pjaxUrls.add('#locations-pjax', e.url);
 
         // Form handlers
         $modal
@@ -184,83 +101,16 @@ $(function () {
         // After submit form handler
         $modal.on('afterSubmit.Form', '#version-form', function () {
             // Reload versions table content
-            reloadGrid('#versions-pjax');
+            grid.reload('#versions-pjax');
 
             // Close modal window
             $modal.Modal().hide();
         });
-    });
-
-    // This handler will trigger after `#settings-modal` loads
-    $(document).on('loaded.Modal', '#settings-modal', function (e) {
-        let $modal = $(e.currentTarget);
-
-        // Enable interactive form
-        $('#settings-form').Form();
-
-        $modal.on('click', 'button:submit', function (e) {
-            e.preventDefault();
-
-            $modal.find('[name="action"]:hidden').val($(this).val());
-            $modal.find('form').submit();
-        });
-
-        // After submit form handler
-        $modal.on('afterSubmit.Form', '#settings-form', function () {
-            // Reload storage table content
-            $.pjax.reload('#storage-pjax');
-
-            // Close modal window
-            $modal.Modal().hide();
-        });
-    });
-
-    // This handler will trigger after `#filter-modal` loads
-    $(document).on('loaded.Modal', '#filter-modal', function (e) {
-        let $modal = $(e.currentTarget);
-
-        // Enable interactive form
-        $('#filter-form').Form();
-
-        $modal
-            .off('click', 'button:submit,button:reset')
-            .on('click', 'button:submit,button:reset', function (e) {
-                e.preventDefault();
-
-                $modal.find('[name="action"]:hidden').val($(this).val());
-                $modal.find('form').submit();
-            });
-
-        // After submit form handler
-        $modal
-            .off('afterSubmit.Form', '#filter-form')
-            .on('afterSubmit.Form', '#filter-form', function (e) {
-                // Reload storage table content
-                $.pjax({
-                    container: '#storage-pjax',
-                    fragment: '#storage-pjax',
-                    url: e.response.url,
-                    push: true,
-                });
-
-                // Close modal window
-                $modal.Modal().hide();
-            });
-    });
-
-    // This handler will trigger after `#confirm-modal` was shown
-    $(document).on('shown.Modal', '#confirm-modal', function (e) {
-        let $modal = $(e.currentTarget);
-
-        // Set focus to password field
-        $modal.find('input:password').val('').focus();
-        $modal.find('.form-group.error').toggleClass('error', false);
-        $modal.find('.form-group__error').html('');
     });
 
     // This handler will trigger after modal was hidden
     $(document).on('hidden.Modal', '#storage-dir-modal, #storage-file-modal', function () {
-        reloadGrid('#storage-pjax');
+        grid.reload('#storage-pjax');
     });
 
     // File upload

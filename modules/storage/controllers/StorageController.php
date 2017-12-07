@@ -8,6 +8,7 @@ use storage\models\Storage;
 use storage\models\StorageFilter;
 use storage\models\StorageSettings;
 use storage\models\StorageTree;
+use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -76,6 +77,10 @@ class StorageController extends Controller
         $behaviors['confirm'] = [
             'class' => ConfirmFilter::className(),
             'actions' => ['delete']
+        ];
+        $behaviors['ajax'] = [
+            'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
 
         return $behaviors;
