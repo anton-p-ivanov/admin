@@ -11,6 +11,13 @@ use yii\helpers\ArrayHelper;
 class Module extends \yii\base\Module
 {
     /**
+     * @var array
+     */
+    public $controllerMap = [
+        'values' => 'fields\controllers\ValuesController',
+        'validators' => 'fields\controllers\ValidatorsController'
+    ];
+    /**
      * @var string
      */
     public $defaultRoute = 'fields';
@@ -31,6 +38,12 @@ class Module extends \yii\base\Module
 
         // initialize the module with the configuration loaded from config.php
         \Yii::configure($this, ArrayHelper::merge($config, $env));
+
+        // set alias
+        \Yii::setAlias('@fields', '@app/modules/fields');
+
+        // set view path
+        $this->viewPath = '@fields/views';
 
         $this->registerTranslations();
     }
