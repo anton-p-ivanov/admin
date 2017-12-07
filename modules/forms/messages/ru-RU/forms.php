@@ -86,4 +86,5 @@ return [
     'Copy result' => 'Копирование результата',
     'Mail event type' => 'Тип почтового события',
     'Mail template' => 'Почтовый шаблон',
+    'New form has been created. You can edit it attributes.' => 'Новая форма добавлена. Вы можете изменить её свойства.',
 ];

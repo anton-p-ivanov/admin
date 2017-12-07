@@ -111,6 +111,7 @@ class FormStatus extends ActiveRecord
 
         $className = '\mail\models\Template';
         if (class_exists($className)) {
+            $rules[] = ['mail_template_uuid', 'default', 'value' => null];
             $rules[] = [
                 'mail_template_uuid',
                 'exist',

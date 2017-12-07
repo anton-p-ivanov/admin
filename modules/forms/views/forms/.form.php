@@ -26,7 +26,7 @@ use yii\helpers\Html;
     <div class="modal__body">
         <?php if (Yii::$app->session->getFlash('FORM_CREATED')): ?>
         <div class="modal__alert alert alert_success">
-            <div class="alert__content">New form has been created. You can edit it attributes.</div>
+            <div class="alert__content"><?= Yii::t('forms', 'New form has been created. You can edit it attributes.'); ?></div>
             <a class="alert__dismiss" href="#" data-toggle="dismiss"><i class="material-icons">close</i></a>
         </div>
         <?php endif; ?>

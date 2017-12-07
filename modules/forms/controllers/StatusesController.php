@@ -98,7 +98,7 @@ class StatusesController extends Controller
             return $this->postCreate($model);
         }
 
-        return $this->renderAjax('create', [
+        return $this->renderPartial('create', [
             'model' => $model,
             'workflow' => new Workflow()
         ]);

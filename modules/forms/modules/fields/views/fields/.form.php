@@ -26,7 +26,7 @@ use yii\helpers\Html;
     <div class="modal__body">
         <?php if (Yii::$app->session->getFlash('FIELD_CREATED')): ?>
         <div class="modal__alert alert alert_success" data-autoclose="10">
-            <div class="alert__content">New field has been created. You can edit it attributes.</div>
+            <div class="alert__content"><?= Yii::t('fields', 'New field has been created. You can edit it attributes.'); ?></div>
             <a class="alert__dismiss" href="#" data-toggle="dismiss">
                 <i class="material-icons">close</i>
             </a>

@@ -1,73 +1,7 @@
 $(function () {
     "use strict";
 
-    let _pjaxUrls = {'#forms-pjax': window.location.href};
-
-    // Enable PJAX for main grid
-    $(document).pjax('#forms-pjax a:not([data-pjax="false"])', {
-        container: '#forms-pjax',
-        fragment: '#forms-pjax',
-        push: true
-    });
-
-    $(document).on('pjax:success', function (e, a, b, c, d) {
-        _pjaxUrls[d.container] = d.url;
-    });
-
-    /**
-     * Reloads file versions grid.
-     */
-    function reloadGrid(selector) {
-        $.pjax({
-            container: selector,
-            fragment: selector,
-            url: _pjaxUrls[selector],
-            push: false,
-        });
-    }
-
-    // This handler will trigger on-demand update of `pjax` containers
-    $(document).on('click', '[data-toggle="pjax"]', function (e) {
-        e.preventDefault();
-        reloadGrid($(this).data('target'));
-    });
-
-    // Toggle action activation
-    $(document).on('click', '[data-toggle="action"]', function (e) {
-        e.preventDefault();
-        let self = $(this),
-            $modal = $('#confirm-modal'),
-            formSelector = '#confirm-form',
-            container = '#' + self.parents('[data-pjax-container]').attr('id');
-
-        if (self.data('confirm')) {
-            // Showing confirmation modal
-            $modal.Modal().show();
-
-            // Remove previously appended selections
-            $(formSelector).find('[name="selection[]"]').remove();
-
-            // Append selected items to confirm form
-            let $selected = $(container).find('[name="selection[]"]:checked').clone();
-            $(formSelector).append($selected.prop('type', 'hidden'));
-
-            // Setting up confirmation form
-            $(formSelector).attr({
-                'method': self.data('http-method') || 'post',
-                'action': self.attr('href')
-            });
-
-            $modal
-                .off('afterSubmit.Form', formSelector)
-                .on('afterSubmit.Form', formSelector, function () {
-                    // Reload versions table content
-                    reloadGrid(container);
-
-                    // Close modal window
-                    $modal.Modal().hide();
-                });
-        }
-    });
+    let grid = $('#forms-pjax').grid();
 
     // This handler will trigger after `#forms-modal` loads
     $(document).on('loaded.Modal', '#forms-modal', function (e) {
@@ -145,7 +79,7 @@ $(function () {
 
     // This handler will trigger after `#forms-modal` was hidden
     $(document).on('hidden.Modal', '#forms-modal', function () {
-        reloadGrid('#forms-pjax');
+        grid.reload('#forms-pjax');
     });
 
     // This handler will trigger after `#fields-modal` loads
@@ -199,64 +133,7 @@ $(function () {
 
     // This handler will trigger after `#fields-modal` was hidden
     $(document).on('hidden.Modal', '#fields-modal', function () {
-        reloadGrid('#fields-pjax');
-    });
-
-    // This handler will trigger after `#settings-modal` loads
-    $(document).on('loaded.Modal', '#settings-modal', function (e) {
-        let $modal = $(e.currentTarget);
-
-        // Enable interactive form
-        $('#settings-form').Form();
-
-        $modal.on('click', 'button:submit', function (e) {
-            e.preventDefault();
-
-            $modal.find('[name="action"]:hidden').val($(this).val());
-            $modal.find('form').submit();
-        });
-
-        // After submit form handler
-        $modal.on('afterSubmit.Form', '#settings-form', function () {
-            // Reload forms table content
-            $.pjax.reload('#forms-pjax');
-
-            // Close modal window
-            $modal.Modal().hide();
-        });
-    });
-
-    // This handler will trigger after `#filter-modal` loads
-    $(document).on('loaded.Modal', '#filter-modal', function (e) {
-        let $modal = $(e.currentTarget);
-
-        // Enable interactive form
-        $('#filter-form').Form();
-
-        $modal
-            .off('click', 'button:submit,button:reset')
-            .on('click', 'button:submit,button:reset', function (e) {
-                e.preventDefault();
-
-                $modal.find('[name="action"]:hidden').val($(this).val());
-                $modal.find('form').submit();
-            });
-
-        // After submit form handler
-        $modal
-            .off('afterSubmit.Form', '#filter-form')
-            .on('afterSubmit.Form', '#filter-form', function (e) {
-                // Reload storage table content
-                $.pjax({
-                    container: '#forms-pjax',
-                    fragment: '#forms-pjax',
-                    url: e.response.url,
-                    push: true,
-                });
-
-                // Close modal window
-                $modal.Modal().hide();
-            });
+        grid.reload('#fields-pjax');
     });
 
     let modals = ['#statuses-modal', '#results-modal', '#values-modal', '#validators-modal'];
@@ -274,44 +151,15 @@ $(function () {
             .off('afterSubmit.Form', '#' + name + '-form')
             .on('afterSubmit.Form', '#' + name + '-form', function () {
                 // Reload parent table content
-                reloadGrid('#' + name + '-pjax');
+                grid.reload('#' + name + '-pjax');
 
                 // Close modal window
                 $modal.Modal().hide();
             });
     });
 
-    // This handler will trigger after `#confirm-modal` was shown
-    $(document).on('shown.Modal', '#confirm-modal', function (e) {
-        let $modal = $(e.currentTarget);
-
-        // Set focus to password field
-        $modal.find('input:password').val('').focus();
-        $modal.find('.form-group.error').toggleClass('error', false);
-        $modal.find('.form-group__error').html('');
-    });
-
     // This handler will trigger after `#results-modal` was loaded
     $(document).on('loaded.Modal', '#results-modal', function (e) {
         $(e.currentTarget).find('.modal__body').css({'max-height': ($(window).height() * .75) + 'px'});
-    });
-
-    // This handler will trigger after listed tabs` content loaded
-    $(document).on('loaded.Tabs', '[data-remote]', function (e) {
-        let $pjaxContainer = $(e.target).find('[data-pjax-container]'), selector;
-
-        if ($pjaxContainer.length === 0) {
-            return;
-        }
-
-        selector = '#' + $pjaxContainer.get(0).id;
-
-        $(document).pjax(selector + ' a:not([data-pjax="false"])', {
-            container: selector,
-            fragment: selector,
-            push: false
-        });
-
-        _pjaxUrls[selector] = $(selector).data('pjax-url');
     });
 });

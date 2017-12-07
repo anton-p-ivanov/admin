@@ -77,4 +77,5 @@ return [
     'Add new validator' => 'Добавить валидатор',
     'Add new value' => 'Добавить значение',
     'Add new field' => 'Добавить поле',
+    'New field has been created. You can edit it attributes.' => 'Новое поле добавлено. Вы можете изменить его свойства.',
 ];

@@ -6,4 +6,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'workflow' => $workflow, 'title' => 'New form status']); ?>
+<?= $this->render('.form.php', ['model' => $model, 'workflow' => $workflow, 'title' => 'New status']); ?>
