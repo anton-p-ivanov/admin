@@ -31,6 +31,7 @@ class TemplatesAsset extends AssetBundle
     public $depends = [
         'app\themes\material\assets\AppAsset',
         'app\themes\material\assets\FormAsset',
+        'app\themes\material\assets\GridAsset',
         'app\widgets\form\FieldSelectorAsset',
         'app\widgets\TabsAsset',
         'yii\widgets\PjaxAsset',

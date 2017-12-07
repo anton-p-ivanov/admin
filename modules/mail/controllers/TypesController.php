@@ -253,7 +253,7 @@ class TypesController extends Controller
             return $model->attributes;
         }
 
-        return $this->renderAjax('settings', ['model' => $model]);
+        return $this->renderPartial('settings', ['model' => $model]);
     }
 
     /**

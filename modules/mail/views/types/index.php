@@ -2,6 +2,7 @@
 /**
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
+ * @var bool $isFiltered
  */
 
 $this->title = sprintf('%s — %s: %s',
@@ -18,6 +19,7 @@ $this->title = sprintf('%s — %s: %s',
 
     <?= \app\widgets\Toolbar::widget([
         'buttons' => require_once ".toolbar.php",
+        'isFiltered' => $isFiltered
     ]); ?>
 
     <?= \app\widgets\grid\GridView::widget([
