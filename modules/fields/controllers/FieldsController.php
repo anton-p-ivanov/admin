@@ -67,17 +67,15 @@ abstract class FieldsController extends Controller
     abstract public function actionIndex();
 
     /**
-     * @param string $form_uuid
      * @return array|string
      * @throws HttpException
      */
-    public function actionCreate($form_uuid)
+    public function actionCreate()
     {
         $model = new Field([
             'active' => true,
             'sort' => 100,
             'type' => Field::FIELD_TYPE_DEFAULT,
-            'form_uuid' => $form_uuid,
             'label' => \Yii::t('fields', 'New field'),
             'code' => 'FORM_FIELD_' . \Yii::$app->security->generateRandomString(6)
         ]);
