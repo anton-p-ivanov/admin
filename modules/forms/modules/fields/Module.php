@@ -17,6 +17,7 @@ class Module extends \yii\base\Module
         'values' => 'fields\controllers\ValuesController',
         'validators' => 'fields\controllers\ValidatorsController'
     ];
+
     /**
      * @var string
      */

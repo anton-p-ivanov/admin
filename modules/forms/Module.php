@@ -27,10 +27,13 @@ class Module extends \yii\base\Module
         parent::init();
 
         $config = require_once(__DIR__ . '/config/web.php');
-        $env = require_once(__DIR__ . '/config/' . YII_ENV .'/web.php');
+        $env = require_once(__DIR__ . '/config/' . YII_ENV . '/web.php');
 
         // initialize the module with the configuration loaded from config file
         \Yii::configure($this, ArrayHelper::merge($config, $env));
+
+        // set alias
+        \Yii::setAlias('@fields', '@app/modules/fields');
 
         $this->registerTranslations();
     }

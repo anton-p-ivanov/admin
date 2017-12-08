@@ -31,10 +31,7 @@ return \yii\helpers\ArrayHelper::merge(
     ],
     $columns,
     [
-        [
-            'attribute' => 'status.title',
-            'options' => ['width' => 150],
-        ],
+        'status.title',
         [
             'attribute' => 'workflow.modified_date',
             'format' => 'datetime',

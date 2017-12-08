@@ -20,6 +20,14 @@ use yii\helpers\Json;
 class Field extends \fields\models\Field
 {
     /**
+     * @return string
+     */
+    public static function tableName()
+    {
+        return '{{%forms_fields}}';
+    }
+
+    /**
      * @param array $params
      * @return ActiveDataProvider
      */
@@ -88,6 +96,39 @@ class Field extends \fields\models\Field
                 $result->updateAttributes(['data' => Json::encode($data)]);
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        foreach ($this->form->results as $result) {
+            $data = Json::decode($result->data);
+            if (isset($data[$this->code])) {
+                unset($data[$this->code]);
+            }
+
+            $result->updateAttributes(['data' => Json::encode($data)]);
+        }
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFieldValidators()
+    {
+        return $this->hasMany(FieldValidator::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFieldValues()
+    {
+        return $this->hasMany(FieldValue::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
