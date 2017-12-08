@@ -22,7 +22,7 @@
         <?= $form->field($model, 'sort'); ?>
 
         <div class="form-group__required form-group__hint">
-            * <?= Yii::t('forms', 'Required fields'); ?>
+            * <?= Yii::t('fields', 'Required fields'); ?>
         </div>
 
     </div>

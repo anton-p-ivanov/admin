@@ -28,7 +28,7 @@ use fields\models\Field;
         <?= $form->field($model, 'code'); ?>
     </div>
     <div class="grid__item">
-        <?= $form->field($model, 'type')->dropDownList($model->getTypes()); ?>
+        <?= $form->field($model, 'type')->dropDownList(Field::getTypes()); ?>
     </div>
 </div>
 

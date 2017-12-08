@@ -116,7 +116,7 @@ class Field extends ActiveRecord
      */
     protected static function getSortAttributes()
     {
-        $attributes = (new self())->attributes();
+        $attributes = (new static())->attributes();
         $attributes['workflow.modified_date'] = [
             'asc' => ['{{%workflow}}.[[modified_date]]' => SORT_ASC],
             'desc' => ['{{%workflow}}.[[modified_date]]' => SORT_DESC],
@@ -305,7 +305,7 @@ class Field extends ActiveRecord
     /**
      * @return array
      */
-    public function getTypes()
+    public static function getTypes()
     {
         $types = [
             self::FIELD_TYPE_STRING => 'String',
