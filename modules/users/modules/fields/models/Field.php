@@ -84,7 +84,7 @@ class Field extends \fields\models\Field
         parent::afterSave($insert, $changedAttributes);
 
         // If field code was changed update all form results
-        if (array_key_exists('code', $changedAttributes)) {
+        if (!$insert && array_key_exists('code', $changedAttributes)) {
             /* @var UserData[] $results */
             $results = UserData::find()->all();
             foreach ($results as $result) {
