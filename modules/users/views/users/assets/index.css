@@ -1,0 +1,86 @@
+#confirm-modal {
+    z-index: 1100;
+}
+#users-modal .modal__container {
+    width: 900px;
+}
+#settings-modal .modal__footer,
+#filter-modal .modal__footer {
+    margin-left: -12px;
+    margin-right: -12px;
+}
+#settings-modal .modal__footer .grid__item:last-child,
+#filter-modal .modal__footer .grid__item:last-child {
+    text-align: right;
+}
+/*.user__title,*/
+/*.user__title:hover {*/
+    /*display: inline;*/
+    /*text-decoration: none;*/
+    /*color: #ffffff;*/
+/*}*/
+.modal__alert {
+    padding-left: 24px;
+    padding-right: 24px;
+    margin: 0 -24px;
+}
+.grid-view__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+.grid-view__empty-content {
+    max-width: 50%;
+    min-width: 300px;
+    text-align: center;
+}
+#users-modal .tabs-pane {
+    position: relative;
+    min-height: 400px;
+}
+#accounts-pjax,
+#access-sites-pjax,
+#access-roles-pjax {
+    margin: 0 -24px;
+}
+#passwords-modal .modal__container {
+    width: 400px;
+    min-width: 400px;
+}
+#filter-modal .modal__container,
+#filter-modal .modal__body,
+#settings-modal .modal__container,
+#settings-modal .modal__body {
+    overflow-x: visible;
+    overflow-y: visible;
+}
+.grid-view__table tbody td.accounts {
+    position: relative;
+    overflow: visible;
+}
+.grid-view__table tbody td.accounts .dropdown {
+    top: 57px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.grid-view__table tbody td.accounts .dropdown span {
+    color: #666;
+}
+.dropdown-link {
+    display: inline-block;
+    position: relative;
+    padding-right: 24px;
+    color: inherit;
+}
+.dropdown-link::after {
+    content: "keyboard_arrow_down";
+    font-family: "Material Icons", sans-serif;
+    font-size: 24px;
+    position: absolute;
+    right: 0;
+}
