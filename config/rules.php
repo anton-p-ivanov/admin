@@ -4,8 +4,10 @@
  */
 
 return \yii\helpers\ArrayHelper::merge(
-    require_once "../modules/forms/config/rules.php",
-    require_once "../modules/storage/config/rules.php",
+    require __DIR__ . "/../modules/mail/config/rules.php",
+    require __DIR__ . "/../modules/forms/config/rules.php",
+    require __DIR__ . "/../modules/storage/config/rules.php",
+    require __DIR__ . "/../modules/users/config/rules.php",
     [
         'api/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/api/<controller>/<action>',
         'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/admin/<controller>/<action>',
