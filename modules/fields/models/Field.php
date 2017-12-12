@@ -215,6 +215,9 @@ class Field extends ActiveRecord
         if ($this->hasValues() && !$this->fieldValues) {
             $this->addError($attribute, self::t('Field values required. Add them on `Values` tab.'));
         }
+        else if (!$this->hasValues() && $this->multiple) {
+            $this->addError($attribute, self::t('{type} can not be assigned to `multiple` fields.'));
+        }
     }
 
     /**
@@ -298,7 +301,10 @@ class Field extends ActiveRecord
 
         // If field type is not `selectable` remove all related field values.
         if ($this->fieldValues && !in_array($this->type, [self::FIELD_TYPE_LIST, self::FIELD_TYPE_SELECT])) {
-            FieldValue::deleteAll(['uuid' => ArrayHelper::getColumn($this->fieldValues, 'uuid')]);
+            $values = $this->fieldValues;
+            /* @var ActiveRecord $className */
+            $className = get_class(array_shift($values));
+            $className::deleteAll(['uuid' => ArrayHelper::getColumn($this->fieldValues, 'uuid')]);
         }
     }
 
