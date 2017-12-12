@@ -190,7 +190,7 @@
                 e.preventDefault();
 
                 // Reload grid on demand
-                this.reload(this.getAttribute('data-target'));
+                grid.reload(this.getAttribute('data-target'));
             });
 
             // Toggle action activation
