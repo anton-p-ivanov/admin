@@ -39,7 +39,7 @@ class TemplateFilter extends Filter
     public $code;
 
     /**
-     * @inheritdoc
+     * @param \yii\db\ActiveQuery $query
      */
     public function buildQuery(&$query)
     {

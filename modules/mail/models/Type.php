@@ -5,8 +5,10 @@ namespace mail\models;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\models\Workflow;
+use yii\behaviors\SluggableBehavior;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
+use yii\validators\UniqueValidator;
 
 /**
  * Class Type
@@ -74,7 +76,7 @@ class Type extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['code', 'title'], 'required', 'message' => self::t('{attribute} is required.')],
+            ['title', 'required', 'message' => self::t('{attribute} is required.')],
             ['code', 'string', 'max' => 100, 'tooLong' => self::t('Maximum (max, number) characters allowed.')],
             ['title', 'string', 'max' => 255, 'tooLong' => self::t('Maximum (max, number) characters allowed.')],
             ['description', 'safe'],
@@ -100,6 +102,14 @@ class Type extends ActiveRecord
         $behaviors = parent::behaviors();
         $behaviors[] = PrimaryKeyBehavior::className();
         $behaviors[] = WorkflowBehavior::className();
+        $behaviors[] = [
+            'class' => SluggableBehavior::className(),
+            'attribute' => 'title',
+            'slugAttribute' => 'code',
+            'ensureUnique' => true,
+            'uniqueValidator' => ['class' => UniqueValidator::className()],
+            'immutable' => true
+        ];
 
         return $behaviors;
     }

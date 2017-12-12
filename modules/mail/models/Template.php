@@ -8,6 +8,7 @@ use app\models\Site;
 use app\models\Workflow;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\validators\EmailValidator;
 
 /**
@@ -203,13 +204,8 @@ class Template extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->_type) {
-            $this->insertType();
-        }
-
-        if ($this->_sites) {
-            $this->insertSites();
-        }
+        $this->insertType();
+        $this->insertSites();
     }
 
     /**
@@ -219,10 +215,12 @@ class Template extends ActiveRecord
     {
         TemplateType::deleteAll(['template_uuid' => $this->uuid]);
 
-        (new TemplateType([
-            'template_uuid' => $this->uuid,
-            'type_uuid' => $this->_type
-        ]))->insert();
+        if ($this->_type) {
+            (new TemplateType([
+                'template_uuid' => $this->uuid,
+                'type_uuid' => $this->_type
+            ]))->insert();
+        }
     }
 
     /**
@@ -232,22 +230,32 @@ class Template extends ActiveRecord
     {
         TemplateSite::deleteAll(['template_uuid' => $this->uuid]);
 
-        foreach ($this->_sites as $site) {
-            (new TemplateSite([
-                'template_uuid' => $this->uuid,
-                'site_uuid' => $site
-            ]))->insert();
+        if (is_array($this->_sites)) {
+            foreach ($this->_sites as $site) {
+                (new TemplateSite([
+                    'template_uuid' => $this->uuid,
+                    'site_uuid' => $site
+                ]))->insert();
+            }
         }
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSitesRelation()
+    {
+        return $this->hasMany(Site::className(), ['uuid' => 'site_uuid'])
+            ->viaTable(TemplateSite::tableName(), ['template_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return Site[]
+     */
     public function getSites()
     {
         if ($this->_sites === null) {
-            $this->_sites = $this->hasMany(Site::className(), ['uuid' => 'site_uuid'])
-                ->viaTable(TemplateSite::tableName(), ['template_uuid' => 'uuid']);
+            $this->_sites = $this->getSitesRelation()->all();
         }
 
         return $this->_sites;
@@ -264,11 +272,19 @@ class Template extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getTypeRelation()
+    {
+        return $this->hasOne(Type::className(), ['uuid' => 'type_uuid'])
+            ->viaTable(TemplateType::tableName(), ['template_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return Type|ActiveRecord
+     */
     public function getType()
     {
         if ($this->_type === null) {
-            $this->_type = $this->hasOne(Type::className(), ['uuid' => 'type_uuid'])
-                ->viaTable(TemplateType::tableName(), ['template_uuid' => 'uuid']);
+            $this->_type = $this->getTypeRelation()->one();
         }
 
         return $this->_type;
@@ -296,8 +312,8 @@ class Template extends ActiveRecord
     public function duplicate()
     {
         $copy = new self([
-            'sites' => $this->sites,
-            'type' => $this->type
+            'sites' => $this->sites ? ArrayHelper::getColumn($this->sites, 'uuid') : null,
+            'type' => $this->type ? $this->type->uuid : null
         ]);
 
         foreach ($this->attributes as $attribute => $value) {
