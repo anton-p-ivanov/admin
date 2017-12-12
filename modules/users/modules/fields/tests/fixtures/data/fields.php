@@ -6,7 +6,7 @@ return [
         'label' => 'Field 1',
         'description' => '',
         'code' => 'USER_FIELD_TEST_01',
-        'type' => \users\modules\fields\models\Field::FIELD_TYPE_DEFAULT,
+        'type' => \users\modules\fields\models\Field::FIELD_TYPE_LIST,
         'multiple' => false,
         'default' => '',
         'options' => '',

@@ -12,6 +12,7 @@ use users\modules\fields\models\Field;
 use users\modules\fields\models\FieldValidator;
 use users\modules\fields\models\FieldValue;
 use Yii;
+use yii\helpers\Inflector;
 
 /**
  * Class FieldsTest
@@ -69,21 +70,27 @@ class FieldsTest extends Unit
     /**
      * Testing user field creation.
      */
-    public function testFieldInsert()
+    public function testFieldCreate()
     {
         $field = new Field([
-            'label' => 'Test field ' . Yii::$app->security->generateRandomString(6),
+            'label' => 'Test field ' . date('YmdHis'),
             'type' => Field::FIELD_TYPE_DEFAULT,
             'multiple' => false
         ]);
 
         $result = $field->insert();
 
+        // Test whether field was created.
         $this->assertTrue($result);
+
+        // Test whether field has a valid workflow record.
         $this->assertTrue($field->getWorkflow()->one() instanceof Workflow);
 
-        $field->type = Field::FIELD_TYPE_LIST;
+        // Test valid code generation.
+        $this->assertTrue($field->code === mb_strtoupper(Inflector::slug($field->label)));
+
         $field->multiple = true;
+        $field->type = Field::FIELD_TYPE_LIST;
 
         for ($i = 0; $i < 10; $i++) {
             $random = Yii::$app->security->generateRandomString(6);
@@ -94,6 +101,7 @@ class FieldsTest extends Unit
             ]))->insert();
         }
 
+        // Test count of created field values
         $this->assertTrue((int)$field->getFieldValues()->count() === 10);
 
         foreach (FieldValidator::getTypes() as $type => $name) {
@@ -104,7 +112,31 @@ class FieldsTest extends Unit
             ]))->insert();
         }
 
+        // Test count of created field validators
         $this->assertTrue(count(FieldValidator::getTypes()) === (int)$field->getFieldValidators()->count());
+    }
+
+    /**
+     * Testing updating field attributes
+     */
+    public function testFieldUpdate()
+    {
+        $field = Field::findOne(['code' => 'USER_FIELD_TEST_01']);
+
+        // Make sure that the all fixtures is correctly loaded
+        $this->makeSure($field);
+
+
+        $field->code = 'USER_FIELD_TEST_UPDATE_01';
+        $field->type = Field::FIELD_TYPE_DEFAULT;
+        $field->update();
+
+        // we expect that old field code was replaced with new one
+        $this->assertTrue((int)UserData::find()->where(['like', 'data', 'USER_FIELD_TEST_01'])->count() === 0);
+        $this->assertTrue((int)UserData::find()->where(['like', 'data', 'USER_FIELD_TEST_UPDATE_01'])->count() > 0);
+
+        // we expect that all values assigned will be removed
+        $this->assertTrue((int)$field->getFieldValues()->count() === 0);
     }
 
     /**
