@@ -69,6 +69,14 @@
                 handler = plugin.handler,
                 date = {};
 
+            if (typeof plugin.format === 'string') {
+                plugin.format = plugin.format.split(' ');
+                plugin.format = {
+                    'date': plugin.format[0],
+                    'time': plugin.format[1]
+                }
+            }
+
             handler
                 .on('focus.DateTimePicker', function (e) {
                     let pos = $(this).offset(),
@@ -117,7 +125,7 @@
                         date['date'] = self.data('date');
 
                         if (plugin.type === 'date') {
-                            $(target).val(moment(date['date']).format(plugin.format)).data('date', date['date']).trigger('blur');
+                            $(target).val(moment(date['date']).format(plugin.format['date'])).data('date', date['date']).trigger('blur');
                             $picker.remove();
                         }
                         else {
@@ -148,7 +156,7 @@
                                 typeof date['hours'] !== typeof undefined
                             ) {
                                 value = date['date'] + ' ' + date['hours'] + ':' + date['minutes'];
-                                $(target).val(moment(value).format(plugin.format)).data('date', value).trigger('blur');
+                                $(target).val(moment(value).format(plugin.format['time'])).data('date', value).trigger('blur');
                                 $picker.remove();
                             }
                         }
