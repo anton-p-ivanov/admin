@@ -23,7 +23,7 @@ class UniqueCodeValidator extends Validator
     public function validateAttribute($model, $attribute)
     {
         $count = Field::find()->where(['form_uuid' => $model->form_uuid, 'code' => $model->$attribute])->count();
-        if ($count > 1) {
+        if ($count > 0) {
             $this->addError($model, $attribute, Field::t($this->message, ['code' => $model->$attribute]));
         }
     }

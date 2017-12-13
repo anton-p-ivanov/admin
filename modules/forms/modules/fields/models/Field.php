@@ -49,11 +49,9 @@ class Field extends \fields\models\Field
     public function rules(): array
     {
         $rules = parent::rules();
-        $rules[] = [
-            'code',
-            UniqueCodeValidator::className(),
-            'message' => self::t('Field with code `{value}` is already exists.')
-        ];
+        $rules[] = ['form_uuid', 'required', 'message' => self::t('{attribute} is required.')];
+        $rules[] = ['form_uuid', 'exist', 'targetClass' => Form::className(), 'targetAttribute' => 'uuid', 'message' => self::t('Invalid form.')];
+        $rules[] = ['code', UniqueCodeValidator::className(), 'message' => self::t('Field with code `{value}` is already exists.')];
 
         return $rules;
     }
