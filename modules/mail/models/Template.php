@@ -338,7 +338,7 @@ class Template extends ActiveRecord
      */
     public static function getList($type_uuid)
     {
-        return self::find()->joinWith('type')
+        return self::find()->joinWith('typeRelation')
             ->where(['{{%mail_types}}.[[uuid]]' => $type_uuid])
             ->select('subject')
             ->indexBy('uuid')
