@@ -4,6 +4,7 @@
  */
 
 return \yii\helpers\ArrayHelper::merge(
+    require __DIR__ . "/../modules/accounts/config/rules.php",
     require __DIR__ . "/../modules/mail/config/rules.php",
     require __DIR__ . "/../modules/forms/config/rules.php",
     require __DIR__ . "/../modules/storage/config/rules.php",

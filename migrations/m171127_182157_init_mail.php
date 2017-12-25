@@ -80,7 +80,7 @@ class m171127_182157_init_mail extends Migration
         $this->dropColumn('{{%forms_statuses}}', 'mail_template_uuid');
         $this->dropColumn('{{%forms}}', 'mail_template_uuid');
 
-        $this->dropTable('{{%forms_mail_types}}');
+        $this->dropTable('{{%forms_events}}');
         $this->dropTable('{{%mail_templates_types}}');
         $this->dropTable('{{%mail_templates_sites}}');
         $this->dropTable('{{%mail_types}}');

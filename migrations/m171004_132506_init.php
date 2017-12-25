@@ -27,7 +27,9 @@ class m171004_132506_init extends Migration
             'CONSTRAINT FOREIGN KEY (`rule_name`) REFERENCES {{%auth_rules}} (`name`) ON DELETE SET NULL ON UPDATE CASCADE'
         ], 'ENGINE InnoDB');
 
-        $this->execute(file_get_contents(__DIR__ . "/sql/auth_items.sql"));
+        if (!YII_ENV_TEST) {
+            $this->execute(file_get_contents(__DIR__ . "/sql/auth_items.sql"));
+        }
 
         $this->createTable('{{%auth_items_children}}', [
             'parent' => 'varchar(64) not null',
@@ -38,12 +40,14 @@ class m171004_132506_init extends Migration
         ], 'ENGINE InnoDB');
 
         $this->createTable('{{%auth_assignments}}', [
+            'uuid' => 'char(36) not null',
             'item_name' => 'varchar(64) not null',
             'user_id' => 'char(36) not null',
             'created_at' => 'timestamp null default null',
-            'valid_date_from' => 'timestamp null default null',
-            'valid_date_to' => 'timestamp null default null',
-            'PRIMARY KEY (`item_name`, `user_id`)',
+            'valid_from_date' => 'timestamp null default null',
+            'valid_to_date' => 'timestamp null default null',
+            'PRIMARY KEY (`uuid`)',
+            'UNIQUE KEY `user_item` (`item_name`, `user_id`)',
             'CONSTRAINT FOREIGN KEY (`item_name`) REFERENCES {{%auth_items}} (`name`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
@@ -55,11 +59,28 @@ class m171004_132506_init extends Migration
             'CONSTRAINT FOREIGN KEY (`item_name`) REFERENCES {{%auth_items}} (`name`) ON DELETE CASCADE ON UPDATE CASCADE'
         ], 'ENGINE InnoDB');
 
+        $this->createTable('{{%sites}}', [
+            'uuid' => 'char(36) not null',
+            'active' => 'tinyint(1) not null default "1"',
+            'title' => 'varchar(255) not null',
+            'url' => 'varchar(255) not null',
+            'email' => 'varchar(255) not null',
+            'sort' => 'int(10) unsigned not null default "100"',
+            'code' => 'varchar(50) not null',
+            'PRIMARY KEY (`uuid`)',
+            'UNIQUE KEY `code` (`code`)'
+        ]);
+
+        if (!YII_ENV_TEST && file_exists(__DIR__ . "/sql/sites.sql")) {
+            $this->execute(file_get_contents(__DIR__ . "/sql/sites.sql"));
+        }
+
         $this->createTable('{{%users}}', [
             'uuid' => 'char(36) not null',
             'email' => 'varchar(100) not null',
             'fname' => 'varchar(100) not null',
             'lname' => 'varchar(100) not null',
+            'sname' => 'varchar(100) not null',
             'workflow_uuid' => 'char(36) null default null',
             'PRIMARY KEY (`uuid`)',
             'UNIQUE KEY `email` (`email`)',
@@ -83,7 +104,7 @@ class m171004_132506_init extends Migration
             'CONSTRAINT FOREIGN KEY (`user_uuid`) REFERENCES {{%users}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE'
         ]);
 
-        $this->createTable('{{%users_checkword}}', [
+        $this->createTable('{{%users_checkwords}}', [
             'user_uuid' => 'char(36) not null',
             'checkword' => 'char(60) not null',
             'PRIMARY KEY (`user_uuid`)',
@@ -101,19 +122,39 @@ class m171004_132506_init extends Migration
             'default' => 'varchar(255) not null',
             'options' => 'text not null default \'\'',
             'active' => 'boolean not null default \'1\'',
+            'list' => 'boolean default \'0\'',
             'sort' => 'int(10) unsigned not null default \'100\'',
+            'workflow_uuid' => 'char(36) null default null',
             'PRIMARY KEY (`uuid`)',
-            'UNIQUE KEY `code` (`code`)'
+            'UNIQUE KEY `code` (`code`)',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%users_fields_data}}', [
+        $this->createTable('{{%users_fields_validators}}', [
+            'uuid' => 'char(36) not null',
+            'field_uuid' => 'char(36) not null',
+            'type' => 'char(1) not null',
+            'options' => 'text',
+            'active' => 'boolean default "1"',
+            'sort' => 'int(10) unsigned not null default "100"',
+            'PRIMARY KEY (`uuid`)',
+            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%users_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%users_fields_values}}', [
             'uuid' => 'char(36) not null',
             'field_uuid' => 'char(36) not null',
             'value' => 'varchar(255) not null',
             'label' => 'varchar(255) not null',
-            'sort' => 'int(10) unsigned not null default \'100\'',
+            'sort' => 'int(10) unsigned not null default "100"',
             'PRIMARY KEY (`uuid`)',
-            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%users_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE'
+            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%users_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%users_data}}', [
+            'user_uuid' => 'char(36) not null',
+            'data' => 'text not null',
+            'PRIMARY KEY (`user_uuid`)',
+            'CONSTRAINT FOREIGN KEY (`user_uuid`) REFERENCES {{%users}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
         $this->createTable('{{%users_settings}}', [
@@ -123,6 +164,21 @@ class m171004_132506_init extends Migration
             'value' => 'text',
             'PRIMARY KEY (`user_uuid`, `module`, `name`)',
             'CONSTRAINT FOREIGN KEY (`user_uuid`) REFERENCES {{%users}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE'
+        ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%users_sites}}', [
+            'uuid' => 'char(36) not null',
+            'user_uuid' => 'char(36) not null',
+            'site_uuid' => 'char(36) not null',
+            'active' => 'tinyint(1) unsigned not null default \'1\'',
+            'active_from_date' => 'timestamp null default null',
+            'active_to_date' => 'timestamp null default null',
+            'login_date' => 'timestamp null default null',
+            'activity_date' => 'timestamp null default null',
+            'PRIMARY KEY (`uuid`)',
+            'UNIQUE KEY `user_site` (`user_uuid`, `site_uuid`)',
+            'CONSTRAINT FOREIGN KEY (`user_uuid`) REFERENCES {{%users}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`site_uuid`) REFERENCES {{%sites}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE'
         ], 'ENGINE InnoDB');
 
         $this->createTable('{{%workflow_statuses}}', [
@@ -153,6 +209,7 @@ class m171004_132506_init extends Migration
         ]);
 
         $this->addForeignKey('{{%users_ibfk_1}}', '{{%users}}', 'workflow_uuid', '{{%workflow}}', 'uuid', 'SET NULL', 'CASCADE');
+        $this->addForeignKey('{{%users_fields_ibfk_1}}', '{{%users_fields}}', 'workflow_uuid', '{{%workflow}}', 'uuid', 'SET NULL', 'CASCADE');
 
         $this->createTable('{{%filters}}', [
             'uuid' => 'char(36) not null',
@@ -162,61 +219,41 @@ class m171004_132506_init extends Migration
             'PRIMARY KEY (`uuid`)',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%sites}}', [
-            'uuid' => 'char(36) not null',
-            'active' => 'tinyint(1) not null default "1"',
+        $this->createTable('{{%i18n_languages}}', [
+            'code' => 'varchar(10) not null',
             'title' => 'varchar(255) not null',
-            'url' => 'varchar(255) not null',
-            'email' => 'varchar(255) not null',
-            'sort' => 'int(10) unsigned not null default "100"',
-            'code' => 'varchar(50) not null',
-            'PRIMARY KEY (`uuid`)',
-            'UNIQUE KEY `code` (`code`)'
-        ]);
+            'default' => 'tinyint(1) unsigned not null default \'0\'',
+            'sort' => 'int(10) unsigned not null default \'100\'',
+            'PRIMARY KEY (`code`)',
+        ], 'ENGINE InnoDB');
 
-        $sites = [
-            [
-                'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
-                'title' => 'Timber Industries',
-                'url' => 'https://www.timber-industries.com',
-                'email' => 'Timber Industries <noreply@timber-industries.com>',
-                'code' => 'TIMBER_INDUSTRIES'
-            ],
-            [
-                'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
-                'title' => 'Jupiter Brews',
-                'url' => 'https://www.jupiter-brews.com',
-                'email' => 'Jupiter Brews <noreply@jupiter-brews.com>',
-                'code' => 'JUPITER_BREWS'
-            ],
-            [
-                'uuid' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
-                'title' => 'Amazon Foods',
-                'url' => 'https://www.amazon-foods.com',
-                'email' => 'Amazon Foods <noreply@amazon-foods.com>',
-                'code' => 'AMAZON FOODS'
-            ],
-        ];
-
-        $this->batchInsert('{{%sites}}', ['uuid', 'title', 'url', 'email', 'code'], $sites);
+        if (file_exists(__DIR__ . '/sql/i18n_languages.sql')) {
+            $this->execute(file_get_contents(__DIR__ . '/sql/i18n_languages.sql'));
+        }
     }
 
     public function safeDown()
     {
-        $this->dropTable('{{%sites}}');
+        $this->dropTable('{{%i18n_languages}}');
         $this->dropTable('{{%filters}}');
 
+        $this->dropForeignKey('{{%users_fields_ibfk_1}}', '{{%users_fields}}');
         $this->dropForeignKey('{{%users_ibfk_1}}', '{{%users}}');
 
         $this->dropTable('{{%workflow}}');
         $this->dropTable('{{%workflow_statuses}}');
 
+        $this->dropTable('{{%users_sites}}');
         $this->dropTable('{{%users_settings}}');
-        $this->dropTable('{{%users_fields_data}}');
+        $this->dropTable('{{%users_data}}');
+        $this->dropTable('{{%users_fields_values}}');
+        $this->dropTable('{{%users_fields_validators}}');
         $this->dropTable('{{%users_fields}}');
-        $this->dropTable('{{%users_checkword}}');
+        $this->dropTable('{{%users_checkwords}}');
         $this->dropTable('{{%users_passwords}}');
         $this->dropTable('{{%users}}');
+
+        $this->dropTable('{{%sites}}');
 
         $this->dropTable('{{%auth_assignments}}');
         $this->dropTable('{{%auth_items_children}}');

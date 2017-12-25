@@ -48,7 +48,12 @@ class Tabs extends Widget
         }
 
         echo Html::beginTag('div', ['class' => 'tabs']);
-        echo $this->renderNav();
+
+        // Display tabs navigation only when more than one tab is available
+        if (count($this->items) > 1) {
+            echo $this->renderNav();
+        }
+
         echo Html::beginTag('div', ['class' => 'tabs-content']);
     }
 

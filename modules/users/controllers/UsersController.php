@@ -11,6 +11,7 @@ use users\models\UserFilter;
 use users\models\UserPassword;
 use users\models\UserSettings;
 use yii\filters\AjaxFilter;
+use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -79,6 +80,13 @@ class UsersController extends Controller
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
             'except' => ['index']
+        ];
+        $behaviors['cn'] = [
+            'class' => ContentNegotiator::className(),
+            'only' => ['list', 'get'],
+            'formats' => [
+                'application/json' => Response::FORMAT_JSON,
+            ]
         ];
 
         return $behaviors;
@@ -221,6 +229,40 @@ class UsersController extends Controller
         }
 
         return $this->renderPartial('password', ['model' => $model]);
+    }
+
+    /**
+     * This method searches for accounts by their name or its part.
+     * Used in select boxes.
+     *
+     * @param string $search
+     * @return array
+     */
+    public function actionList($search = '')
+    {
+        $query = User::find()->where(['like', 'CONCAT_WS(" ", `fname`, `lname`)', $search]);
+
+        if (\Yii::$app->request->method === 'OPTIONS') {
+            $count = $query->count();
+            if ($count > 50) {
+                return ['count' => $count];
+            }
+        }
+
+        return $query
+            ->select(['title' => 'CONCAT(`fname`, " ", `lname`, " (", `email`, ")")'])
+            ->indexBy('uuid')
+            ->orderBy('title')
+            ->column();
+    }
+
+    /**
+     * @param string $uuid
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function actionGet($uuid)
+    {
+        return User::find()->where(['uuid' => $uuid])->one();
     }
 
     /**

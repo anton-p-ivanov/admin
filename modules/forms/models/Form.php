@@ -456,13 +456,22 @@ class Form extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getEventRelation()
+    {
+        $className = '\mail\models\Type';
+        return $this->hasOne($className, ['uuid' => 'type_uuid'])
+            ->viaTable('{{%forms_events}}', ['form_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return \mail\models\Type
+     */
     public function getEvent()
     {
         if ($this->_event === null) {
             $className = '\mail\models\Type';
             if (class_exists($className)) {
-                $this->_event = $this->hasOne($className, ['uuid' => 'type_uuid'])
-                    ->viaTable('{{%forms_events}}', ['form_uuid' => 'uuid']);
+                $this->_event = $this->getEventRelation()->one();
             }
         }
 

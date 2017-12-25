@@ -129,16 +129,25 @@ $(function () {
     $(document).on('loaded.Modal', '#data-modal', function (e) {
         let $modal = $(e.currentTarget),
             form = '#data-form',
-            $dtPickerFields = $('[data-toggle="dt-picker"]'),
-            dateTimeFormat = 'DD.MM.YYYY HH:mm';
+            $dtPickerFields = $('[data-picker="date"],[data-picker="time"],[data-picker="datetime"]'),
+            dateFormat = 'DD.MM.YYYY',
+            timeFormat = 'HH:mm';
 
         // Enable interactive form
         $(form).Form();
 
         // Enable datepicker
-        $dtPickerFields.DateTimePicker({'format': dateTimeFormat})
+        $dtPickerFields.each(function (index, picker) {
+            $(picker).DateTimePicker({
+                'type': $(picker).data('picker'),
+                'format': {
+                    'date': $(picker).data('date-format') || dateFormat,
+                    'time': $(picker).data('time-format') || timeFormat
+                }
+            })
             .closest('.form-group')
             .addClass('form-group__dt-picker');
+        });
 
         // Enable dropdowns
         $modal.find('[data-type-ahead]').dropDownInput();

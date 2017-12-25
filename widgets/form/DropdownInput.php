@@ -27,8 +27,25 @@ class DropdownInput extends BaseInput
     {
         parent::init();
 
+        // Normalizing widget options
+        $this->normalizeOptions();
+
         // Registering assets
         DropDownInputAsset::register($this->view);
+    }
+
+    /**
+     * Normalizing widget options.
+     */
+    protected function normalizeOptions()
+    {
+        $defaultOptions = [
+            'data-type-ahead' => false,
+            'hiddenInputOptions' => [],
+            'multiple' => false
+        ];
+
+        $this->options = ArrayHelper::merge($defaultOptions, $this->options);
     }
 
     /**
@@ -38,14 +55,15 @@ class DropdownInput extends BaseInput
     {
         $value = Html::getAttributeValue($this->model, $this->attribute);
         $options = ArrayHelper::merge($this->inputOptions, [
-            'readonly' => !isset($this->options['data-type-ahead']),
-            'value' => array_key_exists($value, $this->items) ? $this->items[$value] : null
+            'readonly' => $this->options['data-type-ahead'] === true,
+            'autocomplete' => 'off',
+            'value' => array_key_exists($value, $this->items) ? strip_tags($this->items[$value]) : null
         ]);
 
         $options = ArrayHelper::merge($options, $this->options);
 
         $hiddenOptions = ['value' => $value];
-        if (isset($this->options['hiddenInputOptions'])) {
+        if ($this->options['hiddenInputOptions']) {
             $hiddenOptions = ArrayHelper::merge($hiddenOptions, $this->options['hiddenInputOptions']);
         }
 
@@ -81,7 +99,13 @@ class DropdownInput extends BaseInput
     {
         array_walk($this->items, [$this, 'renderDropdownItem']);
 
-        return Html::ul($this->items, ['class' => 'dropdown dropdown_wide', 'encode' => false]);
+        $classNames = ['dropdown', 'dropdown_wide'];
+
+        if ($this->options['multiple']) {
+            $classNames[] = 'dropdown_checkboxes';
+        }
+
+        return Html::ul($this->items, ['class' => implode(' ', $classNames), 'encode' => false]);
     }
 
     /**
@@ -90,7 +114,19 @@ class DropdownInput extends BaseInput
      */
     protected function renderDropdownItem(&$value, $key)
     {
-        $value = Html::tag('li', Html::a($value, '#', ['data-value' => $key]), [
+        if ($this->options['multiple']) {
+            $content = Html::activeCheckbox($this->model, $this->attribute, [
+                'label' => $value,
+                'value' => $key,
+                'data-value' => $key,
+                'uncheck' => false
+            ]);
+        }
+        else {
+            $content = Html::a($value, '#', ['data-value' => $key]);
+        }
+
+        $value = Html::tag('li', $content, [
             'class' => Html::getAttributeValue($this->model, $this->attribute) == $key ? 'active' : null
         ]);
     }

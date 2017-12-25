@@ -295,3 +295,6 @@
     display: block;
     line-height: 39px;
 }
+.form-group_hidden {
+    display: none;
+}

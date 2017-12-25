@@ -12,6 +12,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $fname
  * @property string $lname
+ * @property string $sname
  * @property string $workflow_uuid
  *
  * @package app\models
@@ -59,7 +60,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        return 1;//$this->uuid;
+        return self::findOne(['email' => 'guest.user@example.com'])->uuid;
     }
 
     /**

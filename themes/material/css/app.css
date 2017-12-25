@@ -119,8 +119,9 @@ b, strong {
     left: auto;
 }
 .dropdown_wide {
-    right: 0;
-    left: 0;
+    min-width: 100%;
+    /*right: 0;*/
+    /*left: 0;*/
 }
 .dropdown > li {
     position: relative;
@@ -165,6 +166,13 @@ b, strong {
     line-height: 32px;
     color: #999999;
 }
+.dropdown .search-entry {
+    color: #00aeef;
+    font-weight: bold;
+}
+.dropdown a:hover .search-entry {
+    color: white;
+}
 .dropdown::-webkit-scrollbar {
     width: 4px;
     background-color: transparent;
@@ -172,7 +180,6 @@ b, strong {
 .dropdown::-webkit-scrollbar-thumb {
     background-color: #00aeef;
 }
-
 /* endregion */
 /* region Buttons */
 .btn {
@@ -248,6 +255,7 @@ b, strong {
     max-width: 900px;
     max-height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     background-color: white;
     color: rgba(0, 0, 0, .65);
     margin: 0 auto;
@@ -502,5 +510,8 @@ input[type="radio"]:checked::after {
 }
 .text_muted {
     color: rgba(0, 0, 0, .5);
+}
+.text_nowrap {
+    white-space: nowrap;
 }
 /* endregion */

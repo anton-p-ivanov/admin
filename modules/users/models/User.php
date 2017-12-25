@@ -95,6 +95,17 @@ class User extends \app\models\User
     }
 
     /**
+     * @return array
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields['fullname'] = 'fullname';
+
+        return $fields;
+    }
+
+    /**
      * @param \users\models\UserSettings|\app\models\UserSettings $settings
      * @return ActiveDataProvider
      */

@@ -4,6 +4,7 @@ namespace app\widgets\form;
 use forms\modules\fields\models\Field;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\widgets\InputWidget;
 
 /**
@@ -37,6 +38,11 @@ class FormInput extends InputWidget
      */
     public function run()
     {
+        $options = Json::decode($this->formField->options);
+        if (is_array($options)) {
+            $this->options = ArrayHelper::merge($this->options, $options);
+        }
+
         if (array_key_exists($this->formField->type, self::$types)) {
             echo call_user_func([$this, 'render' . ucfirst(self::$types[$this->formField->type]) . 'Input']);
         }

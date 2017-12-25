@@ -18,6 +18,14 @@ class UserSettings extends ActiveRecord
     /**
      * @var string
      */
+    public $sortBy = 'title';
+    /**
+     * @var int
+     */
+    public $sortOrder = SORT_ASC;
+    /**
+     * @var string
+     */
     protected static $_moduleName;
     /**
      * @var string

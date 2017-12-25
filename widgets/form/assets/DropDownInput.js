@@ -13,11 +13,11 @@ $(function () {
             i18n = {
                 'en-US': {
                     'NOT_FOUND': 'No elements found.',
-                    'VALUE_TOO_SHORT': 'Please, enter 3 characters at least...'
+                    'VALUE_TOO_SHORT': 'Please, enter 3 characters at least...',
                 },
                 'ru-RU': {
                     'NOT_FOUND': 'Элементы не найдены.',
-                    'VALUE_TOO_SHORT': 'Введите не менее 3 символов...'
+                    'VALUE_TOO_SHORT': 'Введите не менее 3 символов...',
                 }
             };
 
@@ -35,6 +35,13 @@ $(function () {
                 else {
                     dd.append($('<li>').attr({'class': 'empty'}).text(i18n[locale]['NOT_FOUND']));
                 }
+            },
+            'replace': function (text, value) {
+                return text.replace(new RegExp("(" + value + ")", 'i'), '<span class="search-entry">$1</span>');
+            },
+            'clear': function (dd) {
+                dd.find('li').remove();
+                dd.append($('<li>').attr({'class': 'empty'}).text(i18n[locale]['VALUE_TOO_SHORT']));
             }
         };
 
@@ -46,8 +53,18 @@ $(function () {
             __options[self.id] = {};
 
             if (isRemote) {
-                dd.find('li').remove();
-                dd.append($('<li>').attr({'class': 'empty'}).text(i18n[locale]['VALUE_TOO_SHORT']));
+                $.ajax({
+                    url: self.data('url'),
+                    type: 'OPTIONS',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (!response.hasOwnProperty('count')) {
+                            __options[self.id] = response;
+                            __selected = response;
+                            isRemote = false;
+                        }
+                    }
+                });
             }
             else {
                 dd.find('li > a').each(function (index, item) {
@@ -56,12 +73,11 @@ $(function () {
                 });
             }
 
+            m.clear(dd);
+
             // Handling key pressing
             self.on('keyup.dropDownInput', function () {
-                let value = $(this).val().toUpperCase(),
-                    regexp = new RegExp("(" + value + ")", 'gi'),
-                    pos = -1,
-                    text;
+                let value = $(this).val().toUpperCase(), pos = -1, text;
 
                 if (__timeout) {
                     clearTimeout(__timeout);
@@ -69,8 +85,8 @@ $(function () {
 
                 if (value === __prevValue) return;
 
-                if (isRemote) {
-                    if (value.length >= 3) {
+                if (value.length >= 3) {
+                    if (isRemote) {
                         __timeout = setTimeout(function() {
                             $.getJSON(self.data('url'), {'search': value}, function (data) {
                                 __selected = data;
@@ -78,7 +94,7 @@ $(function () {
                                 for (let i in __selected) {
                                     if (__selected.hasOwnProperty(i)) {
                                         text = __selected[i];
-                                        __selected[i.toString()] = text.replace(regexp, '<b>$1</b>');
+                                        __selected[i.toString()] = m.replace(text, value);
                                     }
                                 }
 
@@ -87,28 +103,27 @@ $(function () {
                         }, 500);
                     }
                     else {
-                        __selected = {};
-                        dd.find('li').remove();
-                        dd.append($('<li>').attr({'class': 'empty'}).text(i18n[locale]['VALUE_TOO_SHORT']));
-                    }
-                }
-                else {
-                    if (value.length >= 3) {
                         for (let i in __options[self.id]) {
                             if (__options[self.id].hasOwnProperty(i)) {
                                 pos = __options[self.id][i].toUpperCase().indexOf(value);
                                 if (pos === 0) {
                                     text = __options[self.id][i];
-                                    __selected[i.toString()] = text.replace(regexp, '<b>$1</b>');
+                                    __selected[i.toString()] = m.replace(text, value);
                                 }
                             }
                         }
+
+                        m.rebuildList(dd);
+                    }
+                }
+                else {
+                    if (value === ' ') {
+                        __selected = __options[self.id];
+                        m.rebuildList(dd);
                     }
                     else {
-                        __selected = __options[self.id];
+                        m.clear(dd);
                     }
-
-                    m.rebuildList(dd);
                 }
 
                 if (dd.not('.opened')) {

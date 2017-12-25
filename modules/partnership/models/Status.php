@@ -33,6 +33,7 @@ class Status extends ActiveRecord
     public static function getList()
     {
         return static::find()
+            ->joinWith('translation')
             ->orderBy(['title' => SORT_ASC])
             ->select('title')
             ->indexBy('uuid')
