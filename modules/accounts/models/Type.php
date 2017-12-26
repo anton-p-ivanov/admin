@@ -168,7 +168,7 @@ class Type extends ActiveRecord
      */
     protected static function prepareSearchQuery()
     {
-        return self::find()->multilingual();
+        return self::find()->joinWith('translation');
     }
 
     /**
