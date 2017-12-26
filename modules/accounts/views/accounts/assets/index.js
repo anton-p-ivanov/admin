@@ -32,8 +32,6 @@ $(function () {
                     $modal.Modal().hide();
                 }
             });
-
-        $('[data-target="#partnership"]:eq(0)').trigger('click');
     });
 
     // This handler will trigger after `#forms-modal` was hidden
@@ -142,6 +140,4 @@ $(function () {
                 $modal.Modal().hide();
             });
     });
-
-    $('[data-target="#accounts-modal"]:eq(1)').trigger('click');
 });
