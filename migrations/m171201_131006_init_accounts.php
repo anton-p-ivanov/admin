@@ -174,7 +174,7 @@ class m171201_131006_init_accounts extends Migration
         $this->dropTable('{{%accounts_data}}');
         $this->dropTable('{{%accounts_fields_values}}');
         $this->dropTable('{{%accounts_fields_validators}}');
-        $this->dropTable('{{%accounts}}');
+        $this->dropTable('{{%accounts_fields}}');
         $this->dropTable('{{%accounts_addresses}}');
         $this->dropTable('{{%accounts_types_assignments}}');
         $this->dropTable('{{%accounts_types_i18n}}');
