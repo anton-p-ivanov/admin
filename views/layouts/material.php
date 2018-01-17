@@ -43,6 +43,10 @@ use yii\helpers\Html;
         <i class="app-logo__logo material-icons">dashboard</i>
         <span class="app-logo__title">Application Title</span>
     </div>
+    <?= \yii\widgets\Menu::widget([
+        'options' => ['class' => 'app-nav'],
+        'items' => require_once (__DIR__ . "/nav.php")
+    ]); ?>
 </nav>
 <main>
     <?= $content; ?>
