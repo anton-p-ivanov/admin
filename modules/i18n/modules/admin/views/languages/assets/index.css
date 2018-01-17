@@ -1,0 +1,7 @@
+#confirm-modal {
+    z-index: 1100;
+}
+.modal__alert {
+    margin-left: -24px;
+    margin-right: -24px;
+}

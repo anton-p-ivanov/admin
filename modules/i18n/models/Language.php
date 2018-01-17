@@ -26,6 +26,24 @@ class Language extends ActiveRecord
     }
 
     /**
+     * @param string $message
+     * @param array $params
+     * @return string
+     */
+    public static function t($message, $params = [])
+    {
+        return \Yii::t('i18n', $message, $params);
+    }
+
+    /**
+     * @return array
+     */
+    public function transactions()
+    {
+        return [self::SCENARIO_DEFAULT => self::OP_ALL];
+    }
+
+    /**
      * @return array
      */
     public static function getList(): array
@@ -35,6 +53,14 @@ class Language extends ActiveRecord
             ->indexBy('code')
             ->select('title')
             ->column();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefault(): bool
+    {
+        return (int) $this->default === 1;
     }
 
     /**
