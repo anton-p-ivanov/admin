@@ -17,7 +17,7 @@ class Module extends \yii\base\Module
     /**
      * @var string
      */
-    public $title = 'I18N';
+    public static $title = 'I18N';
 
     /**
      * @inheritdoc

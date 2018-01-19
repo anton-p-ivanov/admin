@@ -8,7 +8,7 @@
 
 $this->title = sprintf('%s — %s',
     Yii::t('app', 'Control panel'),
-    Yii::t('accounts', Yii::$app->controller->module->{'title'})
+    Yii::t('accounts', \accounts\Module::$title)
 );
 
 // Registering assets

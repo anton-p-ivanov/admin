@@ -7,7 +7,7 @@
 
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
-    Yii::t('mail', Yii::$app->controller->module->{'title'}),
+    Yii::t('mail', \mail\Module::$title),
     Yii::t('mail', 'Types')
 );
 

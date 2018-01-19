@@ -17,7 +17,7 @@ class Module extends \yii\base\Module
     /**
      * @var string
      */
-    public $title = 'Control panel';
+    public static $title = 'Control panel';
 
     /**
      * @inheritdoc

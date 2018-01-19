@@ -6,7 +6,7 @@
 
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
-    Yii::t('i18n', Yii::$app->controller->module->{'title'}),
+    Yii::t('i18n', \i18n\modules\admin\Module::$title),
     Yii::t('i18n', 'Languages')
 );
 

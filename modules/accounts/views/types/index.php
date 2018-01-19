@@ -6,7 +6,7 @@
 
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
-    Yii::t('accounts', Yii::$app->controller->module->{'title'}),
+    Yii::t('accounts', \accounts\Module::$title),
     Yii::t('accounts', 'Types')
 );
 

@@ -6,7 +6,7 @@
 
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
-    Yii::t('catalogs', Yii::$app->controller->module->{'title'}),
+    Yii::t('catalogs', \catalogs\modules\admin\Module::$title),
     Yii::t('catalogs', 'Types')
 );
 
