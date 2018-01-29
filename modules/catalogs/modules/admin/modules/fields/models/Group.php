@@ -57,7 +57,7 @@ class Group extends ActiveRecord
      */
     public static function t($message, $params = [])
     {
-        return \Yii::t('catalogs/groups', $message, $params);
+        return \Yii::t('catalogs/fields/groups', $message, $params);
     }
 
     /**

@@ -43,6 +43,12 @@ class Module extends \yii\base\Module
         \Yii::$app->i18n->translations['catalogs*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@catalogs/messages',
+            'fileMap' => [
+                'catalogs' => 'catalogs.php',
+                'catalogs/catalogs' => 'catalogs.php',
+                'catalogs/types' => 'types.php',
+                'catalogs/fields/groups' => 'fields/groups.php',
+            ]
         ];
     }
 }

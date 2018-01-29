@@ -4,7 +4,7 @@
  */
 return [
     [
-        'label' => Yii::t('catalogs/groups', 'Edit'),
+        'label' => Yii::t('catalogs/fields/groups', 'Edit'),
         'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -15,7 +15,7 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('catalogs/groups', 'Copy'),
+        'label' => Yii::t('catalogs/fields/groups', 'Copy'),
         'url' => ['copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -27,7 +27,7 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('catalogs/groups', 'Delete'),
+        'label' => Yii::t('catalogs/fields/groups', 'Delete'),
         'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',

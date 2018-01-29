@@ -8,7 +8,7 @@
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
     Yii::t('catalogs', \catalogs\modules\admin\Module::$title),
-    Yii::t('catalogs/groups', 'Groups')
+    Yii::t('catalogs/fields/groups', 'Groups')
 );
 
 // Registering assets
@@ -16,7 +16,7 @@ $this->title = sprintf('%s — %s: %s',
 
 ?>
 <div class="catalog-title">
-    <?= Yii::t('catalogs/groups', 'Fields` groups for catalog'); ?> "<?= $catalog->title; ?>"
+    <?= Yii::t('catalogs/fields/groups', 'Fields` groups for catalog'); ?> "<?= $catalog->title; ?>"
 </div>
 <div id="groups-pjax" data-pjax-container="true">
 

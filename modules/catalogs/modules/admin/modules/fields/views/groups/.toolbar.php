@@ -18,7 +18,7 @@ return [
             ],
         ],
         [
-            'label' => Yii::t('catalogs/groups', 'Create'),
+            'label' => Yii::t('catalogs/fields/groups', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#groups-modal',
@@ -38,7 +38,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('catalogs/groups', 'Refresh'),
+                    'label' => Yii::t('catalogs/fields/groups', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]
@@ -54,7 +54,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('catalogs/groups', 'Delete selected items')
+                'title' => Yii::t('catalogs/fields/groups', 'Delete selected items')
             ],
         ],
     ]

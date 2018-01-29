@@ -18,7 +18,7 @@ use app\widgets\form\ActiveForm;
     ]); ?>
 
     <div class="modal__header">
-        <div class="modal__heading"><?= Yii::t('catalogs/groups', $title); ?></div>
+        <div class="modal__heading"><?= Yii::t('catalogs/fields/groups', $title); ?></div>
     </div>
     <div class="modal__body">
         <?= $form->field($model, 'active')->switch(); ?>
@@ -29,7 +29,7 @@ use app\widgets\form\ActiveForm;
     <div class="modal__footer grid">
         <div class="grid__item">
             <div class="form-group__required form-group__hint">
-                * <?= Yii::t('catalogs/groups', 'Required fields'); ?>
+                * <?= Yii::t('catalogs/fields/groups', 'Required fields'); ?>
             </div>
         </div>
         <div class="grid__item text_right">

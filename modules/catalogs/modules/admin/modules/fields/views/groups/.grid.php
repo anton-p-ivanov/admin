@@ -16,7 +16,7 @@ return [
         'format' => 'raw',
         'value' => function (Group $data) {
             return Html::a($data->title, ['edit', 'uuid' => $data->uuid], [
-                'title' => Yii::t('catalogs/groups', 'View & edit field`s group properties'),
+                'title' => Yii::t('catalogs/fields/groups', 'View & edit field`s group properties'),
                 'data-toggle' => 'modal',
                 'data-target' => '#groups-modal',
                 'data-pjax' => 'false',
@@ -26,7 +26,7 @@ return [
         }
     ],
     [
-        'label' => Yii::t('training/courses', 'Act.'),
+        'label' => Yii::t('catalogs/fields/groups', 'Act.'),
         'attribute' => 'active',
         'format' => 'boolean',
         'options' => ['width' => 150],
