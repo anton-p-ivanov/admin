@@ -3,7 +3,7 @@
  * @var array $catalogs
  */
 
-use catalogs\models\Type;
+use catalogs\modules\admin\models\Type;
 use yii\helpers\Html;
 
 return [
@@ -19,7 +19,7 @@ return [
         'format' => 'raw',
         'value' => function (Type $data) {
             return Html::a($data->title, ['edit', 'uuid' => $data->uuid], [
-                'title' => Yii::t('catalogs', 'View & edit type properties'),
+                'title' => Yii::t('catalogs/types', 'View & edit catalog`s type properties'),
                 'data-toggle' => 'modal',
                 'data-target' => '#types-modal',
                 'data-pjax' => 'false',
@@ -30,15 +30,19 @@ return [
     ],
     [
         'attribute' => 'catalogs',
+        'format' => 'raw',
         'options' => ['width' => 150],
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
         'value' => function (Type $type) use ($catalogs) {
+            $count = 0;
             if (array_key_exists($type->uuid, $catalogs)) {
-                return $catalogs[$type->uuid];
+                $count = $catalogs[$type->uuid];
             }
 
-            return 0;
+            return Html::a($count, ['catalogs/index', 'type_uuid' => $type->uuid], [
+                'data-pjax' => 'false',
+            ]);
         }
     ],
     [

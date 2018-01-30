@@ -17,7 +17,7 @@ class Module extends \yii\base\Module
     /**
      * @var string
      */
-    public static $title = 'Manage catalogs';
+    public static $title = 'Catalogs';
 
     /**
      * @inheritdoc
@@ -33,21 +33,6 @@ class Module extends \yii\base\Module
         \Yii::configure($this, ArrayHelper::merge($config, $env));
 
         // set alias
-        \Yii::setAlias('@catalogs', '@app/modules/catalogs');
-
-        $this->registerTranslations();
-
-
-    }
-
-    /**
-     * Register module translations
-     */
-    protected function registerTranslations()
-    {
-        \Yii::$app->i18n->translations['catalogs*'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@catalogs/messages',
-        ];
+        \Yii::setAlias('@fields', '@app/modules/fields');
     }
 }

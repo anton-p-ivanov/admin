@@ -18,7 +18,7 @@ use app\widgets\form\ActiveForm;
     ]); ?>
 
     <div class="modal__header">
-        <div class="modal__heading"><?= Yii::t('catalogs', $title); ?></div>
+        <div class="modal__heading"><?= Yii::t('catalogs/types', $title); ?></div>
     </div>
     <div class="modal__body">
         <?= \app\widgets\form\FieldSelector::widget([
@@ -38,7 +38,7 @@ use app\widgets\form\ActiveForm;
     <div class="modal__footer grid">
         <div class="grid__item">
             <div class="form-group__required form-group__hint">
-                * <?= Yii::t('catalogs', 'Required fields'); ?>
+                * <?= Yii::t('catalogs/types', 'Required fields'); ?>
             </div>
         </div>
         <div class="grid__item text_right">

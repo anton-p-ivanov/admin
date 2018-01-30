@@ -7,7 +7,7 @@
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
     Yii::t('catalogs', \catalogs\modules\admin\Module::$title),
-    Yii::t('catalogs', 'Types')
+    Yii::t('catalogs/types', 'Types')
 );
 
 // Registering assets

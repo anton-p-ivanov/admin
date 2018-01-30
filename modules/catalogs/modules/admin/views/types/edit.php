@@ -5,4 +5,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Edit type']); ?>
+<?= $this->render('.form.php', ['model' => $model, 'title' => 'Edit catalog`s type']); ?>

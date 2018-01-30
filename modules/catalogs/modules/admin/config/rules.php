@@ -1,6 +1,8 @@
 <?php
 
-return [
-    'admin/catalogs/<controller:[\w]+>/<uuid:[a-z0-9\-]{36}>' => 'catalogs/admin/<controller>/index',
-    'admin/catalogs/<controller:[\w]+>/<action:[\w]+>/<uuid:[a-z0-9\-]{36}>' => 'catalogs/admin/<controller>/<action>',
-];
+return \yii\helpers\ArrayHelper::merge(
+    require __DIR__ . "/../modules/fields/config/rules.php",
+    [
+
+    ]
+);

@@ -40,6 +40,11 @@ class Module extends \yii\base\Module
      */
     protected function registerTranslations()
     {
+        \Yii::$app->i18n->translations['fields*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@fields/messages',
+        ];
+
         \Yii::$app->i18n->translations['catalogs*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@catalogs/messages',
@@ -47,7 +52,10 @@ class Module extends \yii\base\Module
                 'catalogs' => 'catalogs.php',
                 'catalogs/catalogs' => 'catalogs.php',
                 'catalogs/types' => 'types.php',
+                'catalogs/fields' => 'fields.php',
                 'catalogs/fields/groups' => 'fields/groups.php',
+                'catalogs/fields/validators' => 'fields/validators.php',
+                'catalogs/fields/values' => 'fields/values.php',
             ]
         ];
     }

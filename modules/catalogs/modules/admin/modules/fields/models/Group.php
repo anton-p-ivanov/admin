@@ -7,6 +7,7 @@ use app\components\behaviors\WorkflowBehavior;
 use app\components\traits\ActiveSearch;
 use app\models\Workflow;
 use catalogs\modules\admin\models\Catalog;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
 /**
@@ -35,6 +36,30 @@ class Group extends ActiveRecord
         return '{{%catalogs_fields_groups}}';
     }
 
+    /**
+     * @param string $catalog_uuid
+     * @return ActiveDataProvider
+     */
+    public static function search($catalog_uuid)
+    {
+        return new ActiveDataProvider([
+            'query' => self::prepareSearchQuery($catalog_uuid),
+            'sort' => [
+                'defaultOrder' => ['title' => SORT_ASC],
+                'attributes' => self::getSortAttributes()
+            ]
+        ]);
+    }
+
+    /**
+     * @param string $catalog_uuid
+     * @return \yii\db\ActiveQuery
+     */
+    protected static function prepareSearchQuery($catalog_uuid)
+    {
+        return self::find()->where(['catalog_uuid' => $catalog_uuid]);
+    }
+    
     /**
      * @param string $catalog_uuid
      * @return array

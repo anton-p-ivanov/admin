@@ -3,7 +3,7 @@
 return [
     'group-1' => [
         [
-            'label' => Yii::t('catalogs', 'Create'),
+            'label' => Yii::t('catalogs/types', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#types-modal',
@@ -22,7 +22,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('catalogs', 'Refresh'),
+                    'label' => Yii::t('catalogs/types', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]
@@ -38,7 +38,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('catalogs', 'Delete selected items')
+                'title' => Yii::t('catalogs/types', 'Delete selected items')
             ],
         ],
     ]

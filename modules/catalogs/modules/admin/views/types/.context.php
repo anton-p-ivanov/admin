@@ -1,10 +1,10 @@
 <?php
 /**
- * @var \catalogs\models\Type $model
+ * @var \catalogs\modules\admin\models\Type $model
  */
 return [
     [
-        'label' => Yii::t('catalogs', 'Edit'),
+        'label' => Yii::t('catalogs/types', 'Edit'),
         'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -15,7 +15,7 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('catalogs', 'Copy'),
+        'label' => Yii::t('catalogs/types', 'Copy'),
         'url' => ['copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -27,7 +27,15 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('catalogs', 'Delete'),
+        'label' => Yii::t('catalogs/types', 'Catalogs'),
+        'url' => ['catalogs/index', 'type_uuid' => $model->uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
+        ]),
+    ],
+    ['options' => ['class' => 'dropdown__divider']],
+    [
+        'label' => Yii::t('catalogs/types', 'Delete'),
         'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',

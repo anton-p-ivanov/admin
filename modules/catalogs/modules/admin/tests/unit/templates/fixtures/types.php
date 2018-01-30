@@ -10,5 +10,4 @@ return [
     'uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'type-' . $index)->toString(),
     'sort' => 100,
     'code' => 'CATALOG_TYPE_' . $index,
-    'workflow_uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'workflow-' . $index)->toString(),
 ];

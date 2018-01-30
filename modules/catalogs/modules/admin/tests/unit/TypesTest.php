@@ -2,8 +2,7 @@
 
 namespace catalogs\modules\admin\tests;
 
-use app\models\Workflow;
-use catalogs\models\Type;
+use catalogs\modules\admin\models\Type;
 use Codeception\Test\Unit;
 use Faker\Factory;
 use Faker\Generator;
@@ -30,7 +29,6 @@ class TypesTest extends Unit
     public function _fixtures()
     {
         return [
-            'workflow' => 'catalogs\modules\admin\tests\fixtures\WorkflowFixture',
             'types' => 'catalogs\modules\admin\tests\fixtures\TypeFixture',
             'types_i18n' => 'catalogs\modules\admin\tests\fixtures\TypeI18NFixture'
         ];
@@ -129,7 +127,6 @@ class TypesTest extends Unit
         $result = $clone->save();
 
         $this->assertTrue($result);
-        $this->assertTrue($type->getWorkflow()->one() instanceof Workflow);
     }
 
     /**
@@ -150,7 +147,6 @@ class TypesTest extends Unit
         $this->assertTrue($result === 1);
         $this->assertFalse($type->refresh());
         $this->assertEquals(0, (int) $type->getRelation('translations')->count());
-        $this->assertEquals(0, Workflow::find()->where(['uuid' => $type->workflow_uuid])->count());
     }
 
     /**
@@ -161,6 +157,5 @@ class TypesTest extends Unit
     {
         $this->assertTrue($type instanceof Type);
         $this->assertEquals(2, (int) $type->getRelation('translations')->count());
-        $this->assertEquals(1, Workflow::find()->where(['uuid' => $type->workflow_uuid])->count());
     }
 }

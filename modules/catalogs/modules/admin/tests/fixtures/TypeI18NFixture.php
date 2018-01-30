@@ -16,5 +16,5 @@ class TypeI18NFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/types_i18n.php';
+    public $dataFile = __DIR__ . '/data/generated/types_i18n.php';
 }

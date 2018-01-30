@@ -4,8 +4,8 @@ namespace catalogs\modules\admin\controllers;
 
 use app\components\behaviors\ConfirmFilter;
 use app\models\User;
-use catalogs\models\Catalog;
-use catalogs\models\Type;
+use catalogs\modules\admin\models\Catalog;
+use catalogs\modules\admin\models\Type;
 use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -68,13 +68,19 @@ class TypesController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', [
+        $params = [
             'dataProvider' => Type::search(),
             'catalogs' => Catalog::find()
                 ->select(['count' => 'COUNT(*)'])
                 ->groupBy('type_uuid')
                 ->indexBy('type_uuid')->column()
-        ]);
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
@@ -82,7 +88,9 @@ class TypesController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Type();
+        $model = new Type([
+            'sort' => 100
+        ]);
 
         if ($model->load(\Yii::$app->request->post())) {
             return $this->postCreate($model);
@@ -101,7 +109,7 @@ class TypesController extends Controller
     public function actionEdit($uuid)
     {
         /* @var Type $model */
-        $model = Type::find()->multilingual()->where(['uuid' => $uuid])->one();
+        $model = $this->getModel($uuid);
 
         if (!$model) {
             throw new HttpException(404, 'Catalog`s type not found.');
@@ -124,7 +132,7 @@ class TypesController extends Controller
     public function actionCopy($uuid)
     {
         /* @var Type $model */
-        $model = Type::find()->multilingual()->where(['uuid' => $uuid])->one();
+        $model = $this->getModel($uuid);
 
         if (!$model) {
             throw new HttpException(404, 'Catalog`s type not found.');
@@ -175,5 +183,14 @@ class TypesController extends Controller
         $model->save(false);
 
         return $model->attributes;
+    }
+
+    /**
+     * @param string $uuid
+     * @return \yii\db\ActiveRecord|Type
+     */
+    protected function getModel($uuid)
+    {
+        return Type::find()->multilingual()->where(['uuid' => $uuid])->one();
     }
 }
