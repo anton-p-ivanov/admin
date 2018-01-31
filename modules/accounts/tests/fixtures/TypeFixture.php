@@ -16,5 +16,5 @@ class TypeFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/types.php';
+    public $dataFile = __DIR__ . '/data/generated/types.php';
 }

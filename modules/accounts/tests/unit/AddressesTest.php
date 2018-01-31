@@ -75,7 +75,7 @@ class AddressesTest extends Unit
     /**
      * Testing element creation.
      */
-    public function testContactCreate()
+    public function testAddressCreate()
     {
         $address = new Address([
             'type_uuid' => AddressType::find()->orderBy(new Expression('RAND()'))->one()->{'uuid'},

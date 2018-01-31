@@ -17,5 +17,5 @@ return [
     'active' => 1,
     'sort' => 100,
     'parent_uuid' => null,
-    'workflow_uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'workflow-' . $index)->toString(),
+    'workflow_uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'workflow-account-' . $index)->toString(),
 ];

@@ -16,5 +16,5 @@ class AccountsFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/accounts.php';
+    public $dataFile = __DIR__ . '/data/generated/accounts.php';
 }

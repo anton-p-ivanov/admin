@@ -16,5 +16,5 @@ class AddressesFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/addresses.php';
+    public $dataFile = __DIR__ . '/data/generated/addresses.php';
 }

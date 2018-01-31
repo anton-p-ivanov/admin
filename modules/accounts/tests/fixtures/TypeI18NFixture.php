@@ -1,6 +1,7 @@
 <?php
 namespace accounts\tests\fixtures;
 
+use i18n\modules\admin\tests\fixtures\LanguageFixture;
 use yii\test\ActiveFixture;
 
 /**
@@ -16,5 +17,11 @@ class TypeI18NFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/types_i18n.php';
+    public $dataFile = __DIR__ . '/data/generated/types_i18n.php';
+    /**
+     * @var array
+     */
+    public $depends = [
+        LanguageFixture::class
+    ];
 }

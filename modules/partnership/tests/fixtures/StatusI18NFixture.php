@@ -1,6 +1,7 @@
 <?php
 namespace partnership\tests\fixtures;
 
+use i18n\modules\admin\tests\fixtures\LanguageFixture;
 use yii\test\ActiveFixture;
 
 /**
@@ -17,4 +18,10 @@ class StatusI18NFixture extends ActiveFixture
      * @var string
      */
     public $dataFile = __DIR__ . '/data/statuses_i18n.php';
+    /**
+     * @var array
+     */
+    public $depends = [
+        LanguageFixture::class
+    ];
 }

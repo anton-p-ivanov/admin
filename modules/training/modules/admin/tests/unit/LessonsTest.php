@@ -7,7 +7,6 @@ use Codeception\Test\Unit;
 use Faker\Factory;
 use Faker\Generator;
 use Ramsey\Uuid\Uuid;
-use training\modules\admin\models\Course;
 use training\modules\admin\models\Lesson;
 use training\modules\admin\models\Question;
 
@@ -183,7 +182,7 @@ class LessonsTest extends Unit
     {
         $this->assertTrue($lesson instanceof Lesson);
         $this->assertTrue($lesson->workflow instanceof Workflow);
-        $this->assertTrue($lesson->course instanceof Course);
+        $this->assertTrue($lesson->course instanceof \training\models\Course);
         $this->assertTrue((int) Question::find()->where(['lesson_uuid' => $lesson->uuid])->count() > 0);
     }
 }

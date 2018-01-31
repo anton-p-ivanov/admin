@@ -16,5 +16,5 @@ class ContactsFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/contacts.php';
+    public $dataFile = __DIR__ . '/data/generated/contacts.php';
 }
