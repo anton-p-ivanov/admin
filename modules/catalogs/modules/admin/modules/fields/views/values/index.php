@@ -8,7 +8,7 @@
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
     Yii::t('catalogs', \catalogs\Module::$title),
-    Yii::t('catalogs/fields/values', 'Values')
+    Yii::t('fields/values', 'Values')
 );
 
 // Registering assets
@@ -16,7 +16,7 @@ $this->title = sprintf('%s — %s: %s',
 
 ?>
 <div class="field-title">
-    <?= Yii::t('catalogs/fields/values', 'Values for field'); ?> "<?= $field->label; ?>"
+    <?= Yii::t('fields/values', 'Values for field'); ?> "<?= $field->label; ?>"
 </div>
 <div id="values-pjax" data-pjax-container="true">
 

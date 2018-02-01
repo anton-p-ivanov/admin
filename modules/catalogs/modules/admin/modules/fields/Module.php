@@ -2,6 +2,9 @@
 
 namespace catalogs\modules\admin\modules\fields;
 
+use catalogs\modules\admin\modules\fields\models\Field;
+use catalogs\modules\admin\modules\fields\models\FieldValidator;
+use catalogs\modules\admin\modules\fields\models\FieldValue;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -11,6 +14,24 @@ use yii\helpers\ArrayHelper;
  */
 class Module extends \yii\base\Module
 {
+    /**
+     * @var array
+     */
+    public $controllerMap = [
+        'values' => [
+            'class' => 'fields\controllers\ValuesController',
+            'modelClass' => FieldValue::class,
+            'fieldClass' => Field::class,
+            'viewPath' => '@catalogs/modules/admin/modules/fields/views/values'
+        ],
+        'validators' => [
+            'class' => 'fields\controllers\ValidatorsController',
+            'modelClass' => FieldValidator::class,
+            'fieldClass' => Field::class,
+            'viewPath' => '@catalogs/modules/admin/modules/fields/views/validators'
+        ],
+    ];
+
     /**
      * @var string
      */
@@ -35,5 +56,8 @@ class Module extends \yii\base\Module
 
         // set alias
         \Yii::setAlias('@fields', '@app/modules/fields');
+
+        // set view path
+        $this->viewPath = '@fields/views';
     }
 }

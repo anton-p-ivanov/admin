@@ -5,4 +5,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'New field`s value']); ?>
+<?= $this->render('@fields/views/values/.form.php', ['model' => $model, 'title' => 'New value']); ?>

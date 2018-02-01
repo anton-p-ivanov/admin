@@ -20,6 +20,8 @@ use yii\db\ActiveRecord;
  * @property string $catalog_uuid
  * @property string $workflow_uuid
  *
+ * @property Catalog $catalog
+ * @property Field[] $fields
  * @property Workflow $workflow
  *
  * @package catalogs\modules\admin\modules\fields\models
@@ -147,5 +149,21 @@ class Group extends ActiveRecord
     public function getWorkflow()
     {
         return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCatalog()
+    {
+        return $this->hasOne(Catalog::className(), ['uuid' => 'catalog_uuid']);
+    }
+
+    /**+
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFields()
+    {
+        return $this->hasMany(Field::className(), ['group_uuid' => 'uuid']);
     }
 }

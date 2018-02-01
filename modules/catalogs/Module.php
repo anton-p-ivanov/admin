@@ -43,6 +43,11 @@ class Module extends \yii\base\Module
         \Yii::$app->i18n->translations['fields*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@fields/messages',
+            'fileMap' => [
+                'fields' => 'fields.php',
+                'fields/validators' => 'validators.php',
+                'fields/values' => 'values.php',
+            ]
         ];
 
         \Yii::$app->i18n->translations['catalogs*'] = [
@@ -54,8 +59,6 @@ class Module extends \yii\base\Module
                 'catalogs/types' => 'types.php',
                 'catalogs/fields' => 'fields.php',
                 'catalogs/fields/groups' => 'fields/groups.php',
-                'catalogs/fields/validators' => 'fields/validators.php',
-                'catalogs/fields/values' => 'fields/values.php',
             ]
         ];
     }

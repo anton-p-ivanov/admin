@@ -5,4 +5,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'New field`s validator']); ?>
+<?= $this->render('@fields/views/validators/.form.php', ['model' => $model, 'title' => 'New validator']); ?>

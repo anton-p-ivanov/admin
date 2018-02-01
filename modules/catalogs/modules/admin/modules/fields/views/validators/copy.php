@@ -5,4 +5,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Copy field`s validator']); ?>
+<?= $this->render('@fields/views/validators/.form.php', ['model' => $model, 'title' => 'Copy validator']); ?>

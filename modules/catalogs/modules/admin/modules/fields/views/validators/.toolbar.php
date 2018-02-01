@@ -9,7 +9,7 @@ return [
             'label' => '<i class="material-icons">arrow_back</i>',
             'encode' => false,
             'options' => [
-                'title' => Yii::t('catalogs/fields/validators', 'Back to fields` list'),
+                'title' => Yii::t('fields/validators', 'Back to fields` list'),
                 'data-pjax' => 'false'
             ],
             'url' => [
@@ -18,7 +18,7 @@ return [
             ],
         ],
         [
-            'label' => Yii::t('catalogs/fields/validators', 'Create'),
+            'label' => Yii::t('fields/validators', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#validators-modal',
@@ -38,7 +38,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('catalogs/fields/validators', 'Refresh'),
+                    'label' => Yii::t('fields/validators', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]
@@ -54,7 +54,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('catalogs/fields/validators', 'Delete selected items')
+                'title' => Yii::t('fields/validators', 'Delete selected items')
             ],
         ],
     ],

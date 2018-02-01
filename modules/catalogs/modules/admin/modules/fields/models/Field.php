@@ -2,6 +2,8 @@
 
 namespace catalogs\modules\admin\modules\fields\models;
 
+use catalogs\modules\admin\models\Catalog;
+
 /**
  * Class Field
  *
@@ -10,6 +12,8 @@ namespace catalogs\modules\admin\modules\fields\models;
  *
  * @property FieldValidator[] $fieldValidators
  * @property FieldValue[] $fieldValues
+ * @property Catalog $catalog
+ * @property Group $group
  *
  * @package catalogs\modules\admin\modules\fields\models
  */
@@ -31,8 +35,6 @@ class Field extends \fields\models\Field
         $labels = parent::attributeLabels();
 
         $labels['group_uuid'] = self::t('Group');
-        $labels['validators'] = self::t('Validators');
-        $labels['values'] = self::t('Values');
 
         return $labels;
     }
@@ -120,5 +122,21 @@ class Field extends \fields\models\Field
     public function getFieldValues()
     {
         return $this->hasMany(FieldValue::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCatalog()
+    {
+        return $this->hasOne(Catalog::className(), ['uuid' => 'catalog_uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(Group::className(), ['uuid' => 'group_uuid']);
     }
 }

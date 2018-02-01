@@ -5,4 +5,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Copy field`s value']); ?>
+<?= $this->render('@fields/views/values/.form.php', ['model' => $model, 'title' => 'Copy value']); ?>

@@ -17,7 +17,7 @@ return [
             ],
         ],
         [
-            'label' => Yii::t('catalogs/fields', 'Create'),
+            'label' => Yii::t('fields', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#fields-modal',
@@ -47,7 +47,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('catalogs/fields', 'Refresh'),
+                    'label' => Yii::t('fields', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]
@@ -63,7 +63,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('catalogs/fields', 'Delete selected items')
+                'title' => Yii::t('fields', 'Delete selected items')
             ],
         ],
     ],

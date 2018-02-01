@@ -8,7 +8,7 @@
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
     Yii::t('catalogs', \catalogs\Module::$title),
-    Yii::t('catalogs/fields', 'Fields')
+    Yii::t('fields', 'Fields')
 );
 
 // Registering assets
@@ -27,7 +27,7 @@ $this->title = sprintf('%s — %s: %s',
     <?= \app\widgets\grid\GridView::widget([
         'id' => 'fields-grid',
         'dataProvider' => $dataProvider,
-        'columns' => require_once ".grid.php",
+        'columns' => require_once Yii::getAlias('@fields/views/fields/.grid.php'),
         'tableOptions' => ['class' => implode(' ', [
             'grid-view__table',
             'grid-view__table_fixed'

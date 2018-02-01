@@ -4,7 +4,7 @@
  */
 return [
     [
-        'label' => Yii::t('catalogs/fields/values', 'Edit'),
+        'label' => Yii::t('fields/values', 'Edit'),
         'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -15,7 +15,7 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('catalogs/fields/values', 'Copy'),
+        'label' => Yii::t('fields/values', 'Copy'),
         'url' => ['copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -27,7 +27,7 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('catalogs/fields/values', 'Delete'),
+        'label' => Yii::t('fields/values', 'Delete'),
         'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',

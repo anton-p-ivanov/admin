@@ -8,7 +8,7 @@
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
     Yii::t('catalogs', \catalogs\Module::$title),
-    Yii::t('catalogs/fields/validators', 'Validators')
+    Yii::t('fields/validators', 'Validators')
 );
 
 // Registering assets
@@ -16,7 +16,7 @@ $this->title = sprintf('%s — %s: %s',
 
 ?>
 <div class="field-title">
-    <?= Yii::t('catalogs/fields/validators', 'Validators for field'); ?> "<?= $field->label; ?>"
+    <?= Yii::t('fields/validators', 'Validators for field'); ?> "<?= $field->label; ?>"
 </div>
 <div id="validators-pjax" data-pjax-container="true">
 
