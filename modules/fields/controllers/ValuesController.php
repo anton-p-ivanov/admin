@@ -4,8 +4,6 @@ namespace fields\controllers;
 
 use app\components\behaviors\ConfirmFilter;
 use app\models\User;
-use fields\models\Field;
-use fields\models\FieldValue;
 use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -19,6 +17,15 @@ use yii\widgets\ActiveForm;
  */
 class ValuesController extends Controller
 {
+    /**
+     * @var string|\fields\models\FieldValidator
+     */
+    public $modelClass;
+    /**
+     * @var  string|\fields\models\Field
+     */
+    public $fieldClass;
+    
     /**
      * @param \yii\base\Action $action
      * @return bool
@@ -57,6 +64,7 @@ class ValuesController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -69,25 +77,39 @@ class ValuesController extends Controller
      */
     public function actionIndex($field_uuid)
     {
-        $field = Field::findOne($field_uuid);
+        $field = $this->fieldClass::findOne($field_uuid);
 
         if (!$field) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Field not found.');
         }
 
-        return $this->renderPartial('index', [
-            'field_uuid' => $field_uuid,
-            'dataProvider' => FieldValue::search($field_uuid),
-        ]);
+        $params = [
+            'dataProvider' => $this->modelClass::search($field_uuid),
+            'field' => $field,
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
      * @param string $field_uuid
      * @return array|string
+     * @throws HttpException
      */
     public function actionCreate($field_uuid)
     {
-        $model = new FieldValue([
+        $field = $this->fieldClass::findOne($field_uuid);
+
+        if (!$field) {
+            throw new HttpException(404, 'Field not found.');
+        }
+
+        /* @var \fields\models\FieldValue $model */
+        $model = new $this->modelClass([
             'sort' => 100,
             'field_uuid' => $field_uuid
         ]);
@@ -108,11 +130,11 @@ class ValuesController extends Controller
      */
     public function actionEdit($uuid)
     {
-        /* @var FieldValue $model */
-        $model = FieldValue::findOne($uuid);
+        /* @var $this->modelClass $model */
+        $model = $this->modelClass::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Value not found.');
         }
 
         if ($model->load(\Yii::$app->request->post())) {
@@ -131,14 +153,14 @@ class ValuesController extends Controller
      */
     public function actionCopy($uuid)
     {
-        /* @var FieldValue $model */
-        $model = FieldValue::findOne($uuid);
+        /* @var $this->modelClass $model */
+        $model = $this->modelClass::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Value not found.');
         }
 
-        /* @var FieldValue $copy */
+        /* @var $this->modelClass $copy */
         $copy = $model->duplicate();
 
         if ($copy->load(\Yii::$app->request->post())) {
@@ -156,7 +178,7 @@ class ValuesController extends Controller
     public function actionDelete()
     {
         $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = FieldValue::findAll($selected);
+        $models = $this->modelClass::findAll($selected);
         $counter = 0;
 
         foreach ($models as $model) {
@@ -167,10 +189,10 @@ class ValuesController extends Controller
     }
 
     /**
-     * @param FieldValue $model
+     * @param \yii\db\ActiveRecord $model
      * @return array
      */
-    protected function postCreate(FieldValue $model)
+    protected function postCreate($model)
     {
         // Validate user inputs
         $errors = ActiveForm::validate($model);

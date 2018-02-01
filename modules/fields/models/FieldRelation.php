@@ -18,16 +18,6 @@ use yii\db\ActiveRecord;
 class FieldRelation extends ActiveRecord
 {
     /**
-     * @param string $message
-     * @param array $params
-     * @return string
-     */
-    public static function t($message, $params = [])
-    {
-        return \Yii::t('fields', $message, $params);
-    }
-
-    /**
      * @return array
      */
     public function transactions()

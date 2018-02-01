@@ -142,6 +142,8 @@ class Field extends ActiveRecord
             'default' => 'Default value',
             'options' => 'Extra HTML-attributes',
             'workflow.modified_date' => 'Modified',
+            'validators' => 'Validators',
+            'values' => 'Values',
         ];
 
         return array_map('self::t', $labels);
@@ -180,15 +182,14 @@ class Field extends ActiveRecord
                 'sort',
                 'integer',
                 'min' => 0,
-                'tooSmall' => self::t('Value must be greater than 0.'),
+                'tooSmall' => self::t('Value must be greater or equal than {min, number}.'),
                 'message' => self::t('Value must be a integer.')
             ],
             ['description', 'safe'],
             // Code validation rules
             ['code', 'string', 'max' => 50, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
             ['code', 'validateCode'],
-            ['code', 'match', 'pattern' => '/^[a-z_\-\d]*$/i'],
-//            ['code', 'unique', 'message' => self::t('Field with code `{value}` is already exists.')],
+            ['code', 'match', 'pattern' => '/^[a-z_\-\d]*$/i', 'message' => self::t('Invalid code.')],
             ['type', 'validateValues'],
             ['list', 'validateList'],
             ['options', JsonValidator::className()]
@@ -212,10 +213,7 @@ class Field extends ActiveRecord
      */
     public function validateValues($attribute)
     {
-        if ($this->hasValues() && !$this->fieldValues) {
-            $this->addError($attribute, self::t('Field values required. Add them on `Values` tab.'));
-        }
-        else if (!$this->hasValues() && $this->multiple) {
+        if (!$this->hasValues() && $this->multiple) {
             $this->addError($attribute, self::t('{type} can not be assigned to `multiple` fields.'));
         }
     }
@@ -371,30 +369,28 @@ class Field extends ActiveRecord
     {
         return in_array(FieldValidator::TYPE_REQUIRED, ArrayHelper::getColumn($this->fieldValidators, 'type'));
     }
-
-    /**
-     * @param int $length
-     * @return string
-     */
-    protected static function generateCodeAppendix($length = 6)
-    {
-        $alphabet = str_split('abcdefghijklmnopqrstuvwxyz');
-        $appendix = '';
-        for ($i = 0; $i < $length + 1; $i++) {
-            $appendix .= $alphabet[random_int(0, count($alphabet) - 1)];
-        }
-
-        return $appendix;
-    }
+//
+//    /**
+//     * @param int $length
+//     * @return string
+//     */
+//    protected static function generateCodeAppendix($length = 6)
+//    {
+//        $alphabet = str_split('abcdefghijklmnopqrstuvwxyz');
+//        $appendix = '';
+//        for ($i = 0; $i < $length + 1; $i++) {
+//            $appendix .= $alphabet[random_int(0, count($alphabet) - 1)];
+//        }
+//
+//        return $appendix;
+//    }
 
     /**
      * @return Field|bool
      */
     public function duplicate()
     {
-        $clone = new self([
-            'sort' => 100
-        ]);
+        $clone = new static();
 
         foreach ($this->attributes as $attribute => $value) {
             if ($this->isAttributeSafe($attribute)) {
@@ -402,33 +398,8 @@ class Field extends ActiveRecord
             }
         }
 
-        $appendixLength = 7;
-        if (mb_strlen($clone->code) > (50 - $appendixLength)) {
-            $clone->code = mb_substr($clone->code, 0, (50 - $appendixLength));
-        }
+        $clone->code = null;
 
-        $clone->code .= '_' . self::generateCodeAppendix($appendixLength - 1);
-        $clone->type = self::FIELD_TYPE_DEFAULT;
-
-        if ($clone->save()) {
-
-            $clone->updateAttributes([
-                'type' => $this->type,
-                'multiple' => $this->multiple
-            ]);
-
-            foreach (['fieldValues', 'fieldValidators'] as $relation) {
-                /* @var FieldRelation $values */
-                $values = $this->$relation;
-                foreach ($values as $value) {
-                    $value->field_uuid = $clone->uuid;
-                    $value->duplicate()->save();
-                }
-            }
-
-            return $clone;
-        }
-
-        return false;
+        return $clone;
     }
 }

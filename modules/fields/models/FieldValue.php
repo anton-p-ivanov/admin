@@ -21,6 +21,16 @@ class FieldValue extends FieldRelation
     }
 
     /**
+     * @param string $message
+     * @param array $params
+     * @return string
+     */
+    public static function t($message, $params = [])
+    {
+        return \Yii::t('fields/values', $message, $params);
+    }
+
+    /**
      * @return array
      */
     public function rules(): array
@@ -35,7 +45,7 @@ class FieldValue extends FieldRelation
                 'sort',
                 'integer',
                 'min' => 0,
-                'tooSmall' => self::t('Value must be greater than 0.'),
+                'tooSmall' => self::t('Value must be greater than {min, number}.'),
                 'message' => self::t('Value must be a integer.')
             ],
             [

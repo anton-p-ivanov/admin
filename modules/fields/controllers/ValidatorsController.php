@@ -4,8 +4,6 @@ namespace fields\controllers;
 
 use app\components\behaviors\ConfirmFilter;
 use app\models\User;
-use fields\models\Field;
-use fields\models\FieldValidator;
 use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -15,10 +13,20 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class ValidatorsController
+ *
  * @package fields\controllers
  */
 class ValidatorsController extends Controller
 {
+    /**
+     * @var string|\fields\models\FieldValidator
+     */
+    public $modelClass;
+    /**
+     * @var  string|\fields\models\Field
+     */
+    public $fieldClass;
+
     /**
      * @param \yii\base\Action $action
      * @return bool
@@ -57,6 +65,7 @@ class ValidatorsController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -69,27 +78,43 @@ class ValidatorsController extends Controller
      */
     public function actionIndex($field_uuid)
     {
-        $field = Field::findOne($field_uuid);
+        $field = $this->fieldClass::findOne($field_uuid);
 
         if (!$field) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Field not found.');
         }
 
-        return $this->renderPartial('index', [
-            'field_uuid' => $field_uuid,
-            'dataProvider' => FieldValidator::search($field_uuid),
-        ]);
+        $params = [
+            'dataProvider' => $this->modelClass::search($field_uuid),
+            'field' => $field,
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
      * @param string $field_uuid
      * @return array|string
+     * @throws HttpException
      */
     public function actionCreate($field_uuid)
     {
-        $model = new FieldValidator([
+        $field = $this->fieldClass::findOne($field_uuid);
+
+        if (!$field) {
+            throw new HttpException(404, 'Field not found.');
+        }
+
+        /* @var \fields\models\Field $model */
+        $model = new $this->modelClass([
+            'field_uuid' => $field_uuid,
+            'type' => $this->modelClass::TYPE_STRING,
+            'active' => true,
             'sort' => 100,
-            'field_uuid' => $field_uuid
         ]);
 
         if ($model->load(\Yii::$app->request->post())) {
@@ -102,17 +127,17 @@ class ValidatorsController extends Controller
     }
 
     /**
-     * @param $uuid
+     * @param string $uuid
      * @return array|string
      * @throws HttpException
      */
     public function actionEdit($uuid)
     {
-        /* @var FieldValidator $model */
-        $model = FieldValidator::findOne($uuid);
+        /* @var \fields\models\FieldValidator $model */
+        $model = $this->modelClass::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Validator not found.');
         }
 
         if ($model->load(\Yii::$app->request->post())) {
@@ -131,14 +156,14 @@ class ValidatorsController extends Controller
      */
     public function actionCopy($uuid)
     {
-        /* @var FieldValidator $model */
-        $model = FieldValidator::findOne($uuid);
+        /* @var \fields\models\FieldValidator $model */
+        $model = $this->modelClass::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Validator not found.');
         }
 
-        /* @var FieldValidator $copy */
+        // Makes a model`s copy
         $copy = $model->duplicate();
 
         if ($copy->load(\Yii::$app->request->post())) {
@@ -156,7 +181,7 @@ class ValidatorsController extends Controller
     public function actionDelete()
     {
         $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = FieldValidator::findAll($selected);
+        $models = $this->modelClass::findAll($selected);
         $counter = 0;
 
         foreach ($models as $model) {
@@ -167,10 +192,10 @@ class ValidatorsController extends Controller
     }
 
     /**
-     * @param FieldValidator $model
+     * @param \yii\db\ActiveRecord $model
      * @return array
      */
-    protected function postCreate(FieldValidator $model)
+    protected function postCreate($model)
     {
         // Validate user inputs
         $errors = ActiveForm::validate($model);

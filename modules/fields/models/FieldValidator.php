@@ -9,6 +9,8 @@ use fields\validators\JsonValidator;
  *
  * @property string $type
  * @property string $options
+ * @property boolean $active
+ * @property integer $sort
  *
  * @package fields\models
  */
@@ -38,6 +40,16 @@ class FieldValidator extends FieldRelation
     }
 
     /**
+     * @param string $message
+     * @param array $params
+     * @return string
+     */
+    public static function t($message, $params = [])
+    {
+        return \Yii::t('fields/validators', $message, $params);
+    }
+
+    /**
      * @return array
      */
     public function rules(): array
@@ -52,10 +64,27 @@ class FieldValidator extends FieldRelation
                 'message' => self::t('Value must be a integer.')
             ],
             ['type', 'in', 'range' => array_keys($this->getTypes())],
+            ['type', 'validateType'],
             ['active', 'boolean'],
             ['options', 'safe'],
             ['options', JsonValidator::className()]
         ];
+    }
+
+    /**
+     * @param string $attribute
+     */
+    public function validateType($attribute)
+    {
+        $count = self::find()->where([
+            'field_uuid' => $this->field_uuid,
+            'type' => $this->$attribute
+        ])->count();
+
+        if ($count > 0) {
+            $message = sprintf('Validator `%s` already assigned.', self::getTypes()[$this->$attribute]);
+            $this->addError($attribute, $message);
+        }
     }
 
     /**
@@ -67,6 +96,7 @@ class FieldValidator extends FieldRelation
             'type' => 'Type',
             'options' => 'Options',
             'sort' => 'Sort',
+            'active' => 'Active',
         ];
 
         return array_map('self::t', $labels);
@@ -77,7 +107,12 @@ class FieldValidator extends FieldRelation
      */
     public function attributeHints(): array
     {
-        $hints = [];
+        $hints = [
+            'type' => 'Select one of available types.',
+            'options' => 'Provide valid JSON-string.',
+            'sort' => 'Sorting index. Default is 100.',
+            'active' => 'Whether validator is active.',
+        ];
 
         return array_map('self::t', $hints);
     }
@@ -101,5 +136,13 @@ class FieldValidator extends FieldRelation
         ];
 
         return array_map('self::t', $types);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return (int) $this->active === 1;
     }
 }

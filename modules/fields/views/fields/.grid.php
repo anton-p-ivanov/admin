@@ -1,6 +1,11 @@
 <?php
+/**
+ * @var array $validators
+ * @var array $values
+ */
 
-use forms\modules\fields\models\Field;
+use fields\models\Field;
+use yii\helpers\Html;
 
 return [
     [
@@ -20,6 +25,44 @@ return [
                 'data-pjax' => 'false',
                 'data-reload' => 'true',
                 'data-persistent' => 'true'
+            ]);
+        }
+    ],
+    [
+        'attribute' => 'validators',
+        'format' => 'raw',
+        'options' => ['width' => 150],
+        'contentOptions' => ['class' => 'text_right'],
+        'headerOptions' => ['class' => 'text_right'],
+        'value' => function (Field $model) use ($validators) {
+            $count = 0;
+            if (array_key_exists($model->uuid, $validators)) {
+                $count = $validators[$model->uuid];
+            }
+
+            return Html::a($count, ['validators/index', 'field_uuid' => $model->uuid], [
+                'data-pjax' => 'false',
+            ]);
+        }
+    ],
+    [
+        'attribute' => 'values',
+        'format' => 'raw',
+        'options' => ['width' => 150],
+        'contentOptions' => ['class' => 'text_right'],
+        'headerOptions' => ['class' => 'text_right'],
+        'value' => function (Field $model) use ($values) {
+            if (!$model->hasValues()) {
+                return '&mdash;';
+            }
+
+            $count = 0;
+            if (array_key_exists($model->uuid, $values)) {
+                $count = $values[$model->uuid];
+            }
+
+            return Html::a($count, ['values/index', 'field_uuid' => $model->uuid], [
+                'data-pjax' => 'false',
             ]);
         }
     ],

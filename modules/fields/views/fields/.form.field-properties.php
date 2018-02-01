@@ -33,7 +33,3 @@ use fields\models\Field;
 </div>
 
 <?= $form->field($model, 'description')->multilineInput(); ?>
-
-<div class="form-group__required form-group__hint">
-    * <?= Yii::t('fields', 'Required fields'); ?>
-</div>

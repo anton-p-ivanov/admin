@@ -1,11 +1,11 @@
 <?php
 /**
- * @var \fields\models\Field $model
+ * @var \accounts\modules\admin\modules\fields\models\Field $model
  */
 return [
     [
         'label' => Yii::t('fields', 'Edit'),
-        'url' => ['fields/edit', 'uuid' => $model->uuid],
+        'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#fields-modal',
@@ -16,7 +16,18 @@ return [
     ],
     [
         'label' => Yii::t('fields', 'Copy'),
-        'url' => ['fields/copy', 'uuid' => $model->uuid],
+        'url' => ['copy', 'uuid' => $model->uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-toggle' => 'modal',
+            'data-target' => '#fields-modal',
+            'data-pjax' => 'false',
+            'data-reload' => 'true',
+            'data-persistent' => 'true'
+        ]),
+    ],
+    [
+        'label' => Yii::t('fields', 'Copy (with relatives)'),
+        'url' => ['copy', 'uuid' => $model->uuid, 'deep' => true],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#fields-modal',
@@ -28,7 +39,7 @@ return [
     ['options' => ['class' => 'dropdown__divider']],
     [
         'label' => Yii::t('fields', 'Delete'),
-        'url' => ['fields/delete', 'uuid' => $model->uuid],
+        'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',
             'data-http-method' => 'delete',

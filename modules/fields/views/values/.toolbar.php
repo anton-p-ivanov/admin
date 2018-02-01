@@ -7,7 +7,7 @@
 return [
     'group-1' => [
         [
-            'label' => Yii::t('fields', 'Add'),
+            'label' => Yii::t('fields/values', 'Add'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#values-modal',
@@ -27,7 +27,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('fields', 'Refresh'),
+                    'label' => Yii::t('fields/values', 'Refresh'),
                     'url' => $updateUrl,
                     'template' => \yii\helpers\Html::a('{label}', '{url}', [
                         'data-toggle' => 'pjax',
@@ -47,7 +47,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('fields', 'Delete selected items')
+                'title' => Yii::t('fields/values', 'Delete selected items')
             ],
         ],
     ],

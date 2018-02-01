@@ -1,21 +1,17 @@
 <?php
-/**
- * @var string $updateUrl
- */
 
 return [
     'group-1' => [
         [
-            'label' => Yii::t('fields', 'Add'),
+            'label' => Yii::t('fields', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#fields-modal',
                 'data-reload' => 'true',
-                'data-pjax' => 'false',
                 'data-persistent' => 'true'
             ],
             'url' => [
-                'fields/create'
+                'create',
             ],
         ]
     ],
@@ -27,20 +23,16 @@ return [
             'items' => [
                 [
                     'label' => Yii::t('fields', 'Refresh'),
-                    'url' => $updateUrl,
-                    'template' => \yii\helpers\Html::a('{label}', '{url}', [
-                        'data-toggle' => 'pjax',
-                        'data-target' => '#fields-pjax',
-                    ])
+                    'url' => \yii\helpers\Url::current()
                 ]
             ]
         ],
     ],
     'selected' => [
-        [
+         [
             'label' => '<i class="material-icons">delete</i>',
             'encode' => false,
-            'url' => ['fields/delete'],
+            'url' => ['delete'],
             'options' => [
                 'data-http-method' => 'delete',
                 'data-confirm' => 'true',

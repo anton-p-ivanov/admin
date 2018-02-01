@@ -2,45 +2,30 @@
 /**
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
- * @var string $field_uuid
+ * @var \fields\models\Field $field
  */
-
-$updateUrl = \yii\helpers\Url::to(['validators/index', 'field_uuid' => $field_uuid]);
 ?>
-<div id="validators-pjax" data-pjax-container="true" data-pjax-url="<?= $updateUrl; ?>">
-    <?php if ($dataProvider->totalCount > 0): ?>
+<div class="field-title">
+    <?= Yii::t('fields/validators', 'Validators for field'); ?> "<?= $field->label; ?>"
+</div>
+<div id="validators-pjax" data-pjax-container="true">
 
-        <?= \app\widgets\Toolbar::widget([
-            'buttons' => require_once ".toolbar.php",
-            'options' => ['class' => 'toolbar toolbar_light'],
-        ]); ?>
+    <?= \app\widgets\Toolbar::widget([
+        'buttons' => require_once ".toolbar.php",
+    ]); ?>
 
-        <?= \app\widgets\grid\GridView::widget([
-            'id' => 'validators-grid',
-            'dataProvider' => $dataProvider,
-            'layout' => '{items}',
-            'tableOptions' => ['class' => implode(' ', [
-                'grid-view__table',
-                'grid-view__table_dense',
-                'grid-view__table_light',
-                'grid-view__table_fixed'
-            ])],
-            'columns' => require_once ".grid.php",
-        ]); ?>
+    <?= \app\widgets\grid\GridView::widget([
+        'id' => 'validators-grid',
+        'dataProvider' => $dataProvider,
+        'columns' => require_once ".grid.php",
+        'tableOptions' => ['class' => implode(' ', [
+            'grid-view__table',
+            'grid-view__table_fixed'
+        ])],
+    ]); ?>
 
-    <?php else: ?>
-        <div class="grid-view__empty">
-            <div class="grid-view__empty-content">
-                <p><?= Yii::t('fields', 'There are no validators yet. You can add a new one by clicking a button below.'); ?></p>
-                <p><?= \yii\helpers\Html::a(Yii::t('fields', 'Add new validator'), ['validators/create', 'field_uuid' => $field_uuid], [
-                        'class' => 'btn btn_primary',
-                        'data-toggle' => 'modal',
-                        'data-target' => '#validators-modal',
-                        'data-reload' => 'true',
-                        'data-pjax' => 'false',
-                        'data-persistent' => 'true'
-                    ]); ?></p>
-            </div>
-        </div>
-    <?php endif; ?>
+</div>
+
+<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+    <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

@@ -1,13 +1,12 @@
 <?php
 /**
- * @var string $field_uuid
- * @var string $updateUrl
+ * @var \fields\models\Field $field
  */
 
 return [
     'group-1' => [
         [
-            'label' => Yii::t('fields', 'Add'),
+            'label' => Yii::t('fields/validators', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#validators-modal',
@@ -16,7 +15,7 @@ return [
                 'data-persistent' => 'true'
             ],
             'url' => [
-                'validators/create', 'field_uuid' => $field_uuid
+                'validators/create', 'field_uuid' => $field->uuid
             ],
         ]
     ],
@@ -27,12 +26,8 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('fields', 'Refresh'),
-                    'url' => $updateUrl,
-                    'template' => \yii\helpers\Html::a('{label}', '{url}', [
-                        'data-toggle' => 'pjax',
-                        'data-target' => '#validators-pjax',
-                    ])
+                    'label' => Yii::t('fields/validators', 'Refresh'),
+                    'url' => \yii\helpers\Url::current()
                 ]
             ]
         ],
@@ -47,7 +42,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('fields', 'Delete selected items')
+                'title' => Yii::t('fields/validators', 'Delete selected items')
             ],
         ],
     ],

@@ -25,7 +25,7 @@ return [
     'options',
     [
         'attribute' => 'sort',
-        'label' => Yii::t('fields', 'Sort.'),
+        'label' => Yii::t('fields/validators', 'Sort.'),
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],

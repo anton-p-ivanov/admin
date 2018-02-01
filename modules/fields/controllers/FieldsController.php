@@ -4,7 +4,10 @@ namespace fields\controllers;
 
 use app\components\behaviors\ConfirmFilter;
 use app\models\User;
+use app\models\Workflow;
 use fields\models\Field;
+use fields\models\FieldValidator;
+use fields\models\FieldValue;
 use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -14,10 +17,16 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class FieldsController
+ *
  * @package fields\controllers
  */
 abstract class FieldsController extends Controller
 {
+    /**
+     * @var string|\yii\db\ActiveRecord
+     */
+    public $modelClass = Field::class;
+
     /**
      * @param \yii\base\Action $action
      * @return bool
@@ -56,6 +65,7 @@ abstract class FieldsController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -68,27 +78,23 @@ abstract class FieldsController extends Controller
 
     /**
      * @return array|string
-     * @throws HttpException
      */
     public function actionCreate()
     {
-        $model = new Field([
+        /* @var Field $model */
+        $model = new $this->modelClass([
             'active' => true,
             'sort' => 100,
             'type' => Field::FIELD_TYPE_DEFAULT,
-            'label' => \Yii::t('fields', 'New field'),
-            'code' => 'FORM_FIELD_' . \Yii::$app->security->generateRandomString(6)
         ]);
 
-        if (!$model->save()) {
-            throw new HttpException(500, 'Could not create new field.');
+        if ($model->load(\Yii::$app->request->post())) {
+            return $this->postCreate($model);
         }
 
-        \Yii::$app->session->setFlash('FIELD_CREATED');
-
-        return $this->renderPartial('edit', [
+        return $this->renderPartial('create', [
             'model' => $model,
-            'workflow' => $model->workflow
+            'workflow' => new Workflow()
         ]);
     }
 
@@ -100,10 +106,10 @@ abstract class FieldsController extends Controller
     public function actionEdit($uuid)
     {
         /* @var Field $model */
-        $model = Field::findOne($uuid);
+        $model = $this->modelClass::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Field not found.');
         }
 
         if ($model->load(\Yii::$app->request->post())) {
@@ -112,30 +118,35 @@ abstract class FieldsController extends Controller
 
         return $this->renderPartial('edit', [
             'model' => $model,
-            'workflow' => $model->workflow
+            'workflow' => $model->workflow ?: new Workflow()
         ]);
     }
 
     /**
      * @param string $uuid
+     * @param bool $deep
      * @return array|string
      * @throws HttpException
      */
-    public function actionCopy($uuid)
+    public function actionCopy($uuid, $deep = false)
     {
         /* @var Field $model */
-        $model = Field::findOne($uuid);
+        $model = $this->modelClass::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Field not found.');
         }
 
         // Makes a form`s copy
         $copy = $model->duplicate();
 
+        if ($copy->load(\Yii::$app->request->post())) {
+            return $this->postCreate($copy, $deep ? $model : null);
+        }
+
         return $this->renderPartial('copy', [
             'model' => $copy,
-            'workflow' => $copy->workflow
+            'workflow' => new Workflow()
         ]);
     }
 
@@ -145,7 +156,7 @@ abstract class FieldsController extends Controller
     public function actionDelete()
     {
         $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = Field::findAll($selected);
+        $models = $this->modelClass::findAll($selected);
         $counter = 0;
 
         foreach ($models as $model) {
@@ -157,9 +168,10 @@ abstract class FieldsController extends Controller
 
     /**
      * @param Field $model
+     * @param Field $original
      * @return array
      */
-    protected function postCreate(Field $model)
+    protected function postCreate(Field $model, $original = null)
     {
         // Validate user inputs
         $errors = ActiveForm::validate($model);
@@ -169,8 +181,44 @@ abstract class FieldsController extends Controller
             return $errors;
         }
 
-        $model->save(false);
+        $result = $model->save(false);
+
+        if ($result && $original) {
+            foreach ($original->fieldValues as $value) {
+                $this->duplicateValue($value, $model->uuid);
+            }
+
+            foreach ($original->fieldValidators as $validator) {
+                $this->duplicateValidator($validator, $model->uuid);
+            }
+        }
 
         return $model->attributes;
+    }
+
+    /**
+     * @param FieldValidator $validator
+     * @param string $uuid
+     * @return bool
+     */
+    protected function duplicateValidator(FieldValidator $validator, $uuid)
+    {
+        $clone = $validator->duplicate();
+        $clone->field_uuid = $uuid;
+
+        return $clone->save();
+    }
+
+    /**
+     * @param FieldValue $value
+     * @param string $uuid
+     * @return bool
+     */
+    protected function duplicateValue(FieldValue $value, $uuid)
+    {
+        $clone = $value->duplicate();
+        $clone->field_uuid = $uuid;
+
+        return $clone->save();
     }
 }
