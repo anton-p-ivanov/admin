@@ -64,7 +64,9 @@ class FieldValidator extends FieldRelation
                 'message' => self::t('Value must be a integer.')
             ],
             ['type', 'in', 'range' => array_keys($this->getTypes())],
-            ['type', 'validateType'],
+            ['type', 'validateType', 'when' => function (FieldValidator $model) {
+                return $model->isNewRecord;
+            }],
             ['active', 'boolean'],
             ['options', 'safe'],
             ['options', JsonValidator::className()]
@@ -82,8 +84,7 @@ class FieldValidator extends FieldRelation
         ])->count();
 
         if ($count > 0) {
-            $message = sprintf('Validator `%s` already assigned.', self::getTypes()[$this->$attribute]);
-            $this->addError($attribute, $message);
+            $this->addError($attribute, self::t('Validator already assigned.'));
         }
     }
 

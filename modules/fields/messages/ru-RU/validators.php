@@ -43,4 +43,5 @@ return [
     '{attribute} is required.' => 'Поле {attribute} обязательно для заполнения.',
     'Value must be greater than 0.' => 'Значение должно быть больше 0.',
     'Value must be a integer.' => 'Значение должно быть целым числом.',
+    'Validator already assigned.' => 'Валидатор уже назначен.',
 ];
