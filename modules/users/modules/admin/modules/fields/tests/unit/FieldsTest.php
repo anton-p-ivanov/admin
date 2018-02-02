@@ -48,7 +48,7 @@ class FieldsTest extends Unit
     /**
      * Testing some user field specific validations.
      */
-    public function testFieldValidate()
+    public function testValidate()
     {
         $field = new Field();
 
