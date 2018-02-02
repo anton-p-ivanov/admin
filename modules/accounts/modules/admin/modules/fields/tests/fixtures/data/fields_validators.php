@@ -1,7 +1,7 @@
 <?php
 
 use Ramsey\Uuid\Uuid;
-use users\modules\fields\models\FieldValidator;
+use fields\models\FieldValidator;
 
 $return = [];
 $index = 0;
