@@ -120,7 +120,7 @@ class Account extends ActiveRecord
             ['web', 'url', 'defaultScheme' => 'http', 'message' => self::t('{attribute} must be a valid Url.')],
             [['active', 'notify'], 'boolean'],
             ['description', 'safe'],
-            ['sort', 'integer', 'min' => 0, 'message' => self::t('{attribute} value must be grater than {min, number}.')],
+            ['sort', 'integer', 'min' => 0, 'message' => self::t('{attribute} value must be greater than {min, number}.')],
             ['parent_uuid', 'exist', 'targetClass' => self::className(), 'targetAttribute' => 'uuid', 'message' => self::t('Invalid value.')],
             ['types', 'exist', 'targetClass' => Type::className(), 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
             ['sites', 'exist', 'targetClass' => Site::className(), 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
