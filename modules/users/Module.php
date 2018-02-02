@@ -40,6 +40,16 @@ class Module extends \yii\base\Module
      */
     protected function registerTranslations()
     {
+        \Yii::$app->i18n->translations['fields*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@fields/messages',
+            'fileMap' => [
+                'fields' => 'fields.php',
+                'fields/validators' => 'validators.php',
+                'fields/values' => 'values.php'
+            ]
+        ];
+
         \Yii::$app->i18n->translations['users*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@users/messages',

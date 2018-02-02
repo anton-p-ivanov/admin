@@ -2,7 +2,7 @@
 
 namespace users\models;
 
-use users\modules\fields\models\Field;
+use fields\models\Field;
 use users\validators\PropertiesValidator;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;

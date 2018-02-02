@@ -59,7 +59,7 @@ class PropertiesValidator extends Validator
         // Get all properties with nulled values
         $properties = ArrayHelper::map($model->getFields(), 'code', function(){ return null; });
 
-        /* @var \users\modules\fields\models\Field[] $fields */
+        /* @var \fields\models\Field[] $fields */
         $fields = $model->getFields();
 
         foreach (array_merge($properties, $model->$attribute) as $field_uuid => $value) {
