@@ -4,8 +4,8 @@
  */
 return [
     [
-        'label' => Yii::t('forms', 'Edit'),
-        'url' => ['results/edit', 'uuid' => $model->uuid],
+        'label' => Yii::t('forms/results', 'Edit'),
+        'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#results-modal',
@@ -15,8 +15,8 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('forms', 'Copy'),
-        'url' => ['results/copy', 'uuid' => $model->uuid],
+        'label' => Yii::t('forms/results', 'Copy'),
+        'url' => ['copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#results-modal',
@@ -27,8 +27,8 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('forms', 'Delete'),
-        'url' => ['results/delete', 'uuid' => $model->uuid],
+        'label' => Yii::t('forms/results', 'Delete'),
+        'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',
             'data-http-method' => 'delete',

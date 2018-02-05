@@ -5,7 +5,7 @@ namespace forms\models;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\models\Workflow;
-use forms\modules\fields\models\Field;
+use forms\modules\admin\modules\fields\models\Field;
 use forms\validators\PropertiesValidator;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;

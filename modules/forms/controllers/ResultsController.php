@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class ResultsController
+ *
  * @package forms\controllers
  */
 class ResultsController extends Controller
@@ -59,6 +60,7 @@ class ResultsController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -74,13 +76,19 @@ class ResultsController extends Controller
         $form = Form::findOne($form_uuid);
 
         if (!$form) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Form not found.');
         }
 
-        return $this->renderPartial('index', [
+        $params = [
             'dataProvider' => FormResult::search($form_uuid),
             'form' => $form
-        ]);
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
@@ -94,7 +102,7 @@ class ResultsController extends Controller
         $form = Form::findOne($form_uuid);
 
         if (!$form) {
-            throw new HttpException(404, 'Invalid form identifier.');
+            throw new HttpException(404, 'Form not found.');
         }
 
         /* @var \forms\models\FormStatus $status */
@@ -126,7 +134,7 @@ class ResultsController extends Controller
         $model = FormResult::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Result not found.');
         }
 
         $model->data = Json::decode($model->data);
@@ -137,7 +145,7 @@ class ResultsController extends Controller
 
         return $this->renderPartial('edit', [
             'model' => $model,
-            'workflow' => $model->workflow
+            'workflow' => $model->workflow ?: new Workflow()
         ]);
     }
 
@@ -152,7 +160,7 @@ class ResultsController extends Controller
         $model = FormResult::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Result not found.');
         }
 
         // Makes a status copy
@@ -188,7 +196,7 @@ class ResultsController extends Controller
      * @param FormResult $model
      * @return array
      */
-    protected function postCreate(FormResult $model)
+    protected function postCreate($model)
     {
         // Validate user inputs
         $errors = ActiveForm::validate($model);

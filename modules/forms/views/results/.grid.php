@@ -3,7 +3,7 @@
  * @var \forms\models\Form $form
  */
 use forms\models\FormResult;
-use forms\modules\fields\models\Field;
+use forms\modules\admin\modules\fields\models\Field;
 
 $columns = [];
 $fields = array_filter($form->fields, function (Field $field) { return $field->list === 1; });

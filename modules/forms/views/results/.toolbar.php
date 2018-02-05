@@ -7,7 +7,18 @@
 return [
     'group-1' => [
         [
-            'label' => Yii::t('forms', 'Add'),
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('forms/results', 'Back to forms` list'),
+                'data-pjax' => 'false'
+            ],
+            'url' => [
+                'forms/admin/forms/index',
+            ],
+        ],
+        [
+            'label' => Yii::t('forms/results', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#results-modal',
@@ -16,7 +27,7 @@ return [
                 'data-persistent' => 'true'
             ],
             'url' => [
-                'results/create', 'form_uuid' => $form->uuid
+                'create', 'form_uuid' => $form->uuid
             ],
         ]
     ],
@@ -27,8 +38,8 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('forms', 'Refresh'),
-                    'url' => $updateUrl,
+                    'label' => Yii::t('forms/results', 'Refresh'),
+                    'url' => \yii\helpers\Url::current(),
                     'template' => \yii\helpers\Html::a('{label}', '{url}', [
                         'data-toggle' => 'pjax',
                         'data-target' => '#results-pjax',
@@ -41,13 +52,13 @@ return [
         [
             'label' => '<i class="material-icons">delete</i>',
             'encode' => false,
-            'url' => ['results/delete'],
+            'url' => ['delete'],
             'options' => [
                 'data-http-method' => 'delete',
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('forms', 'Delete selected items')
+                'title' => Yii::t('forms/results', 'Delete selected items')
             ],
         ],
     ],
