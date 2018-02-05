@@ -6,6 +6,18 @@ class m171004_132506_init extends Migration
 {
     public function safeUp()
     {
+        $this->createTable('{{%i18n_languages}}', [
+            'code' => 'varchar(10) not null',
+            'title' => 'varchar(255) not null',
+            'default' => 'tinyint(1) unsigned not null default \'0\'',
+            'sort' => 'int(10) unsigned not null default \'100\'',
+            'PRIMARY KEY (`code`)',
+        ], 'ENGINE InnoDB');
+
+        if (file_exists(__DIR__ . '/sql/i18n_languages.sql')) {
+            $this->execute(file_get_contents(__DIR__ . '/sql/i18n_languages.sql'));
+        }
+
         $this->createTable('{{%auth_rules}}', [
             'name' => 'varchar(64) not null',
             'data' => 'text',
@@ -183,10 +195,22 @@ class m171004_132506_init extends Migration
 
         $this->createTable('{{%workflow_statuses}}', [
             'code' => 'char(1) not null',
-            'title' => 'varchar(255) not null',
             'sort' => 'int(10) unsigned not null default \'100\'',
             'PRIMARY KEY (`code`)',
         ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%workflow_statuses_i18n}}', [
+            'code' => 'char(1) not null',
+            'lang' => 'varchar(10) not null',
+            'title' => 'varchar(255) not null',
+            'PRIMARY KEY (`code`, `lang`)',
+            'CONSTRAINT FOREIGN KEY (`code`) REFERENCES {{%workflow_statuses}} (`code`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`lang`) REFERENCES {{%i18n_languages}} (`code`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
+
+        if (file_exists(__DIR__ . '/sql/workflow_statuses.sql')) {
+            $this->execute(file_get_contents(__DIR__ . '/sql/workflow_statuses.sql'));
+        }
 
         $this->createTable('{{%workflow}}', [
             'uuid' => 'char(36) not null',
@@ -202,12 +226,6 @@ class m171004_132506_init extends Migration
             'CONSTRAINT FOREIGN KEY (`modified_by`) REFERENCES {{%users}} (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE'
         ], 'ENGINE InnoDB');
 
-        $this->batchInsert('{{%workflow_statuses}}', ['code', 'title'], [
-            ['D', 'Draft'],
-            ['R', 'Ready for publishing'],
-            ['P', 'Published'],
-        ]);
-
         $this->addForeignKey('{{%users_ibfk_1}}', '{{%users}}', 'workflow_uuid', '{{%workflow}}', 'uuid', 'SET NULL', 'CASCADE');
         $this->addForeignKey('{{%users_fields_ibfk_1}}', '{{%users_fields}}', 'workflow_uuid', '{{%workflow}}', 'uuid', 'SET NULL', 'CASCADE');
 
@@ -218,29 +236,18 @@ class m171004_132506_init extends Migration
             'created_at' => 'timestamp null default null',
             'PRIMARY KEY (`uuid`)',
         ], 'ENGINE InnoDB');
-
-        $this->createTable('{{%i18n_languages}}', [
-            'code' => 'varchar(10) not null',
-            'title' => 'varchar(255) not null',
-            'default' => 'tinyint(1) unsigned not null default \'0\'',
-            'sort' => 'int(10) unsigned not null default \'100\'',
-            'PRIMARY KEY (`code`)',
-        ], 'ENGINE InnoDB');
-
-        if (file_exists(__DIR__ . '/sql/i18n_languages.sql')) {
-            $this->execute(file_get_contents(__DIR__ . '/sql/i18n_languages.sql'));
-        }
     }
 
     public function safeDown()
     {
-        $this->dropTable('{{%i18n_languages}}');
+
         $this->dropTable('{{%filters}}');
 
         $this->dropForeignKey('{{%users_fields_ibfk_1}}', '{{%users_fields}}');
         $this->dropForeignKey('{{%users_ibfk_1}}', '{{%users}}');
 
         $this->dropTable('{{%workflow}}');
+        $this->dropTable('{{%workflow_statuses_i18n}}');
         $this->dropTable('{{%workflow_statuses}}');
 
         $this->dropTable('{{%users_sites}}');
@@ -260,5 +267,7 @@ class m171004_132506_init extends Migration
         $this->dropTable('{{%auth_items_lang}}');
         $this->dropTable('{{%auth_items}}');
         $this->dropTable('{{%auth_rules}}');
+
+        $this->dropTable('{{%i18n_languages}}');
     }
 }
