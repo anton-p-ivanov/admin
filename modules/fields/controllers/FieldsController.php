@@ -5,9 +5,8 @@ namespace fields\controllers;
 use app\components\behaviors\ConfirmFilter;
 use app\models\User;
 use app\models\Workflow;
+use fields\components\traits\Duplicator;
 use fields\models\Field;
-use fields\models\FieldValidator;
-use fields\models\FieldValue;
 use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -22,6 +21,8 @@ use yii\widgets\ActiveForm;
  */
 abstract class FieldsController extends Controller
 {
+    use Duplicator;
+
     /**
      * @var string|\yii\db\ActiveRecord
      */
@@ -194,31 +195,5 @@ abstract class FieldsController extends Controller
         }
 
         return $model->attributes;
-    }
-
-    /**
-     * @param FieldValidator $validator
-     * @param string $uuid
-     * @return bool
-     */
-    protected function duplicateValidator(FieldValidator $validator, $uuid)
-    {
-        $clone = $validator->duplicate();
-        $clone->field_uuid = $uuid;
-
-        return $clone->save();
-    }
-
-    /**
-     * @param FieldValue $value
-     * @param string $uuid
-     * @return bool
-     */
-    protected function duplicateValue(FieldValue $value, $uuid)
-    {
-        $clone = $value->duplicate();
-        $clone->field_uuid = $uuid;
-
-        return $clone->save();
     }
 }
