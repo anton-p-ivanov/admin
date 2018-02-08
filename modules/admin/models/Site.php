@@ -121,4 +121,22 @@ class Site extends \app\models\Site
 
         return $clone;
     }
+
+    /**
+     * @param string $message
+     * @param array $params
+     * @return string
+     */
+    public static function t($message, $params = [])
+    {
+        return \Yii::t('admin/sites', $message, $params);
+    }
+
+    /**
+     * @return array
+     */
+    public function transactions()
+    {
+        return [self::SCENARIO_DEFAULT => self::OP_ALL];
+    }
 }
