@@ -23,6 +23,13 @@ class FieldSelector extends Widget
      * @var array
      */
     public $attributes;
+    /**
+     * @var array
+     */
+    public $options = [
+        'fieldType' => 'textInput',
+        'action-icon' => 'arrow_drop_down',
+    ];
 
     /**
      * @inheritdoc
@@ -44,7 +51,7 @@ class FieldSelector extends Widget
         foreach ($this->attributes as $index => $attribute) {
             echo $this->form->field($this->model, $attribute, ['options' => [
                 'class' => 'form-group' . ($index > 0 ? ' form-group_hidden' : '')
-            ]]);
+            ]])->{$this->options['fieldType']}();
         }
 
         $this->renderDropdown();
@@ -56,7 +63,7 @@ class FieldSelector extends Widget
      */
     protected function renderDropdown()
     {
-        echo Html::a('<i class="material-icons">arrow_drop_down</i>', '#', [
+        echo Html::a('<i class="material-icons">' . $this->options['action-icon'] . '</i>', '#', [
             'class' => 'form-group__action',
             'data-toggle' => 'dropdown'
         ]);

@@ -62,10 +62,12 @@ class DropdownInput extends BaseInput
 
         $options = ArrayHelper::merge($options, $this->options);
 
-        $hiddenOptions = ['value' => $value];
+        $hiddenOptions = ['value' => $value, 'id' => false];
         if ($this->options['hiddenInputOptions']) {
             $hiddenOptions = ArrayHelper::merge($hiddenOptions, $this->options['hiddenInputOptions']);
         }
+
+        unset($options['hiddenInputOptions']);
 
         return
             Html::activeTextInput($this->model, $this->attribute, $options) .
@@ -100,6 +102,10 @@ class DropdownInput extends BaseInput
         array_walk($this->items, [$this, 'renderDropdownItem']);
 
         $classNames = ['dropdown', 'dropdown_wide'];
+
+        if (isset($this->options['dropdown']['class'])) {
+            $classNames = explode(' ', $this->options['dropdown']['class']);
+        }
 
         if ($this->options['multiple']) {
             $classNames[] = 'dropdown_checkboxes';

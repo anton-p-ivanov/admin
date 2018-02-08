@@ -1,7 +1,7 @@
 <?php
 namespace app\widgets\form;
 
-use forms\modules\fields\models\Field;
+use fields\models\Field;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -41,6 +41,12 @@ class FormInput extends InputWidget
         $options = Json::decode($this->formField->options);
         if (is_array($options)) {
             $this->options = ArrayHelper::merge($this->options, $options);
+        }
+
+        $value = Html::getAttributeValue($this->model, $this->attribute);
+
+        if (!$value && $this->formField->default) {
+            $this->options['value'] = $this->formField->default;
         }
 
         if (array_key_exists($this->formField->type, self::$types)) {
