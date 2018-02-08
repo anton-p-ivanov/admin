@@ -17,7 +17,7 @@ return [
         'value' => function (UserSite $model) {
             return Html::a($model->site->title, ['sites/edit', 'uuid' => $model->uuid], [
                 'data-toggle' => 'modal',
-                'data-target' => '#access-sites-modal',
+                'data-target' => '#sites-modal',
                 'data-pjax' => 'false',
                 'data-reload' => 'true',
                 'data-persistent' => 'true'
@@ -36,6 +36,8 @@ return [
             return $model->isActive() ? '<i class="material-icons text_success version_active">check</i>' : '';
         }
     ],
+    'active_from_date:datetime',
+    'active_to_date:datetime',
     [
         'class' => \app\widgets\grid\ActionColumn::className(),
         'items' => function (

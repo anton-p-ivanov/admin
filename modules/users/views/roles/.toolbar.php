@@ -1,21 +1,32 @@
 <?php
 /**
- * @var string $user_uuid
+ * @var \users\models\User $user
  */
 
 return [
     'group-1' => [
         [
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('users', 'Back to users` list'),
+                'data-pjax' => 'false'
+            ],
+            'url' => [
+                'users/index',
+            ],
+        ],
+        [
             'label' => Yii::t('users', 'Assign role'),
             'options' => [
                 'data-toggle' => 'modal',
-                'data-target' => '#access-roles-modal',
+                'data-target' => '#roles-modal',
                 'data-reload' => 'true',
                 'data-persistent' => 'true'
             ],
             'url' => [
                 'roles/create',
-                'user_uuid' => $user_uuid
+                'user_uuid' => $user->uuid
             ],
         ]
     ],
@@ -27,7 +38,7 @@ return [
             'items' => [
                 [
                     'label' => Yii::t('users', 'Refresh'),
-                    'url' => ['roles/index', 'user_uuid' => $user_uuid]
+                    'url' => \yii\helpers\Url::current()
                 ]
             ]
         ],

@@ -8,7 +8,7 @@ return [
         'url' => ['sites/edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#access-sites-modal',
+            'data-target' => '#sites-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'
@@ -19,7 +19,7 @@ return [
         'url' => ['sites/copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#access-sites-modal',
+            'data-target' => '#sites-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'

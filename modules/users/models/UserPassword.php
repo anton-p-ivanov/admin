@@ -18,6 +18,7 @@ use yii\db\Expression;
  */
 class UserPassword extends ActiveRecord
 {
+    const SCENARIO_NEW_USER = 'new_user';
     /**
      * @var string
      */
@@ -88,8 +89,9 @@ class UserPassword extends ActiveRecord
     public function rules(): array
     {
         return [
+            ['password_new', 'required', 'on' => self::SCENARIO_NEW_USER, 'message' => self::t('{attribute} is required.')],
             ['password_new', 'string', 'min' => 8, 'message' => self::t('Minimum {min, number} characters allowed.')],
-            ['password_new', 'compare'],
+            ['password_new', 'compare', 'message' => self::t('Passwords does not match.')],
             ['password_new_repeat', 'safe'],
             [
                 'expired_date',
@@ -124,6 +126,9 @@ class UserPassword extends ActiveRecord
                     $this->password_new,
                     $this->salt
                 ));
+
+                // Expire previous user`s passwords
+                self::updateAll(['expired' => 1], ['user_uuid' => $this->user_uuid]);
 
                 // Clearing user checkwords if exists
                 UserCheckword::deleteAll(['user_uuid' => $this->user_uuid]);

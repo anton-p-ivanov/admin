@@ -2,6 +2,7 @@
 /**
  * @var \yii\web\View $this
  * @var \users\models\User $model
+ * @var \users\models\UserPassword $password
  * @var \app\models\Workflow $workflow
  * @var string $title
  */
@@ -13,7 +14,6 @@ use yii\helpers\Html;
 <div class="modal__container">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['edit', 'uuid' => $model->uuid],
         'options' => [
             'id' => 'users-form',
             'data-type' => 'active-form',
@@ -36,6 +36,7 @@ use yii\helpers\Html;
                 ]); ?>
                     <?= $this->render('.form.' . substr($item['id'], 4) . '.php', [
                         'model' => $model,
+                        'password' => $password,
                         'form' => $form,
                         'workflow' => $workflow
                     ]); ?>
@@ -44,16 +45,16 @@ use yii\helpers\Html;
         <?php \app\widgets\Tabs::end(); ?>
 
     </div>
-    <div class="modal__footer">
-            <div class="grid__item">
-                <div class="form-group__required form-group__hint">
-                    * <?= Yii::t('users', 'Required fields'); ?>
-                </div>
+    <div class="modal__footer grid">
+        <div class="grid__item">
+            <div class="form-group__required form-group__hint">
+                * <?= Yii::t('users', 'Required fields'); ?>
             </div>
-            <div class="grid__item text_right">
-                <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>
-                <button type="button" class="btn btn_default" data-dismiss="modal"><?= Yii::t('app', 'Close'); ?></button>
-            </div>
+        </div>
+        <div class="grid__item text_right">
+            <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>
+            <button type="button" class="btn btn_default" data-dismiss="modal"><?= Yii::t('app', 'Close'); ?></button>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

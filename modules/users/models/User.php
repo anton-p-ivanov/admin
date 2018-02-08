@@ -5,18 +5,26 @@ use accounts\models\Account;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\models\Workflow;
+use users\validators\PropertiesValidator;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
 
 /**
  * Class User
  *
  * @property Workflow $workflow
  * @property Account[] $accounts
+ * @property UserPassword[] $passwords
  *
  * @package users\models
  */
 class User extends \app\models\User
 {
+    /**
+     * @var array
+     */
+    public $data = [];
+
     /**
      * @param $message
      * @param array $params
@@ -91,6 +99,9 @@ class User extends \app\models\User
             ['email', 'email', 'message' => self::t('{attribute} must be a valid E-Mail address.')],
             ['email', 'unique', 'message' => self::t('{value} is already exists.')],
             [['fname', 'lname', 'sname'], 'string', 'max' => 100, 'message' => self::t('Maximum {max, number} characters allowed.')],
+
+            ['data', 'safe'],
+            ['data', PropertiesValidator::className()]
         ];
     }
 
@@ -106,15 +117,11 @@ class User extends \app\models\User
     }
 
     /**
-     * @param \users\models\UserSettings|\app\models\UserSettings $settings
      * @return ActiveDataProvider
      */
-    public static function search($settings)
+    public static function search()
     {
         $defaultOrder = ['fullname' => SORT_ASC];
-        if ($settings) {
-            $defaultOrder = [$settings->sortBy => $settings->sortOrder];
-        }
 
         return new ActiveDataProvider([
             'query' => self::prepareSearchQuery(),
@@ -157,10 +164,17 @@ class User extends \app\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getUserAccounts()
+    {
+        return $this->hasMany(UserAccount::className(), ['user_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getAccounts()
     {
-        return $this->hasMany(Account::className(), ['uuid' => 'account_uuid'])
-            ->viaTable(UserAccount::tableName(), ['user_uuid' => 'uuid']);
+        return $this->hasMany(Account::className(), ['uuid' => 'account_uuid'])->via('userAccounts');
     }
 
     /**
@@ -174,7 +188,7 @@ class User extends \app\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRoles()
+    public function getUserRoles()
     {
         return $this->hasMany(UserRole::className(), ['user_id' => 'uuid']);
     }
@@ -182,9 +196,25 @@ class User extends \app\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSites()
+    public function getRoles()
+    {
+        return $this->getUserRoles();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserSites()
     {
         return $this->hasMany(UserSite::className(), ['user_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSites()
+    {
+        return $this->getUserSites();
     }
 
     /**
@@ -193,6 +223,19 @@ class User extends \app\models\User
     public function getWorkflow()
     {
         return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return UserData::find()
+            ->where(['user_uuid' => $this->uuid])
+            ->indexBy('field_uuid')
+            ->groupBy('field_uuid')
+            ->select('value')
+            ->column();
     }
 
     /**
@@ -209,5 +252,32 @@ class User extends \app\models\User
         }
 
         return $copy;
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        UserData::deleteAll(['user_uuid' => $this->uuid]);
+
+        if ($this->data) {
+            $this->data = array_filter($this->data, 'strlen');
+            $insert = [];
+            foreach ($this->data as $field_uuid => $value) {
+                $insert[] = [
+                    'user_uuid' => $this->uuid,
+                    'field_uuid' => $field_uuid,
+                    'value' => is_array($value) ? Json::encode($value) : $value
+                ];
+            }
+
+            \Yii::$app->db->createCommand()
+                ->batchInsert(UserData::tableName(), ['user_uuid', 'field_uuid', 'value'], $insert)
+                ->execute();
+        }
     }
 }

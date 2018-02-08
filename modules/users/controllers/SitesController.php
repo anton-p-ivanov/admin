@@ -14,6 +14,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class SitesController
+ *
  * @package users\controllers
  */
 class SitesController extends Controller
@@ -56,6 +57,7 @@ class SitesController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -71,21 +73,34 @@ class SitesController extends Controller
         $user = User::findOne($user_uuid);
 
         if (!$user) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'User not found.');
         }
 
-        return $this->renderPartial('index', [
+        $params = [
             'dataProvider' => UserSite::search($user_uuid),
-            'user_uuid' => $user_uuid
-        ]);
+            'user' => $user
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
      * @param string $user_uuid
      * @return array|string
+     * @throws HttpException
      */
     public function actionCreate($user_uuid)
     {
+        $user = User::findOne($user_uuid);
+
+        if (!$user) {
+            throw new HttpException(404, 'User not found.');
+        }
+
         $model = new UserSite([
             'user_uuid' => $user_uuid,
             'active_dates' => ['active_from_date' => \Yii::$app->formatter->asDatetime(date('Y-m-d H:i:s'))],

@@ -2,9 +2,7 @@
 
 namespace users\modules\admin\modules\fields\models;
 
-use users\models\UserData;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Json;
 use yii\validators\UniqueValidator;
 
 /**
@@ -70,46 +68,58 @@ class Field extends \fields\models\Field
         return $rules;
     }
 
+//    /**
+//     * @param bool $insert
+//     * @param array $changedAttributes
+//     */
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        parent::afterSave($insert, $changedAttributes);
+//
+//        // If field code was changed update all form results
+//        if (!$insert && array_key_exists('code', $changedAttributes)) {
+//            /* @var UserData[] $results */
+//            $results = UserData::find()->all();
+//            foreach ($results as $result) {
+//                $data = Json::decode($result->data);
+//                if (isset($data[$changedAttributes['code']])) {
+//                    $data[$this->code] = $data[$changedAttributes['code']];
+//                    unset($data[$changedAttributes['code']]);
+//                }
+//
+//                $result->updateAttributes(['data' => Json::encode($data)]);
+//            }
+//        }
+//    }
+//
+//    /**
+//     * @inheritdoc
+//     */
+//    public function afterDelete()
+//    {
+//        parent::afterDelete();
+//
+//        /* @var UserData[] $results */
+//        $results = UserData::find()->all();
+//        foreach ($results as $result) {
+//            $data = Json::decode($result->data);
+//            if (isset($data[$this->code])) {
+//                unset($data[$this->code]);
+//            }
+//
+//            $result->updateAttributes(['data' => Json::encode($data)]);
+//        }
+//    }
+
     /**
-     * @param bool $insert
-     * @param array $changedAttributes
+     * @return Field[]
      */
-    public function afterSave($insert, $changedAttributes)
+    public static function getList()
     {
-        parent::afterSave($insert, $changedAttributes);
-
-        // If field code was changed update all form results
-        if (!$insert && array_key_exists('code', $changedAttributes)) {
-            /* @var UserData[] $results */
-            $results = UserData::find()->all();
-            foreach ($results as $result) {
-                $data = Json::decode($result->data);
-                if (isset($data[$changedAttributes['code']])) {
-                    $data[$this->code] = $data[$changedAttributes['code']];
-                    unset($data[$changedAttributes['code']]);
-                }
-
-                $result->updateAttributes(['data' => Json::encode($data)]);
-            }
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterDelete()
-    {
-        parent::afterDelete();
-
-        /* @var UserData[] $results */
-        $results = UserData::find()->all();
-        foreach ($results as $result) {
-            $data = Json::decode($result->data);
-            if (isset($data[$this->code])) {
-                unset($data[$this->code]);
-            }
-
-            $result->updateAttributes(['data' => Json::encode($data)]);
-        }
+        return Field::find()
+            ->where(['active' => true])
+            ->orderBy(['sort' => SORT_ASC])
+            ->indexBy('uuid')
+            ->all();
     }
 }

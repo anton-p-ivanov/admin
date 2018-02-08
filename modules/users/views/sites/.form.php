@@ -12,7 +12,7 @@ use app\widgets\form\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'options' => [
-            'id' => 'access-sites-form',
+            'id' => 'sites-form',
             'data-type' => 'active-form',
         ]
     ]); ?>

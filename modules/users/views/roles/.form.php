@@ -12,7 +12,7 @@ use app\widgets\form\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'options' => [
-            'id' => 'access-roles-form',
+            'id' => 'roles-form',
             'data-type' => 'active-form',
         ]
     ]); ?>

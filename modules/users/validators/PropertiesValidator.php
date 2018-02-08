@@ -3,6 +3,7 @@ namespace users\validators;
 
 use fields\models\FieldValidator;
 use users\models\UserData;
+use users\modules\admin\modules\fields\models\Field;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -56,11 +57,10 @@ class PropertiesValidator extends Validator
      */
     public function validateAttribute($model, $attribute)
     {
-        // Get all properties with nulled values
-        $properties = ArrayHelper::map($model->getFields(), 'code', function(){ return null; });
+        $fields = Field::getList();
 
-        /* @var \fields\models\Field[] $fields */
-        $fields = $model->getFields();
+        // Get all properties with nulled values
+        $properties = ArrayHelper::map($fields, 'uuid', function(){ return null; });
 
         foreach (array_merge($properties, $model->$attribute) as $field_uuid => $value) {
             $field = $fields[$field_uuid];

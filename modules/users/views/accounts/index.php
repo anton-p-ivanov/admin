@@ -2,41 +2,40 @@
 /**
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
- * @var string $user_uuid
+ * @var \users\models\User $user
  */
 
-$updateUrl = \yii\helpers\Url::to(['accounts/index', 'user_uuid' => $user_uuid]);
+$this->title = sprintf('%s — %s: %s',
+    Yii::t('app', 'Control panel'),
+    Yii::t('users', \users\Module::$title),
+    Yii::t('users', 'Accounts')
+);
+
+// Registering assets
+\users\assets\AccountsAsset::register($this);
+
 ?>
-<div id="accounts-pjax" data-pjax-container="true" data-pjax-url="<?= $updateUrl; ?>">
-<?php if ($dataProvider->totalCount > 0): ?>
+<div class="users-title">
+    <?= Yii::t('users', 'Accounts for user'); ?> "<?= $user->getFullName(); ?>"
+</div>
+<div id="accounts-pjax" data-pjax-container="true">
 
     <?= \app\widgets\Toolbar::widget([
         'buttons' => require_once ".toolbar.php",
-        'options' => ['class' => 'toolbar toolbar_light'],
     ]); ?>
 
     <?= \app\widgets\grid\GridView::widget([
         'id' => 'accounts-grid',
         'dataProvider' => $dataProvider,
-        'layout' => '{items}{pager}',
+        'columns' => require_once ".grid.php",
         'tableOptions' => ['class' => implode(' ', [
             'grid-view__table',
-            'grid-view__table_dense',
-            'grid-view__table_light',
             'grid-view__table_fixed'
         ])],
-        'columns' => require_once ".grid.php",
-        'pager' => [
-            'class' => 'app\widgets\grid\Pager',
-            'options' => ['class' => 'pager pager_light']
-        ]
     ]); ?>
 
-<?php else: ?>
-    <div class="grid-view__empty">
-        <div class="grid-view__empty-content">
-            <?= $this->render('.index.empty.php', ['user_uuid' => $user_uuid]); ?>
-        </div>
-    </div>
-<?php endif; ?>
+</div>
+
+<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+    <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class AccountsController
+ *
  * @package users\controllers
  */
 class AccountsController extends Controller
@@ -58,6 +59,7 @@ class AccountsController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::className(),
+            'except' => ['index']
         ];
         $behaviors['cn'] = [
             'class' => ContentNegotiator::className(),
@@ -78,21 +80,34 @@ class AccountsController extends Controller
         $user = User::findOne($user_uuid);
 
         if (!$user) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'User not found.');
         }
 
-        return $this->renderPartial('index', [
+        $params = [
             'dataProvider' => UserAccount::search($user_uuid),
-            'user_uuid' => $user_uuid
-        ]);
+            'user' => $user
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
      * @param string $user_uuid
      * @return array|string
+     * @throws HttpException
      */
     public function actionCreate($user_uuid)
     {
+        $user = User::findOne($user_uuid);
+
+        if (!$user) {
+            throw new HttpException(404, 'User not found.');
+        }
+
         $model = new UserAccount([
             'user_uuid' => $user_uuid
         ]);

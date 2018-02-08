@@ -8,7 +8,7 @@ return [
         'url' => ['roles/edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#access-roles-modal',
+            'data-target' => '#roles-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'
@@ -19,7 +19,7 @@ return [
         'url' => ['roles/copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#access-roles-modal',
+            'data-target' => '#roles-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'

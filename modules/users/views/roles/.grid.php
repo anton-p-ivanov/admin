@@ -17,7 +17,7 @@ return [
         'value' => function (UserRole $model) {
             return Html::a($model->role->description, ['roles/edit', 'uuid' => $model->uuid], [
                 'data-toggle' => 'modal',
-                'data-target' => '#access-roles-modal',
+                'data-target' => '#roles-modal',
                 'data-pjax' => 'false',
                 'data-reload' => 'true',
                 'data-persistent' => 'true'
@@ -36,6 +36,8 @@ return [
             return $model->isValid() ? '<i class="material-icons text_success version_active">check</i>' : '';
         }
     ],
+    'valid_from_date:datetime',
+    'valid_to_date:datetime',
     [
         'class' => \app\widgets\grid\ActionColumn::className(),
         'items' => function (

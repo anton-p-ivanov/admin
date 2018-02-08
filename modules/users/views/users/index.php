@@ -7,7 +7,7 @@
 
 $this->title = sprintf('%s — %s',
     Yii::t('app', 'Control panel'),
-    Yii::t('users', 'Users')
+    Yii::t('users', \users\Module::$title)
 );
 
 // Registering assets
@@ -18,7 +18,6 @@ $this->title = sprintf('%s — %s',
 
     <?= \app\widgets\Toolbar::widget([
         'buttons' => require_once ".toolbar.php",
-        'isFiltered' => $isFiltered
     ]); ?>
 
     <?= \app\widgets\grid\GridView::widget([

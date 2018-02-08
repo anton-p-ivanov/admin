@@ -2,17 +2,17 @@
 
 namespace users\controllers;
 
-use app\components\actions\FilterAction;
-use app\components\actions\SettingsAction;
 use app\components\behaviors\ConfirmFilter;
 use app\models\Workflow;
+use users\components\traits\Duplicator;
 use users\models\User;
-use users\models\UserFilter;
+use users\models\UserAccount;
 use users\models\UserPassword;
-use users\models\UserSettings;
+use users\models\UserRole;
+use users\models\UserSite;
 use yii\filters\AjaxFilter;
-use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -24,22 +24,7 @@ use yii\widgets\ActiveForm;
  */
 class UsersController extends Controller
 {
-    /**
-     * @return array
-     */
-    public function actions(): array
-    {
-        return [
-            'filter' => [
-                'class' => FilterAction::className(),
-                'modelClass' => UserFilter::className()
-            ],
-            'settings' => [
-                'class' => SettingsAction::className(),
-                'modelClass' => UserSettings::className()
-            ]
-        ];
-    }
+    use Duplicator;
 
     /**
      * @param \yii\base\Action $action
@@ -81,13 +66,13 @@ class UsersController extends Controller
             'class' => AjaxFilter::className(),
             'except' => ['index']
         ];
-        $behaviors['cn'] = [
-            'class' => ContentNegotiator::className(),
-            'only' => ['list', 'get'],
-            'formats' => [
-                'application/json' => Response::FORMAT_JSON,
-            ]
-        ];
+//        $behaviors['cn'] = [
+//            'class' => ContentNegotiator::className(),
+//            'only' => ['list', 'get'],
+//            'formats' => [
+//                'application/json' => Response::FORMAT_JSON,
+//            ]
+//        ];
 
         return $behaviors;
     }
@@ -97,19 +82,22 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
-        $filter = null;
-        $settings = UserSettings::loadSettings();
-        $dataProvider = User::search($settings);
-
-        if ($filter_uuid = \Yii::$app->request->get('filter_uuid')) {
-            $filter = UserFilter::loadFilter($filter_uuid);
-            $filter->buildQuery($dataProvider->query);
-        }
+        $dataProvider = User::search();
 
         $params = [
             'dataProvider' => $dataProvider,
-            'settings' => $settings,
-            'isFiltered' => $filter ? $filter->isActive : false,
+            'accounts' => UserAccount::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('user_uuid')
+                ->indexBy('user_uuid')->column(),
+            'roles' => UserRole::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('user_id')
+                ->indexBy('user_id')->column(),
+            'sites' => UserSite::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('user_uuid')
+                ->indexBy('user_uuid')->column(),
         ];
 
         if (\Yii::$app->request->isAjax) {
@@ -121,31 +109,22 @@ class UsersController extends Controller
 
     /**
      * @return array|string
-     * @throws HttpException
      */
     public function actionCreate()
     {
-        $password = \Yii::$app->security->generateRandomString();
-        $model = new User([
-            'email' => 'new-user-' . date('Ymd-His') . '@' . \Yii::$app->request->hostName,
-            'fname' => 'New',
-            'lname' => 'User',
-            'password_new' => $password,
-            'password_new_repeat' => $password
-        ]);
+        $model = new User();
 
-        if (!$model->save()) {
-            throw new HttpException(500, 'Could not create new user.');
+        $password = new UserPassword();
+        $password->scenario = UserPassword::SCENARIO_NEW_USER;
+
+        if ($model->load(\Yii::$app->request->post()) && $password->load(\Yii::$app->request->post())) {
+            return $this->postCreate($model, $password);
         }
 
-        // Refresh model with new data
-        $model->refresh();
-
-        \Yii::$app->session->setFlash('FORM_CREATED');
-
-        return $this->renderPartial('edit', [
+        return $this->renderPartial('create', [
             'model' => $model,
-            'workflow' => $model->workflow
+            'password' => $password,
+            'workflow' => new Workflow()
         ]);
     }
 
@@ -160,42 +139,52 @@ class UsersController extends Controller
         $model = User::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'User not found.');
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
+        $model->data = $model->getData();
+        $password = new UserPassword(['user_uuid' => $model->uuid]);
+
+        if ($model->load(\Yii::$app->request->post()) && $password->load(\Yii::$app->request->post())) {
+            return $this->postCreate($model, $password);
         }
 
         return $this->renderPartial('edit', [
             'model' => $model,
-            'workflow' => $model->workflow
+            'password' => $password,
+            'workflow' => $model->workflow ?: new Workflow()
         ]);
     }
 
     /**
      * @param string $uuid
+     * @param bool $deep
      * @return array|string
      * @throws HttpException
      */
-    public function actionCopy($uuid)
+    public function actionCopy($uuid, $deep = false)
     {
         /* @var User $model */
         $model = User::findOne($uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'User not found.');
         }
+
+        $password = new UserPassword();
+        $password->scenario = UserPassword::SCENARIO_NEW_USER;
 
         // Makes a copy
         $copy = $model->duplicate();
+        $copy->data = $model->getData();
 
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy);
+        if ($copy->load(\Yii::$app->request->post()) && $password->load(\Yii::$app->request->post())) {
+            return $this->postCreate($copy, $password, $deep ? $model : null);
         }
 
         return $this->renderPartial('copy', [
             'model' => $copy,
+            'password' => $password,
             'workflow' => new Workflow()
         ]);
     }
@@ -215,72 +204,86 @@ class UsersController extends Controller
 
         return $counter === count($models);
     }
+//
+//    /**
+//     * This method searches for accounts by their name or its part.
+//     * Used in select boxes.
+//     *
+//     * @param string $search
+//     * @return array
+//     */
+//    public function actionList($search = '')
+//    {
+//        $query = User::find()->where(['like', 'CONCAT_WS(" ", `fname`, `lname`)', $search]);
+//
+//        if (\Yii::$app->request->method === 'OPTIONS') {
+//            $count = $query->count();
+//            if ($count > 50) {
+//                return ['count' => $count];
+//            }
+//        }
+//
+//        return $query
+//            ->select(['title' => 'CONCAT(`fname`, " ", `lname`, " (", `email`, ")")'])
+//            ->indexBy('uuid')
+//            ->orderBy('title')
+//            ->column();
+//    }
+//
+//    /**
+//     * @param string $uuid
+//     * @return array|null|\yii\db\ActiveRecord
+//     */
+//    public function actionGet($uuid)
+//    {
+//        return User::find()->where(['uuid' => $uuid])->one();
+//    }
 
     /**
-     * @param $user_uuid
-     * @return array|string
-     */
-    public function actionPassword($user_uuid)
-    {
-        $model = new UserPassword(['user_uuid' => $user_uuid]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('password', ['model' => $model]);
-    }
-
-    /**
-     * This method searches for accounts by their name or its part.
-     * Used in select boxes.
-     *
-     * @param string $search
+     * @param User $model
+     * @param User $original
+     * @param UserPassword $password
      * @return array
      */
-    public function actionList($search = '')
-    {
-        $query = User::find()->where(['like', 'CONCAT_WS(" ", `fname`, `lname`)', $search]);
-
-        if (\Yii::$app->request->method === 'OPTIONS') {
-            $count = $query->count();
-            if ($count > 50) {
-                return ['count' => $count];
-            }
-        }
-
-        return $query
-            ->select(['title' => 'CONCAT(`fname`, " ", `lname`, " (", `email`, ")")'])
-            ->indexBy('uuid')
-            ->orderBy('title')
-            ->column();
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|null|\yii\db\ActiveRecord
-     */
-    public function actionGet($uuid)
-    {
-        return User::find()->where(['uuid' => $uuid])->one();
-    }
-
-    /**
-     * @param \yii\db\ActiveRecord $model
-     * @return array
-     */
-    protected function postCreate($model)
+    protected function postCreate($model, $password, $original = null)
     {
         // Validate user inputs
-        $errors = ActiveForm::validate($model);
+        $errors = ArrayHelper::merge(
+            ActiveForm::validate($model),
+            ActiveForm::validate($password)
+        );
 
         if ($errors) {
             \Yii::$app->response->statusCode = 206;
             return $errors;
         }
 
-        $model->save(false);
+        $result = $model->save(false);
+
+        if ($result && $password->password_new) {
+            $password->user_uuid = $model->uuid;
+            $result = $result && $password->save(false);
+        }
+
+        if ($result && $original) {
+            $this->duplicateUser($original, $model->uuid);
+        }
 
         return $model->attributes;
+    }
+
+    /**
+     * @param User $original
+     * @param $uuid
+     */
+    protected function duplicateUser($original, $uuid)
+    {
+        $relations = ['account', 'role', 'site'];
+
+        foreach ($relations as $relation) {
+            foreach ($original->{'user' . ucfirst($relation) . 's'} as $model) {
+                $this->{'duplicate' . ucfirst($relation)}($model, $uuid);
+            }
+        }
     }
 }
