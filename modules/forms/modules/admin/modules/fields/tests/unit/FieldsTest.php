@@ -50,8 +50,6 @@ class FieldsTest extends Unit
      */
     protected function _before()
     {
-//        \Yii::setAlias('@forms', '@app/modules/forms');
-
         $this->faker = Factory::create();
     }
 
