@@ -31,11 +31,68 @@ class Workflow extends ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->isNewRecord) {
+            $this->status = WorkflowStatus::WORKFLOW_STATUS_DEFAULT;
+        }
+    }
+
+    /**
+     * @param string $message
+     * @param array $params
+     * @return string
+     */
+    public static function t($message, $params = [])
+    {
+        return \Yii::t('workflow', $message, $params);
+    }
+
+    /**
      * @return array
      */
     public function transactions()
     {
         return [self::SCENARIO_DEFAULT => self::OP_ALL];
+    }
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            ['status', 'in', 'range' => array_keys(WorkflowStatus::getList())],
+            ['status', 'default', 'value' => WorkflowStatus::WORKFLOW_STATUS_DEFAULT]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function attributeLabels()
+    {
+        $labels = [
+            'status' => 'Status'
+        ];
+
+        return array_map('self::t', $labels);
+    }
+
+    /**
+     * @return array
+     */
+    public function attributeHints()
+    {
+        $hints = [
+            'status' => 'Element`s workflow status.'
+        ];
+
+        return array_map('self::t', $hints);
     }
 
     /**
