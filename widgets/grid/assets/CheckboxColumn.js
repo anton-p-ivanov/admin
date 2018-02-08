@@ -50,6 +50,8 @@
                 $target.find('input[name="' + name + '"]:checkbox').prop('checked', e.target.checked);
 
                 countSelected($target, name);
+
+                $(this).trigger($.Event('afterChangeState.CheckboxColumn'));
             });
 
             $(document).on('change.CheckboxColumn', 'input[name="' + name + '"]:checkbox', function (e) {
@@ -61,6 +63,8 @@
                 $target.find('input[name="' + checkAll + '"]:checkbox').prop('checked', count === 0);
 
                 countSelected($target, name);
+
+                $(this).trigger($.Event('afterChangeState.CheckboxColumn'));
             });
         };
 
