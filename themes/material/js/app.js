@@ -11,4 +11,10 @@ $(function(){
         e.preventDefault();
         $(e.target).closest('.alert').remove();
     });
+
+    $(document).on('resize', function (e) {
+        $('.app-nav').css({'height': $(window).outerHeight() - $('.app-logo').outerHeight()});
+    });
+
+    $(document).trigger('resize');
 });

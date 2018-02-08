@@ -51,6 +51,12 @@
     border-radius: 0 0 2px 2px;
     box-shadow: 0 2px 22px 4px rgba(0, 0, 0, .12), 0 7px 8px rgba(0, 0, 0, .20);
 }
+.form-group_dropdown .dropdown_up {
+    top: -39px;
+}
+.field-selector .form-group_text ~ .form-group__action {
+    top: 25px;
+}
 .form-group__action:hover {
     color: #00aeef;
 }
