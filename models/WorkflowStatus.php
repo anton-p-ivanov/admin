@@ -1,6 +1,8 @@
 <?php
 namespace app\models;
 
+use app\components\traits\MultilingualActiveRecord;
+use i18n\components\MultilingualBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -10,6 +12,8 @@ use yii\db\ActiveRecord;
  */
 class WorkflowStatus extends ActiveRecord
 {
+    use MultilingualActiveRecord;
+
     /**
      * Workflow status constants
      */
@@ -29,9 +33,26 @@ class WorkflowStatus extends ActiveRecord
     /**
      * @return array
      */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['ml'] = [
+            'class' => MultilingualBehavior::className(),
+            'langForeignKey' => 'code',
+            'tableName' => '{{%workflow_statuses_i18n}}',
+            'attributes' => ['title']
+        ];
+
+        return $behaviors;
+    }
+
+    /**
+     * @return array
+     */
     public static function getList()
     {
         return self::find()
+            ->joinWith('translation')
             ->orderBy(['sort' => SORT_ASC, 'title' => SORT_ASC])
             ->indexBy('code')
             ->select('title')
