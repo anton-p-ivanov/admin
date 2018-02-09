@@ -164,9 +164,11 @@ class m171004_132506_init extends Migration
 
         $this->createTable('{{%users_data}}', [
             'user_uuid' => 'char(36) not null',
-            'data' => 'text not null',
-            'PRIMARY KEY (`user_uuid`)',
+            'field_uuid' => 'char(36) not null',
+            'value' => 'text not null',
+            'PRIMARY KEY (`user_uuid`, `field_uuid`)',
             'CONSTRAINT FOREIGN KEY (`user_uuid`) REFERENCES {{%users}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%users_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
         $this->createTable('{{%users_settings}}', [
