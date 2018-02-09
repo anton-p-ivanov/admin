@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in $(find ./modules -name 'codeception.yml' -type f); do
+    if [[ -d $(dirname $i)/tests/unit/templates/fixtures ]]; then
+        ./yii_test fixture/generate-all --interactive=0 --fixtureDataPath=$(dirname $i)/tests/fixtures/data/generated --templatePath=$(dirname $i)/tests/unit/templates/fixtures
+    fi
+    ./vendor/bin/codecept run unit -c $(dirname $i)
+done
