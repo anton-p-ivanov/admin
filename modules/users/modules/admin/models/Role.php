@@ -104,10 +104,11 @@ class Role extends AuthItem
     public function rules(): array
     {
         return [
-            ['name', 'required', 'message' => self::t('{attribute} is required.')],
+            [['name', 'description'], 'required', 'message' => self::t('{attribute} is required.')],
             ['name', 'string', 'max' => 100, 'message' => self::t('Maximum {max, number} characters allowed.')],
+            ['description', 'string', 'max' => 200, 'message' => self::t('Maximum {max, number} characters allowed.')],
             ['name', 'match', 'pattern' => '/^[\w\-]+$/i', 'message' => self::t('Invalid characters found.')],
-            ['description', 'safe'],
+            ['name', 'unique'],
         ];
     }
 
