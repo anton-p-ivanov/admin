@@ -29,7 +29,6 @@ class m171004_132506_init extends Migration
         $this->createTable('{{%auth_items}}', [
             'name' => 'varchar(64) not null',
             'type' => 'tinyint(1) not null',
-            'description' => 'text',
             'rule_name' => 'varchar(64)',
             'data' => 'text',
             'created_at' => 'timestamp null default null',
@@ -38,10 +37,6 @@ class m171004_132506_init extends Migration
             'KEY `type` (`type`)',
             'CONSTRAINT FOREIGN KEY (`rule_name`) REFERENCES {{%auth_rules}} (`name`) ON DELETE SET NULL ON UPDATE CASCADE'
         ], 'ENGINE InnoDB');
-
-        if (!YII_ENV_TEST) {
-            $this->execute(file_get_contents(__DIR__ . "/sql/auth_items.sql"));
-        }
 
         $this->createTable('{{%auth_items_children}}', [
             'parent' => 'varchar(64) not null',
@@ -63,13 +58,18 @@ class m171004_132506_init extends Migration
             'CONSTRAINT FOREIGN KEY (`item_name`) REFERENCES {{%auth_items}} (`name`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%auth_items_lang}}', [
+        $this->createTable('{{%auth_items_i18n}}', [
             'item_name' => 'varchar(64) not null',
-            'lang_id' => 'varchar(6) not null',
+            'lang' => 'varchar(10) not null',
             'description' => 'text',
-            'PRIMARY KEY (`item_name`, `lang_id`)',
-            'CONSTRAINT FOREIGN KEY (`item_name`) REFERENCES {{%auth_items}} (`name`) ON DELETE CASCADE ON UPDATE CASCADE'
+            'PRIMARY KEY (`item_name`, `lang`)',
+            'CONSTRAINT FOREIGN KEY (`item_name`) REFERENCES {{%auth_items}} (`name`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`lang`) REFERENCES {{%i18n_languages}} (`code`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
+
+        if (!YII_ENV_TEST) {
+            $this->execute(file_get_contents(__DIR__ . "/sql/auth_items.sql"));
+        }
 
         $this->createTable('{{%sites}}', [
             'uuid' => 'char(36) not null',
@@ -264,7 +264,7 @@ class m171004_132506_init extends Migration
 
         $this->dropTable('{{%auth_assignments}}');
         $this->dropTable('{{%auth_items_children}}');
-        $this->dropTable('{{%auth_items_lang}}');
+        $this->dropTable('{{%auth_items_i18n}}');
         $this->dropTable('{{%auth_items}}');
         $this->dropTable('{{%auth_rules}}');
 

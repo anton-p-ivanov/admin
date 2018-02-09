@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
+use i18n\components\ActiveRecord;
 
 /**
  * Class AuthItem
@@ -44,6 +44,11 @@ class AuthItem extends ActiveRecord
      */
     public static function getRoles()
     {
-        return self::find()->roles()->select('description')->indexBy('name')->column();
+        return self::find()
+            ->joinWith('translation')
+            ->select('description')
+            ->indexBy('name')
+            ->roles()
+            ->column();
     }
 }

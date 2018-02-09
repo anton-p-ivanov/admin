@@ -1,13 +1,13 @@
 <?php
 namespace app\models;
 
-use yii\db\ActiveQuery;
+use omgdef\multilingual\MultilingualQuery;
 
 /**
  * Class AuthItemQuery
  * @package app\models
  */
-class AuthItemQuery extends ActiveQuery
+class AuthItemQuery extends MultilingualQuery
 {
     /**
      * @return AuthItemQuery
