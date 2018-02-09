@@ -32,6 +32,10 @@ class Module extends \yii\base\Module
         // initialize the module with the configuration loaded from config file
         \Yii::configure($this, ArrayHelper::merge($config, $env));
 
+        if (YII_ENV_PROD) {
+            \Yii::$app->assetManager->bundles = require __DIR__ . '/config/' . YII_ENV . '/assets.php';
+        }
+
         $this->registerTranslations();
     }
 
