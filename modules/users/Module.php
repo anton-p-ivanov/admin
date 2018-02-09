@@ -53,6 +53,10 @@ class Module extends \yii\base\Module
         \Yii::$app->i18n->translations['users*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@users/messages',
+            'fileMap' => [
+                'users' => 'users.php',
+                'users/roles' => 'roles.php',
+            ]
         ];
     }
 }
