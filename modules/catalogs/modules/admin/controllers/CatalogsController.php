@@ -6,6 +6,7 @@ use app\components\behaviors\ConfirmFilter;
 use app\models\User;
 use app\models\Workflow;
 use catalogs\modules\admin\models\Catalog;
+use catalogs\modules\admin\models\Type;
 use catalogs\modules\admin\modules\fields\components\traits\Duplicator;
 use catalogs\modules\admin\modules\fields\models\Field;
 use yii\filters\AjaxFilter;
@@ -69,12 +70,16 @@ class CatalogsController extends Controller
     }
 
     /**
+     * @param string $type_uuid
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($type_uuid = null)
     {
+        $type = Type::findOne($type_uuid);
+
         $params = [
-            'dataProvider' => Catalog::search(),
+            'dataProvider' => Catalog::search(['{{%catalogs}}.[[type_uuid]]' => $type_uuid]),
+            'type' => $type,
             'fields' => Field::find()
                 ->select(['count' => 'COUNT(*)'])
                 ->groupBy('catalog_uuid')
@@ -89,13 +94,15 @@ class CatalogsController extends Controller
     }
 
     /**
+     * @param string $type_uuid
      * @return array|string
      */
-    public function actionCreate()
+    public function actionCreate($type_uuid = null)
     {
         $model = new Catalog([
             'active' => 1,
             'sort' => 100,
+            'type_uuid' => $type_uuid
         ]);
 
         if ($model->load(\Yii::$app->request->post())) {

@@ -22,14 +22,15 @@ use yii\db\ActiveQuery;
 class Catalog extends \catalogs\models\Catalog
 {
     /**
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search()
+    public static function search($params = [])
     {
         $defaultOrder = ['title' => SORT_ASC];
 
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery(),
+            'query' => self::prepareSearchQuery($params),
             'sort' => [
                 'defaultOrder' => $defaultOrder,
                 'attributes' => self::getSortAttributes()
@@ -56,14 +57,19 @@ class Catalog extends \catalogs\models\Catalog
     }
 
     /**
+     * @param array $params
      * @return ActiveQuery
      */
-    protected static function prepareSearchQuery()
+    protected static function prepareSearchQuery($params = [])
     {
         /* @var ActiveQuery $query */
         $query = self::find()->joinWith(['translation', 'type' => function (ActiveQuery $query) {
             $query->joinWith('translation');
         }]);
+
+        if ($params) {
+            $query->andFilterWhere($params);
+        }
 
         return $query;
     }

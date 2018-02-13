@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var \catalogs\modules\admin\models\Type $type
+ */
 
 return [
     'group-1' => [
@@ -12,6 +15,7 @@ return [
             ],
             'url' => [
                 'create',
+                'type_uuid' => $type ? $type->uuid : null
             ],
         ]
     ],
