@@ -2,6 +2,8 @@
 
 return [
     'Catalogs' => 'Каталоги',
+    'Elements' => 'Элементы',
+    'No description' => 'Нет описания',
 
     'Title' => 'Название',
     'Description' => 'Описание',
