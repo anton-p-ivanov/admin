@@ -78,8 +78,8 @@ class CatalogsController extends Controller
         $type = Type::findOne($type_uuid);
 
         $params = [
-            'dataProvider' => Catalog::search(['{{%catalogs}}.[[type_uuid]]' => $type_uuid]),
             'type' => $type,
+            'dataProvider' => Catalog::search(['{{%catalogs}}.[[type_uuid]]' => $type_uuid]),
             'fields' => Field::find()
                 ->select(['count' => 'COUNT(*)'])
                 ->groupBy('catalog_uuid')
