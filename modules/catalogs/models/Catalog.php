@@ -18,6 +18,7 @@ use yii\helpers\ArrayHelper;
  * @property boolean $trade
  * @property boolean $index
  * @property string $type_uuid
+ * @property string $tree_uuid
  * @property string $workflow_uuid
  *
  * @property Workflow $workflow
@@ -103,5 +104,13 @@ class Catalog extends ActiveRecord
     public function isActive()
     {
         return (int) $this->active === 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTrading()
+    {
+        return (int) $this->trade === 1;
     }
 }

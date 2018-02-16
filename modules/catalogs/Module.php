@@ -56,6 +56,8 @@ class Module extends \yii\base\Module
             'fileMap' => [
                 'catalogs' => 'catalogs.php',
                 'catalogs/catalogs' => 'catalogs.php',
+                'catalogs/elements' => 'elements.php',
+                'catalogs/locations' => 'locations.php',
                 'catalogs/types' => 'types.php',
                 'catalogs/fields' => 'fields.php',
                 'catalogs/fields/groups' => 'fields/groups.php',

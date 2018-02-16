@@ -19,7 +19,7 @@ $this->title = sprintf('%s — %s: %s',
         <div class="catalog__title"><?= $catalog->title; ?></div>
         <div class="catalog__description"><?= $catalog->description ?: '<em>' . Yii::t('catalogs', 'No description') . '</em>'; ?></div>
         <div class="catalog_actions">
-            <a class="btn btn_primary btn_inverted" href="<?= \yii\helpers\Url::to(['elements/index', 'catalog_uuid' => $catalog->uuid]); ?>">
+            <a class="btn btn_primary btn_inverted" href="<?= \yii\helpers\Url::to(['elements/index', 'tree_uuid' => $catalog->tree_uuid]); ?>">
                 <?= Yii::t('catalogs', 'Elements'); ?>
             </a>
         </div>

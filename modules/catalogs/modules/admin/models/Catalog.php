@@ -222,6 +222,14 @@ class Catalog extends \catalogs\models\Catalog
 
         if ($isValid) {
             $this->code = mb_strtoupper($this->code);
+
+            if ($this->tree_uuid === null) {
+                // Create new root node in catalog`s tree
+                $node = new ElementTree();
+                if ($node->makeRoot()) {
+                    $this->tree_uuid = $node->tree_uuid;
+                }
+            }
         }
 
         return $isValid;

@@ -36,10 +36,12 @@ class m171226_083304_init_catalogs extends Migration
             'active' => 'tinyint(1) unsigned not null default \'1\'',
             'trade' => 'tinyint(1) unsigned not null default \'0\'',
             'index' => 'tinyint(1) unsigned not null default \'0\'',
+            'tree_uuid' => 'char(36) null default null',
             'type_uuid' => 'char(36) null default null',
             'workflow_uuid' => 'char(36) null default null',
             'PRIMARY KEY (`uuid`)',
             'UNIQUE KEY `code` (`code`)',
+            'UNIQUE KEY `tree_uuid` (`tree_uuid`)',
             'CONSTRAINT FOREIGN KEY (`type_uuid`) REFERENCES {{%catalogs_types}} (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE',
             'CONSTRAINT FOREIGN KEY (`workflow_uuid`) REFERENCES {{%workflow}} (`uuid`) ON DELETE SET NULL ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
