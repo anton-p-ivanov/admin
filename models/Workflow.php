@@ -77,7 +77,8 @@ class Workflow extends ActiveRecord
     public function attributeLabels()
     {
         $labels = [
-            'status' => 'Status'
+            'status' => 'Status',
+            'modified_date' => 'Modified'
         ];
 
         return array_map('self::t', $labels);
