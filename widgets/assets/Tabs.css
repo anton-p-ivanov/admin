@@ -37,6 +37,7 @@
 }
 .tabs-content {
     position: relative;
+    padding-top: 30px;
 }
 .tabs-pane {
     display: none;
