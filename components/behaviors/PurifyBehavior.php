@@ -16,11 +16,15 @@ class PurifyBehavior extends Behavior
      * @var array Attributes list to be purified
      */
     public $attributes;
+    /**
+     * @var array
+     */
+    public $config;
 
     /**
      * Event handler
      */
-    public function beforeSave()
+    public function beforeValidate()
     {
         /* @var ActiveRecord $owner */
         $owner = $this->owner;
@@ -30,7 +34,7 @@ class PurifyBehavior extends Behavior
         }
 
         array_walk($this->attributes, function ($attribute) use ($owner) {
-            $config = null;
+            $config = $this->config;
             if (is_array($attribute)) {
                 $attribute = $attribute['attribute'];
                 $config = $attribute['config'];
@@ -48,8 +52,7 @@ class PurifyBehavior extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
         ];
     }
 }
