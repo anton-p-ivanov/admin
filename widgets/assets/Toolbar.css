@@ -50,6 +50,9 @@ a.toolbar-btn:hover {
     display: block;
     margin: 12px 0;
 }
+.toolbar-btn_back {
+    margin-right: 20px;
+}
 .toolbar__selected,
 .toolbar__filtered {
     display: flex;
