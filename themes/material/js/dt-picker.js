@@ -112,6 +112,25 @@
                         plugin.renderDatePicker(date);
                     });
 
+                    $picker.on('click.DateTimePicker', '[data-toggle="today"]', function (e) {
+                        e.preventDefault();
+
+                        let format = plugin.format['time'],
+                            value;
+
+                        if (plugin.type === 'date') {
+                            format = plugin.format['date'];
+                        }
+                        else if (plugin.type === 'datetime') {
+                            format = plugin.format['date'] + ' ' + format;
+                        }
+
+                        value = moment(__currentDate).format(format);
+
+                        $(target).val(value).data('date', __currentDate).trigger('blur');
+                        $picker.remove();
+                    });
+
                     $picker.on('click.DateTimePicker', '[data-dismiss]', function (e) {
                         e.preventDefault();
                         $picker.remove();
@@ -155,8 +174,13 @@
                                 typeof date['minutes'] !== typeof undefined &&
                                 typeof date['hours'] !== typeof undefined
                             ) {
+                                let format = plugin.format['time'];
+                                if (plugin.type === 'datetime') {
+                                    format = plugin.format['date'] + ' ' + format;
+                                }
+
                                 value = date['date'] + ' ' + date['hours'] + ':' + date['minutes'];
-                                $(target).val(moment(value).format(plugin.format['time'])).data('date', value).trigger('blur');
+                                $(target).val(moment(value).format(format)).data('date', value).trigger('blur');
                                 $picker.remove();
                             }
                         }
@@ -178,9 +202,9 @@
                     if (top + height > $(window).height() && top - height > 0) {
                         $picker.css({'top': top - height});
                     }
-                    else {
-                        $picker.css({'top': 0});
-                    }
+                    // else {
+                    //     $picker.css({'top': 0});
+                    // }
 
                     // Remove picker on outside click
                     $(document)
@@ -291,7 +315,7 @@
                     selected = (i === __selectedDate.getDate()
                         && month === __selectedDate.getMonth()
                         && year === __selectedDate.getFullYear()),
-                    strDate = [year, month + 1, ("00" + i).slice(-2)].join('-');
+                    strDate = [year, ('00' + (month + 1)).slice(-2), ("00" + i).slice(-2)].join('-');
 
                 days.push({
                     'text': $('<a>').text(i).attr({'href': '#', 'data-date': strDate, 'class': selected ? 'selected' : null}),
