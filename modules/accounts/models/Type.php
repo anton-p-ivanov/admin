@@ -1,7 +1,9 @@
 <?php
 namespace accounts\models;
 
+use app\components\behaviors\PrimaryKeyBehavior;
 use i18n\components\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Type
@@ -52,5 +54,21 @@ class Type extends ActiveRecord
     public function isDefault(): bool
     {
         return (int) $this->default === 1;
+    }
+
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['ml'] = ArrayHelper::merge($behaviors['ml'], [
+            'langForeignKey' => 'type_uuid',
+            'tableName' => '{{%accounts_types_i18n}}',
+            'attributes' => ['title']
+        ]);
+
+        return $behaviors;
     }
 }

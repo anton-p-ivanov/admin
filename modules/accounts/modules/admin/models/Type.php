@@ -1,10 +1,8 @@
 <?php
 namespace accounts\modules\admin\models;
 
-use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\traits\ActiveSearch;
 use i18n\models\Language;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class Type
@@ -68,22 +66,6 @@ class Type extends \accounts\models\Type
     public function transactions()
     {
         return [self::SCENARIO_DEFAULT => self::OP_ALL];
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['ml'] = ArrayHelper::merge($behaviors['ml'], [
-            'langForeignKey' => 'type_uuid',
-            'tableName' => '{{%accounts_types_i18n}}',
-            'attributes' => ['title']
-        ]);
-
-        return $behaviors;
     }
 
     /**
