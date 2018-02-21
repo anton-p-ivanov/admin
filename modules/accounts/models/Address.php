@@ -30,4 +30,25 @@ class Address extends \app\models\Address
             ]))->insert();
         }
     }
+
+    /**
+     * @return Address
+     */
+    public function duplicate()
+    {
+        $copy = new self();
+
+        foreach ($this->attributes as $name => $value) {
+            if ($copy->isAttributeSafe($name)) {
+                $copy->$name = $value;
+            }
+        }
+
+        $copy->account_uuid = AccountAddress::find()
+            ->where(['address_uuid' => $this->uuid])
+            ->select('account_uuid')
+            ->scalar();
+
+        return $copy;
+    }
 }

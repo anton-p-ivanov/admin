@@ -1,13 +1,23 @@
 <?php
 /**
  * @var \accounts\models\Account $account
- * @var string $updateUrl
  */
 
 return [
     'group-1' => [
         [
-            'label' => Yii::t('addresses', 'Add'),
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('accounts/addresses', 'Back to accounts` list'),
+                'data-pjax' => 'false'
+            ],
+            'url' => [
+                'accounts/index',
+            ],
+        ],
+        [
+            'label' => Yii::t('accounts/addresses', 'Add'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#addresses-modal',
@@ -27,8 +37,8 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('addresses', 'Refresh'),
-                    'url' => $updateUrl,
+                    'label' => Yii::t('accounts/addresses', 'Refresh'),
+                    'url' => \yii\helpers\Url::current(),
                     'template' => \yii\helpers\Html::a('{label}', '{url}', [
                         'data-toggle' => 'pjax',
                         'data-target' => '#addresses-pjax',
@@ -47,7 +57,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('addresses', 'Delete selected items')
+                'title' => Yii::t('accounts/addresses', 'Delete selected items')
             ],
         ],
     ],

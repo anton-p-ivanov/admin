@@ -4,8 +4,8 @@
  */
 return [
     [
-        'label' => Yii::t('addresses', 'Edit'),
-        'url' => ['addresses/edit', 'uuid' => $model->address_uuid, 'account_uuid' => $model->account_uuid],
+        'label' => Yii::t('accounts/addresses', 'Edit'),
+        'url' => ['addresses/edit', 'uuid' => $model->address_uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#addresses-modal',
@@ -15,8 +15,8 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('addresses', 'Copy'),
-        'url' => ['addresses/copy', 'uuid' => $model->address_uuid, 'account_uuid' => $model->account_uuid],
+        'label' => Yii::t('accounts/addresses', 'Copy'),
+        'url' => ['addresses/copy', 'uuid' => $model->address_uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#addresses-modal',
@@ -27,7 +27,7 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('addresses', 'Delete'),
+        'label' => Yii::t('accounts/addresses', 'Delete'),
         'url' => ['addresses/delete', 'uuid' => $model->address_uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',

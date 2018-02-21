@@ -61,7 +61,7 @@ class AccountAddress extends ActiveRecord
      */
     public function getAddress()
     {
-        return $this->hasOne(Address::className(), ['uuid' => 'address_uuid']);
+        return $this->hasOne(Address::class, ['uuid' => 'address_uuid']);
     }
 
     /**

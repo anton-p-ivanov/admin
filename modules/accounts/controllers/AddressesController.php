@@ -48,17 +48,18 @@ class AddressesController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
             ]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -77,10 +78,16 @@ class AddressesController extends Controller
             throw new HttpException(404, 'Account not found.');
         }
 
-        return $this->renderPartial('index', [
+        $params = [
             'dataProvider' => AccountAddress::search($account_uuid),
             'account' => $account
-        ]);
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
@@ -116,11 +123,10 @@ class AddressesController extends Controller
 
     /**
      * @param string $uuid
-     * @param string $account_uuid
      * @return array|string
      * @throws HttpException
      */
-    public function actionEdit($uuid, $account_uuid)
+    public function actionEdit($uuid)
     {
         /* @var Address $model */
         $model = Address::findOne($uuid);
@@ -129,12 +135,6 @@ class AddressesController extends Controller
             throw new HttpException(404, 'Address not found.');
         }
 
-        $account = Account::findOne($account_uuid);
-        if (!$account) {
-            throw new HttpException(404, 'Account not found.');
-        }
-
-        $model->{'account_uuid'} = $account_uuid;
         if ($model->load(\Yii::$app->request->post())) {
             return $this->postCreate($model);
         }
@@ -146,11 +146,10 @@ class AddressesController extends Controller
 
     /**
      * @param string $uuid
-     * @param string $account_uuid
      * @return array|string
      * @throws HttpException
      */
-    public function actionCopy($uuid, $account_uuid)
+    public function actionCopy($uuid)
     {
         /* @var Address $model */
         $model = Address::findOne($uuid);
@@ -159,14 +158,8 @@ class AddressesController extends Controller
             throw new HttpException(404, 'Address not found.');
         }
 
-        $account = Account::findOne($account_uuid);
-        if (!$account) {
-            throw new HttpException(404, 'Account not found.');
-        }
-
         // Makes a status copy
         $copy = $model->duplicate();
-        $copy->{'account_uuid'} = $account_uuid;
 
         if ($copy->load(\Yii::$app->request->post())) {
             return $this->postCreate($copy);
