@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class ContactsController
+ *
  * @package accounts\controllers
  */
 class ContactsController extends Controller
@@ -46,17 +47,18 @@ class ContactsController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
             ]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -75,10 +77,16 @@ class ContactsController extends Controller
             throw new HttpException(404, 'Account not found.');
         }
 
-        return $this->renderPartial('index', [
+        $params = [
             'dataProvider' => AccountContact::search($account_uuid),
             'account' => $account
-        ]);
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
@@ -97,6 +105,7 @@ class ContactsController extends Controller
 
         $model = new AccountContact([
             'account_uuid' => $account_uuid,
+            'sort' => 100
         ]);
 
         if ($model->load(\Yii::$app->request->post())) {

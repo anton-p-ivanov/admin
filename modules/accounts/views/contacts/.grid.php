@@ -4,7 +4,7 @@ use accounts\models\AccountContact;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (AccountContact $model) {
             return ['value' => $model->uuid];
@@ -25,12 +25,10 @@ return [
     ],
     [
         'attribute' => 'position',
-        'options' => ['width' => 200],
     ],
     [
         'attribute' => 'email',
         'format' => 'email',
-        'options' => ['width' => 200],
     ],
     [
         'attribute' => 'sort',
@@ -40,7 +38,7 @@ return [
         'options' => ['width' => 100],
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

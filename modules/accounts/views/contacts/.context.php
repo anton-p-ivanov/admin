@@ -4,7 +4,7 @@
  */
 return [
     [
-        'label' => Yii::t('contacts', 'Edit'),
+        'label' => Yii::t('accounts/contacts', 'Edit'),
         'url' => ['contacts/edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -15,7 +15,7 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('contacts', 'Copy'),
+        'label' => Yii::t('accounts/contacts', 'Copy'),
         'url' => ['contacts/copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
@@ -27,7 +27,7 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('contacts', 'Delete'),
+        'label' => Yii::t('accounts/contacts', 'Delete'),
         'url' => ['contacts/delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',

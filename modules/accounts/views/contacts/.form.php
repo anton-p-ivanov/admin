@@ -13,11 +13,11 @@
     ]]); ?>
 
     <div class="modal__header">
-        <div class="modal__heading"><?= Yii::t('contacts', $title); ?></div>
+        <div class="modal__heading"><?= Yii::t('accounts/contacts', $title); ?></div>
     </div>
     <div class="modal__body">
         <?= $form->field($model, 'user_uuid')->dropDownList([], [
-            'value' => $model->user ? $model->user->fullname : null,
+            'value' => $model->user ? $model->user->fullname . ' (' . $model->user->email . ')' : null,
             'data-type-ahead' => 'true',
             'data-remote' => 'true',
             'data-url' => \yii\helpers\Url::to(['/users/users/list'])
@@ -45,11 +45,9 @@
             </div>
         </div>
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('contacts', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            <?= Yii::t('accounts/contacts', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>
