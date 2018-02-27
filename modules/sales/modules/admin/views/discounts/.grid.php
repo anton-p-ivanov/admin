@@ -1,6 +1,5 @@
 <?php
 
-use accounts\models\AccountStatus;
 use app\widgets\grid\ActionColumn;
 use app\widgets\grid\CheckboxColumn;
 use sales\modules\admin\models\Discount;

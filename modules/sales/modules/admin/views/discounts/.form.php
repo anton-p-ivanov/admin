@@ -6,7 +6,6 @@
  */
 
 use app\widgets\form\ActiveForm;
-use partnership\models\Status;
 
 ?>
 <div class="modal__container">
