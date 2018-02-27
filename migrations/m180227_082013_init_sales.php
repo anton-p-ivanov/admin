@@ -37,6 +37,18 @@ class m180227_082013_init_sales extends Migration
             'CONSTRAINT FOREIGN KEY (`status_uuid`) REFERENCES {{%accounts_statuses}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
             'CONSTRAINT FOREIGN KEY (`discount_uuid`) REFERENCES {{%sales_discounts}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%sales_discounts_statuses}}', [
+            'uuid' => 'char(36) not null',
+            'status_uuid' => 'char(36) not null',
+            'discount_uuid' => 'char(36) not null',
+            'value' => 'decimal(5,4)',
+            'issue_date' => 'timestamp null default null',
+            'expire_date' => 'timestamp null default null',
+            'PRIMARY KEY (`uuid`)',
+            'CONSTRAINT FOREIGN KEY (`status_uuid`) REFERENCES {{%partnership_statuses}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`discount_uuid`) REFERENCES {{%sales_discounts}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
     }
 
     /**
@@ -44,6 +56,7 @@ class m180227_082013_init_sales extends Migration
      */
     public function safeDown()
     {
+        $this->dropTable('{{%sales_discounts_statuses}}');
         $this->dropTable('{{%sales_discounts_accounts}}');
         $this->dropTable('{{%sales_discounts}}');
     }
