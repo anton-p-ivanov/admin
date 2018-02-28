@@ -10,11 +10,12 @@ return [
                     'class' => yii\i18n\PhpMessageSource::class,
                     'basePath' => '@accounts/messages',
                     'fileMap' => [
-                        'accounts/types' => 'types.php',
-                        'accounts/fields' => 'fields.php',
-                        'accounts/contacts' => 'contacts.php',
                         'accounts/addresses' => 'addresses.php',
-                        'accounts/statuses' => 'statuses.php'
+                        'accounts/contacts' => 'contacts.php',
+                        'accounts/fields' => 'fields.php',
+                        'accounts/managers' => 'managers.php',
+                        'accounts/statuses' => 'statuses.php',
+                        'accounts/types' => 'types.php',
                     ]
                 ],
                 'addresses*' => [

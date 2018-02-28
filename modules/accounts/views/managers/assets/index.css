@@ -1,0 +1,16 @@
+#confirm-modal {
+    z-index: 1100;
+}
+.account-title {
+    line-height: 64px;
+    margin: 0;
+    padding: 0 24px;
+    border-bottom: solid 1px rgba(255, 255, 255, .12);
+    background-color: rgba(255, 255, 255, .12);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.form-group_text .form-group__input {
+    min-height: 6rem;
+}

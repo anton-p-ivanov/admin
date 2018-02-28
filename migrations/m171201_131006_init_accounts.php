@@ -68,9 +68,13 @@ class m171201_131006_init_accounts extends Migration
         ], 'ENGINE InnoDB');
 
         $this->createTable('{{%accounts_managers}}', [
+            'uuid' => 'char(36) not null',
             'account_uuid' => 'char(36) not null',
             'manager_uuid' => 'char(36) not null',
-            'PRIMARY KEY (`account_uuid`, `manager_uuid`)',
+            'comments' => 'text not null',
+            'sort' => 'int(10) unsigned not null default \'100\'',
+            'PRIMARY KEY (`uuid`)',
+            'UNIQUE KEY `account_manager` (`account_uuid`, `manager_uuid`)',
             'CONSTRAINT FOREIGN KEY (`account_uuid`) REFERENCES {{%accounts}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
             'CONSTRAINT FOREIGN KEY (`manager_uuid`) REFERENCES {{%users}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
