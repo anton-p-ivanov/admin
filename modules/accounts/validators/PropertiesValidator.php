@@ -1,10 +1,10 @@
 <?php
 namespace accounts\validators;
 
+use accounts\models\AccountProperty;
 use fields\models\FieldValidator;
-use accounts\models\AccountData;
 use yii\base\InvalidConfigException;
-use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\validators\RequiredValidator;
 use yii\validators\Validator;
@@ -50,39 +50,31 @@ class PropertiesValidator extends Validator
     ];
 
     /**
-     * @param AccountData $model
+     * @param AccountProperty $model
      * @param string $attribute
      * @throws InvalidConfigException
      */
     public function validateAttribute($model, $attribute)
     {
-        // Get all properties with nulled values
-        $properties = ArrayHelper::map($model->getFields(), 'code', function(){ return null; });
+        $value = Html::getAttributeValue($model, $attribute);
+        $field = $model->field;
+        foreach ($field->fieldValidators as $validator) {
+            if (!array_key_exists($validator->type, $this->_validators)) {
+                throw new InvalidConfigException('Invalid validator.');
+            }
 
-        /* @var \accounts\modules\fields\models\Field[] $fields */
-        $fields = $model->getFields();
+            $className = $this->_validators[$validator->type];
 
-        foreach (array_merge($properties, $model->$attribute) as $field_uuid => $value) {
-            $field = $fields[$field_uuid];
-            foreach ($field->fieldValidators as $validator) {
-                if (!array_key_exists($validator->type, $this->_validators)) {
-                    throw new InvalidConfigException('Invalid validator.');
-                }
+            /* @var Validator $object */
+            $object = new $className($this->getOptions($validator));
+            $object->message = $object->formatMessage(\Yii::t('users', $object->message), [
+                'attribute' => $field->label,
+                'value' => $value
+            ]);
 
-                $className = $this->_validators[$validator->type];
-
-                /* @var Validator $object */
-                $object = new $className($this->getOptions($validator));
-                $object->message = $object->formatMessage(\Yii::t('accounts', $object->message), [
-                    'attribute' => $field->label,
-                    'value' => $value
-                ]);
-
-                if ($object instanceof RequiredValidator || !$object->isEmpty($value)) {
-                    if (!$object->validate($value, $errorMessage)) {
-                        $field_uuid = $attribute . '[' . $field_uuid . ']';
-                        $model->addError($field_uuid, $errorMessage);
-                    }
+            if ($object instanceof RequiredValidator || !$object->isEmpty($value)) {
+                if (!$object->validate($value, $errorMessage)) {
+                    $model->addError($attribute, $errorMessage);
                 }
             }
         }

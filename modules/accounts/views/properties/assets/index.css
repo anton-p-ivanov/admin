@@ -1,0 +1,30 @@
+.action-column {
+    position: relative;
+}
+.action-column > a {
+    display: block;
+    color: white;
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    left: 12px;
+    top: 4px;
+}
+.action-column > a:hover {
+    background-color: rgba(255, 255, 255, .12);
+}
+.action-column  .material-icons {
+    display: block;
+    padding: 12px;
+    position: absolute;
+}
+.property__title {
+    color: white;
+}
+/*
+#property-modal .modal,
+#property-modal .modal__container,
+#property-modal .modal__body {
+    overflow: visible;
+}
+*/
