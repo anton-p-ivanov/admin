@@ -85,17 +85,22 @@ class AccountStatus extends ActiveRecord
     {
         return [
             [
+                ['discount_uuid', 'value'],
+                'required',
+                'message' => self::t('{attribute} is required.')
+            ],
+            [
                 'status_uuid',
                 'exist',
                 'targetClass' => Status::class,
                 'targetAttribute' => 'uuid',
-                'message' => self::t('Invalid {attribute} selected.')
+                'message' => self::t('Invalid status selected.')
             ],
             [
                 'status_uuid',
                 'unique',
                 'targetAttribute' => ['status_uuid', 'account_uuid'],
-                'message' => self::t('This status already assigned for current Account.')
+                'message' => self::t('This status already assigned.')
             ],
             [
                 'dates',

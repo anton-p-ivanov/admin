@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var array $discounts
+ */
 use accounts\models\AccountStatus;
 use app\widgets\grid\ActionColumn;
 use app\widgets\grid\CheckboxColumn;
@@ -26,9 +28,41 @@ return [
             ]);
         }
     ],
-    'valid:boolean',
-    'issue_date:datetime',
-    'expire_date:datetime',
+    [
+        'label' => Yii::t('accounts/statuses', 'Discounts'),
+        'options' => ['width' => 150],
+        'contentOptions' => ['class' => 'text_right'],
+        'headerOptions' => ['class' => 'text_right'],
+        'format' => 'raw',
+        'value' => function (AccountStatus $model) use ($discounts) {
+            $count = 0;
+
+            if (array_key_exists($model->uuid, $discounts)) {
+                $count = $discounts[$model->uuid];
+            }
+
+            return Html::a($count, ['discounts/index', 'status_uuid' => $model->status_uuid], [
+                'data-pjax' => 'false'
+            ]);
+        }
+    ],
+    [
+        'attribute' => 'valid',
+        'format' => 'boolean',
+        'options' => ['width' => 120],
+        'contentOptions' => ['class' => 'text_center'],
+        'headerOptions' => ['class' => 'text_center'],
+    ],
+    [
+        'attribute' => 'issue_date',
+        'format' => 'datetime',
+        'options' => ['width' => 200],
+    ],
+    [
+        'attribute' => 'expire_date',
+        'format' => 'datetime',
+        'options' => ['width' => 200],
+    ],
     [
         'class' => ActionColumn::class,
         'items' => function (

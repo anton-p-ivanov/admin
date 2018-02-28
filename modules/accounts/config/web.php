@@ -11,7 +11,8 @@ return [
                     'basePath' => '@accounts/messages',
                     'fileMap' => [
                         'accounts/types' => 'types.php',
-                        'accounts/fields' => 'fields.php'
+                        'accounts/fields' => 'fields.php',
+                        'accounts/statuses' => 'statuses.php'
                     ]
                 ],
                 'fields*' => [
@@ -21,6 +22,14 @@ return [
                         'fields' => 'fields.php',
                         'fields/validators' => 'validators.php',
                         'fields/values' => 'values.php'
+                    ]
+                ],
+                'sales*' => [
+                    'class' => yii\i18n\PhpMessageSource::class,
+                    'basePath' => '@sales/messages',
+                    'fileMap' => [
+                        'sales' => 'sales.php',
+                        'sales/discounts' => 'discounts.php',
                     ]
                 ]
             ]

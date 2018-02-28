@@ -41,7 +41,7 @@ return [
                     'url' => \yii\helpers\Url::current(),
                     'template' => \yii\helpers\Html::a('{label}', '{url}', [
                         'data-toggle' => 'pjax',
-                        'data-target' => '#contacts-pjax',
+                        'data-target' => '#statuses-pjax',
                     ])
                 ]
             ]
