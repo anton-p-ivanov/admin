@@ -2,6 +2,8 @@
 
 namespace partnership;
 
+use partnership\models\StatusDiscount;
+use sales\modules\discounts\controllers\DiscountsController;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -18,6 +20,15 @@ class Module extends \yii\base\Module
      * @var string
      */
     public static $title = 'Partnership';
+    /**
+     * @var array
+     */
+    public $controllerMap = [
+        'discounts' => [
+            'class' => DiscountsController::class,
+            'modelClass' => StatusDiscount::class,
+        ]
+    ];
 
     /**
      * @inheritdoc
@@ -43,11 +54,19 @@ class Module extends \yii\base\Module
         \Yii::$app->i18n->translations['partnership*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@partnership/messages',
+            'fileMap' => [
+                'partnership' => 'partnership.php',
+                'partnership/statuses' => 'statuses.php',
+            ]
         ];
 
-        \Yii::$app->i18n->translations['statuses*'] = [
+        \Yii::$app->i18n->translations['sales*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@partnership/messages',
+            'basePath' => '@sales/messages',
+            'fileMap' => [
+                'sales' => 'sales.php',
+                'sales/discounts' => 'discounts.php',
+            ]
         ];
     }
 }

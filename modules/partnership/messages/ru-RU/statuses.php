@@ -4,6 +4,7 @@
  */
 return [
     'Statuses' => 'Статусы',
+    'Discounts' => 'Скидки',
     'Title' => 'Название',
     'Code' => 'Код',
     'Up to 200 characters length.' => 'До 200 символов длиной.',

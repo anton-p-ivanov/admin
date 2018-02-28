@@ -4,4 +4,6 @@
  */
 return [
     'Partnership' => 'Партнёрство',
+    'Discounts' => 'Скидки',
+    'Discounts for status' => 'Скидки на статус',
 ];

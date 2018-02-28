@@ -38,6 +38,17 @@ class Discount extends ActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public static function getList()
+    {
+        return static::find()
+            ->select('title')
+            ->indexBy('uuid')
+            ->column();
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getWorkflow()

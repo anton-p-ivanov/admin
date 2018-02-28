@@ -19,7 +19,7 @@ use app\widgets\form\ActiveForm;
     ]); ?>
 
     <div class="modal__header">
-        <div class="modal__heading"><?= Yii::t('statuses', $title); ?></div>
+        <div class="modal__heading"><?= Yii::t('partnership/statuses', $title); ?></div>
     </div>
     <div class="modal__body">
 

@@ -3,15 +3,16 @@
 return [
     'group-1' => [
         [
-            'label' => Yii::t('partnership/statuses', 'Create'),
+            'label' => Yii::t('sales/discounts', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
-                'data-target' => '#statuses-modal',
+                'data-target' => '#discounts-modal',
                 'data-reload' => 'true',
+                'data-pjax' => 'false',
                 'data-persistent' => 'true'
             ],
             'url' => [
-                'create',
+                'discounts/create'
             ],
         ]
     ],
@@ -22,14 +23,18 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('partnership/statuses', 'Refresh'),
-                    'url' => \yii\helpers\Url::current()
+                    'label' => Yii::t('sales/discounts', 'Refresh'),
+                    'url' => \yii\helpers\Url::current(),
+                    'template' => \yii\helpers\Html::a('{label}', '{url}', [
+                        'data-toggle' => 'pjax',
+                        'data-target' => '#discounts-pjax',
+                    ])
                 ]
             ]
         ],
     ],
     'selected' => [
-         [
+        [
             'label' => '<i class="material-icons">delete</i>',
             'encode' => false,
             'url' => ['delete'],
@@ -38,8 +43,8 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('partnership/statuses', 'Delete selected items')
+                'title' => Yii::t('sales/discounts', 'Delete selected items')
             ],
         ],
-    ]
+    ],
 ];

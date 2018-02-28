@@ -5,4 +5,7 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Copy discount']); ?>
+<?= $this->render('@sales/modules/discounts/views/discounts/.form.php', [
+    'model' => $model,
+    'title' => 'Copy discount'
+]); ?>

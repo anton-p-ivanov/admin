@@ -1,25 +1,25 @@
 <?php
 /**
- * @var \partnership\models\Status $model
+ * @var \sales\modules\discounts\models\Discount $model
  */
 return [
     [
-        'label' => Yii::t('partnership/statuses', 'Edit'),
+        'label' => Yii::t('sales/discounts', 'Edit'),
         'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#statuses-modal',
+            'data-target' => '#discounts-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'
         ]),
     ],
     [
-        'label' => Yii::t('partnership/statuses', 'Copy'),
+        'label' => Yii::t('sales/discounts', 'Copy'),
         'url' => ['copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
-            'data-target' => '#statuses-modal',
+            'data-target' => '#discounts-modal',
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'
@@ -27,15 +27,7 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
-        'label' => Yii::t('partnership/statuses', 'Discounts'),
-        'url' => ['discounts/index', 'status_uuid' => $model->uuid],
-        'template' => \yii\helpers\Html::a('{label}', '{url}', [
-            'data-pjax' => 'false',
-        ]),
-    ],
-    ['options' => ['class' => 'dropdown__divider']],
-    [
-        'label' => Yii::t('partnership/statuses', 'Delete'),
+        'label' => Yii::t('sales/discounts', 'Delete'),
         'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',

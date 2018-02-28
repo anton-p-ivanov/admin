@@ -47,7 +47,7 @@ class Status extends ActiveRecord
      */
     public static function t($message, $params = [])
     {
-        return \Yii::t('statuses', $message, $params);
+        return \Yii::t('partnership/statuses', $message, $params);
     }
 
     /**

@@ -1,8 +1,11 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \accounts\models\AccountDiscount $model
+ * @var \partnership\models\StatusDiscount $model
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Edit discount']); ?>
+<?= $this->render('@sales/modules/discounts/views/discounts/.form.php', [
+    'model' => $model,
+    'title' => 'Edit discount'
+]); ?>

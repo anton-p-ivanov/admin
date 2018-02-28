@@ -2,6 +2,8 @@
 
 namespace accounts;
 
+use accounts\models\AccountDiscount;
+use sales\modules\discounts\controllers\DiscountsController;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -18,6 +20,15 @@ class Module extends \yii\base\Module
      * @var string
      */
     public static $title = 'Accounts';
+    /**
+     * @var array
+     */
+    public $controllerMap = [
+        'discounts' => [
+            'class' => DiscountsController::class,
+            'modelClass' => AccountDiscount::class,
+        ]
+    ];
 
     /**
      * @inheritdoc
