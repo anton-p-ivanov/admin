@@ -12,6 +12,7 @@ return [
                     'fileMap' => [
                         'accounts/types' => 'types.php',
                         'accounts/fields' => 'fields.php',
+                        'accounts/contacts' => 'contacts.php',
                         'accounts/statuses' => 'statuses.php'
                     ]
                 ],

@@ -37,7 +37,7 @@ class AccountContact extends ActiveRecord
      */
     public static function t($message, $params = [])
     {
-        return \Yii::t('contacts', $message, $params);
+        return \Yii::t('accounts/contacts', $message, $params);
     }
 
     /**
@@ -47,7 +47,7 @@ class AccountContact extends ActiveRecord
     {
         $labels = [
             'user_uuid' => 'User account',
-            'fullname' => 'User full name',
+            'fullname' => 'Full name',
             'email' => 'E-Mail',
             'position' => 'Position',
             'sort' => 'Sort',
@@ -79,23 +79,16 @@ class AccountContact extends ActiveRecord
     {
         return [
             [
-                ['fullname', 'email', 'position', 'account_uuid'],
+                ['fullname', 'email', 'position'],
                 'required',
                 'message' => self::t('{attribute} is required.')
             ],
             [
                 'user_uuid',
                 'exist',
-                'targetClass' => User::className(),
+                'targetClass' => User::class,
                 'targetAttribute' => 'uuid',
-                'message' => self::t('{attribute} is invalid.')
-            ],
-            [
-                'account_uuid',
-                'exist',
-                'targetClass' => Account::className(),
-                'targetAttribute' => 'uuid',
-                'message' => self::t('{attribute} is invalid.')
+                'message' => self::t('Invalid user account.')
             ],
             [
                 'email',
@@ -115,7 +108,7 @@ class AccountContact extends ActiveRecord
                 'sort',
                 'integer',
                 'min' => 0,
-                'tooSmall' => self::t('{attribute} value must be greater than {min, number}.')
+                'tooSmall' => self::t('{attribute} value must be greater or equal than {min, number}.')
             ],
             [
                 'user_uuid',
@@ -138,7 +131,7 @@ class AccountContact extends ActiveRecord
         $count = self::find()->where(['email' => $this->$attribute])->count();
 
         if ($count > 0) {
-            $this->addError($attribute, self::t('Contact has already exists'));
+            $this->addError($attribute, self::t('Contact has already exists.'));
         }
     }
 
@@ -156,7 +149,7 @@ class AccountContact extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -237,7 +230,7 @@ class AccountContact extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['uuid' => 'user_uuid']);
+        return $this->hasOne(User::class, ['uuid' => 'user_uuid']);
     }
 
     /**
@@ -253,6 +246,6 @@ class AccountContact extends ActiveRecord
      */
     public function getAccount()
     {
-        return $this->hasOne(Account::className(), ['uuid' => 'account_uuid']);
+        return $this->hasOne(Account::class, ['uuid' => 'account_uuid']);
     }
 }

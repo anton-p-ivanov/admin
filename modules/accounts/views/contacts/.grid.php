@@ -11,7 +11,7 @@ return [
         }
     ],
     [
-        'attribute' => 'title',
+        'attribute' => 'fullname',
         'format' => 'raw',
         'value' => function (AccountContact $model, $key) {
             return \yii\helpers\Html::a($model->fullname, ['contacts/edit', 'uuid' => $key], [
@@ -31,6 +31,7 @@ return [
         'format' => 'email',
     ],
     [
+        'label' => Yii::t('accounts/contacts', 'Sort.'),
         'attribute' => 'sort',
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
