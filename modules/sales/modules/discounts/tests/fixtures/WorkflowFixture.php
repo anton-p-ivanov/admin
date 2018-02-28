@@ -1,5 +1,5 @@
 <?php
-namespace sales\modules\admin\tests\fixtures;
+namespace sales\modules\discounts\tests\fixtures;
 
 use app\models\Workflow;
 use i18n\modules\admin\tests\fixtures\LanguageFixture;
@@ -8,7 +8,7 @@ use yii\test\ActiveFixture;
 /**
  * Class WorkflowFixture
  *
- * @package sales\modules\admin\tests\fixtures
+ * @package sales\modules\discounts\tests\fixtures
  */
 class WorkflowFixture extends ActiveFixture
 {

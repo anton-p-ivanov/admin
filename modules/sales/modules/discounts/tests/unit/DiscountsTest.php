@@ -7,7 +7,7 @@ use Codeception\Test\Unit;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
 use sales\modules\discounts\models\Discount;
-use sales\modules\admin\tests\fixtures\DiscountFixture;
+use sales\modules\discounts\tests\fixtures\DiscountFixture;
 
 /**
  * Class DiscountsTest

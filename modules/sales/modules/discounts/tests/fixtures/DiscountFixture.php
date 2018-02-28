@@ -1,19 +1,19 @@
 <?php
-namespace sales\modules\admin\tests\fixtures;
+namespace sales\modules\discounts\tests\fixtures;
 
 use yii\test\ActiveFixture;
 
 /**
  * Class DiscountFixture
  *
- * @package sales\modules\admin\tests\fixtures
+ * @package sales\modules\discounts\tests\fixtures
  */
 class DiscountFixture extends ActiveFixture
 {
     /**
      * @var string
      */
-    public $modelClass = 'sales\modules\admin\models\Discount';
+    public $modelClass = 'sales\modules\discounts\models\Discount';
     /**
      * @var string
      */
