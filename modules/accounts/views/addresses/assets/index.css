@@ -11,3 +11,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+#addresses-modal .modal__container {
+    min-width: 900px;
+}

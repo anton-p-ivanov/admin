@@ -13,7 +13,15 @@ return [
                         'accounts/types' => 'types.php',
                         'accounts/fields' => 'fields.php',
                         'accounts/contacts' => 'contacts.php',
+                        'accounts/addresses' => 'addresses.php',
                         'accounts/statuses' => 'statuses.php'
+                    ]
+                ],
+                'addresses*' => [
+                    'class' => yii\i18n\PhpMessageSource::class,
+                    'basePath' => '@app/messages',
+                    'fileMap' => [
+                        'addresses' => 'addresses.php',
                     ]
                 ],
                 'fields*' => [

@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
  * @property string $address
  *
  * @property AddressCountry $country
+ * @property AddressType $type
  *
  * @package app\models
  */
@@ -44,7 +45,7 @@ class Address extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -88,7 +89,7 @@ class Address extends ActiveRecord
             'region' => 'Maximum 255 characters allowed.',
             'district' => 'Maximum 255 characters allowed.',
             'city' => 'Maximum 255 characters allowed.',
-            'zip' => 'Postal code',
+            'zip' => 'Postal code.',
             'address' => 'Street, apartment, etc.'
         ];
 
@@ -101,11 +102,11 @@ class Address extends ActiveRecord
     public function rules()
     {
         return [
-            [['country_code', 'city', 'zip', 'address'], 'required', 'message' => self::t('{attribute} is required.')],
-            ['country_code', 'exist', 'targetClass' => AddressCountry::className(), 'targetAttribute' => 'code'],
+            [['type_uuid', 'country_code', 'city', 'zip', 'address'], 'required', 'message' => self::t('{attribute} is required.')],
+            ['country_code', 'exist', 'targetClass' => AddressCountry::class, 'targetAttribute' => 'code'],
             [['region', 'district', 'city', 'address'], 'string', 'max' => 255, 'message' => self::t('Maximum {max, number} characters allowed.')],
             ['zip', 'string', 'max' => 50, 'message' => self::t('Maximum {max, number} characters allowed.')],
-            ['type_uuid', 'exist', 'targetClass' => AddressType::className(), 'targetAttribute' => 'uuid'],
+            ['type_uuid', 'exist', 'targetClass' => AddressType::class, 'targetAttribute' => 'uuid'],
         ];
     }
 
@@ -114,7 +115,7 @@ class Address extends ActiveRecord
      */
     public function duplicate()
     {
-        $copy = new static();
+        $copy = new self();
 
         foreach ($this->attributes as $name => $value) {
             if ($copy->isAttributeSafe($name)) {
@@ -130,7 +131,7 @@ class Address extends ActiveRecord
      */
     public function getCountry()
     {
-        return $this->hasOne(AddressCountry::className(), ['code' => 'country_code']);
+        return $this->hasOne(AddressCountry::class, ['code' => 'country_code']);
     }
 
     /**
@@ -138,7 +139,7 @@ class Address extends ActiveRecord
      */
     public function getType()
     {
-        return $this->hasOne(AddressType::className(), ['uuid' => 'type_uuid']);
+        return $this->hasOne(AddressType::class, ['uuid' => 'type_uuid']);
     }
 
     /**
@@ -146,13 +147,15 @@ class Address extends ActiveRecord
      */
     public function __toString()
     {
-        return implode(', ', [
+        $data = [
             $this->country ? $this->country->title : $this->country_code,
             $this->zip,
             $this->region,
             $this->district,
             $this->city,
             $this->address
-        ]);
+        ];
+
+        return implode(', ', array_filter($data, 'strlen'));
     }
 }

@@ -33,7 +33,7 @@ class AccountAddress extends ActiveRecord
      */
     public static function t($message, $params = [])
     {
-        return \Yii::t('addresses', $message, $params);
+        return \Yii::t('accounts/addresses', $message, $params);
     }
 
     /**
@@ -42,7 +42,8 @@ class AccountAddress extends ActiveRecord
     public function attributeLabels()
     {
         $labels = [
-            'address.type.title' => 'Type'
+            'address.type.title' => 'Type',
+            'address' => 'Address'
         ];
 
         return array_map('self::t', $labels);

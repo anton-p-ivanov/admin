@@ -16,8 +16,10 @@
         <div class="modal__heading"><?= Yii::t('accounts/addresses', $title); ?></div>
     </div>
     <div class="modal__body">
-        <?= $form->field($model, 'type_uuid')->dropDownList(\app\models\AddressType::getList()); ?>
         <div class="grid">
+            <div class="grid__item">
+                <?= $form->field($model, 'type_uuid')->dropDownList(\app\models\AddressType::getList()); ?>
+            </div>
             <div class="grid__item">
                 <?= $form->field($model, 'country_code')->dropDownList([], [
                     'value' => $model->country ? $model->country->title : null,
@@ -27,10 +29,13 @@
                 ]); ?>
             </div>
             <div class="grid__item">
-                <?= $form->field($model, 'region'); ?>
+                <?= $form->field($model, 'zip'); ?>
             </div>
         </div>
         <div class="grid">
+            <div class="grid__item">
+                <?= $form->field($model, 'region'); ?>
+            </div>
             <div class="grid__item">
                 <?= $form->field($model, 'district'); ?>
             </div>
@@ -38,14 +43,9 @@
                 <?= $form->field($model, 'city'); ?>
             </div>
         </div>
-        <div class="grid">
-            <div class="grid__item">
-                <?= $form->field($model, 'zip'); ?>
-            </div>
-            <div class="grid__item">
-                <?= $form->field($model, 'address'); ?>
-            </div>
-        </div>
+
+        <?= $form->field($model, 'address'); ?>
+
     </div>
     <div class="modal__footer">
         <div class="grid__item text_small">
