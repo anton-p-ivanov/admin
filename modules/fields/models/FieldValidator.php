@@ -69,7 +69,7 @@ class FieldValidator extends FieldRelation
             }],
             ['active', 'boolean'],
             ['options', 'safe'],
-            ['options', JsonValidator::className()]
+            ['options', JsonValidator::class]
         ];
     }
 

@@ -31,7 +31,7 @@ class FieldRelation extends ActiveRecord
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
