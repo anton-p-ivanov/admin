@@ -5,7 +5,7 @@ namespace accounts\modules\fields\tests;
 use accounts\modules\admin\modules\fields\models\FieldValue;
 use app\models\Workflow;
 use Codeception\Test\Unit;
-use accounts\models\AccountData;
+use accounts\models\AccountProperty;
 use accounts\modules\admin\modules\fields\tests\fixtures\FieldValidatorFixture;
 use accounts\modules\admin\modules\fields\tests\fixtures\FieldValueFixture;
 use accounts\modules\admin\modules\fields\tests\fixtures\AccountDataFixture;
@@ -123,10 +123,6 @@ class FieldsTest extends Unit
         $field->type = Field::FIELD_TYPE_DEFAULT;
         $field->update();
 
-        // we expect that old field code was replaced with new one
-        $this->assertTrue((int)AccountData::find()->where(['like', 'data', 'ACCOUNT_FIELD_TEST_01'])->count() === 0);
-        $this->assertTrue((int)AccountData::find()->where(['like', 'data', 'ACCOUNT_FIELD_TEST_UPDATE_01'])->count() > 0);
-
         // we expect that all values assigned will be removed
         $this->assertTrue((int)$field->getFieldValues()->count() === 0);
     }
@@ -168,7 +164,7 @@ class FieldsTest extends Unit
         $this->assertNull($field->getWorkflow()->one());
         $this->assertTrue((int)$field->getFieldValues()->count() === 0);
         $this->assertTrue((int)$field->getFieldValidators()->count() === 0);
-        $this->assertTrue((int)AccountData::find()->where(['like', 'data', $field->code])->count() === 0);
+        $this->assertTrue((int)AccountProperty::find()->where(['field_uuid' => $field->uuid])->count() === 0);
     }
 
     /**
@@ -181,6 +177,6 @@ class FieldsTest extends Unit
         $this->assertTrue($field->workflow instanceof Workflow);
         $this->assertCount(10, $field->fieldValues);
         $this->assertCount(count(FieldValidator::getTypes()), $field->fieldValidators);
-        $this->assertTrue((int)AccountData::find()->where(['like', 'data', $field->code])->count() > 0);
+        $this->assertTrue((int)AccountProperty::find()->where(['field_uuid' => $field->uuid])->count() > 0);
     }
 }

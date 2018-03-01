@@ -1,7 +1,7 @@
 <?php
 namespace accounts\modules\admin\modules\fields\tests\fixtures;
 
-use accounts\models\AccountData;
+use accounts\models\AccountProperty;
 use yii\test\ActiveFixture;
 
 /**
@@ -14,11 +14,11 @@ class AccountDataFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $modelClass = AccountData::class;
+    public $modelClass = AccountProperty::class;
     /**
      * @var string
      */
-    public $dataFile = __DIR__ . '/data/generated/accounts_data.php';
+    public $dataFile = __DIR__ . '/data/generated/accounts_properties.php';
     /**
      * @var array
      */

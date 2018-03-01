@@ -11,10 +11,6 @@ $this->title = sprintf('%s — %s: %s',
     Yii::t('accounts', \accounts\Module::$title),
     Yii::t('fields', 'Fields')
 );
-
-// Registering assets
-\accounts\modules\admin\modules\fields\assets\FieldsAsset::register($this);
-
 ?>
 
 <?= $this->render('@fields/views/fields/index.php', [
