@@ -230,7 +230,7 @@ class User extends \app\models\User
      */
     public function getData()
     {
-        return UserData::find()
+        return UserProperty::find()
             ->where(['user_uuid' => $this->uuid])
             ->indexBy('field_uuid')
             ->groupBy('field_uuid')
@@ -262,7 +262,7 @@ class User extends \app\models\User
     {
         parent::afterSave($insert, $changedAttributes);
 
-        UserData::deleteAll(['user_uuid' => $this->uuid]);
+        UserProperty::deleteAll(['user_uuid' => $this->uuid]);
 
         if ($this->data) {
             $this->data = array_filter($this->data, 'strlen');
@@ -276,7 +276,7 @@ class User extends \app\models\User
             }
 
             \Yii::$app->db->createCommand()
-                ->batchInsert(UserData::tableName(), ['user_uuid', 'field_uuid', 'value'], $insert)
+                ->batchInsert(UserProperty::tableName(), ['user_uuid', 'field_uuid', 'value'], $insert)
                 ->execute();
         }
     }

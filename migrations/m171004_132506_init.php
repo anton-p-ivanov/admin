@@ -162,7 +162,7 @@ class m171004_132506_init extends Migration
             'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%users_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%users_data}}', [
+        $this->createTable('{{%users_properties}}', [
             'user_uuid' => 'char(36) not null',
             'field_uuid' => 'char(36) not null',
             'value' => 'text not null',
@@ -254,7 +254,7 @@ class m171004_132506_init extends Migration
 
         $this->dropTable('{{%users_sites}}');
         $this->dropTable('{{%users_settings}}');
-        $this->dropTable('{{%users_data}}');
+        $this->dropTable('{{%users_properties}}');
         $this->dropTable('{{%users_fields_values}}');
         $this->dropTable('{{%users_fields_validators}}');
         $this->dropTable('{{%users_fields}}');
