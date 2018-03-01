@@ -59,9 +59,7 @@ class FieldsTest extends Unit
         $field = new Field();
 
         // Empty required fields
-        $this->assertFalse($field->validate(['type']));
         $this->assertFalse($field->validate(['label']));
-        $this->assertFalse($field->validate(['code']));
 
         $field->active = -1;
         $this->assertFalse($field->validate(['active']));
