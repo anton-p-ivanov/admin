@@ -26,20 +26,20 @@ return [
             ]);
         }
     ],
-    'code',
-    'url',
-    'email',
+    'url:url',
+    'email:email',
     [
         'label' => Yii::t('admin/sites', 'Act.'),
         'attribute' => 'active',
         'format' => 'boolean',
-        'options' => ['width' => 150],
+        'options' => ['width' => 80],
     ],
     [
         'attribute' => 'sort',
+        'label' => Yii::t('admin/sites', 'Sort.'),
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
-        'options' => ['width' => 150],
+        'options' => ['width' => 100],
     ],
     [
         'class' => \app\widgets\grid\ActionColumn::className(),

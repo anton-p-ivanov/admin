@@ -40,10 +40,10 @@ use app\widgets\form\ActiveForm;
             </div>
         </div>
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
+    <div class="modal__footer">
+        <div class="grid__item text_small">
             <div class="form-group__required form-group__hint">
-                * <?= Yii::t('admin/sites', 'Required fields'); ?>
+                <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
             </div>
         </div>
         <div class="grid__item text_right">
