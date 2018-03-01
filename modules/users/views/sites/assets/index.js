@@ -12,6 +12,9 @@ $(function () {
         // Enable interactive form
         $('#sites-form').Form();
 
+        // Enable dropdowns
+        $modal.find('.form-group_dropdown input:text').dropDownInput();
+
         // Enable datepicker
         $dtPickerFields.DateTimePicker({'format': dateTimeFormat})
             .closest('.form-group')
