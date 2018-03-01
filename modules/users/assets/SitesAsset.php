@@ -34,6 +34,7 @@ class SitesAsset extends AssetBundle
         'app\themes\material\assets\GridAsset',
         'app\themes\material\assets\FormAsset',
         'app\themes\material\assets\DateTimePickerAsset',
+        'app\widgets\form\DropDownInputAsset',
         'yii\widgets\PjaxAsset',
     ];
 }
