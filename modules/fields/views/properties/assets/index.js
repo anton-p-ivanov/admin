@@ -11,7 +11,7 @@ $(function () {
         $modal.find('#property-form').Form();
 
         // Set focus
-        $modal.find('#element-field-value').focus();
+        $modal.find('input:text:first').focus();
 
         // After submit form handler
         $modal

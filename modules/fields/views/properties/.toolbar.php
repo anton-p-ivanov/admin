@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \accounts\models\Account $account
+ * @var string $returnUrl
  */
 
 return [
@@ -8,15 +8,15 @@ return [
         [
             'label' => '<i class="material-icons">arrow_back</i>',
             'encode' => false,
-            'url' => ['accounts/index'],
+            'url' => $returnUrl,
             'options' => [
-                'title' => Yii::t('accounts/properties', 'Back to accounts` list'),
+                'title' => Yii::t('fields/properties', 'Back to elements` list'),
                 'class' => 'toolbar-btn toolbar-btn_back',
                 'data-pjax' => 'false'
             ],
         ],
         [
-            'label' => $account->title,
+            'label' => $title,
         ]
     ],
     'group-2' => [
@@ -26,7 +26,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('accounts/properties', 'Refresh'),
+                    'label' => Yii::t('users/properties', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]

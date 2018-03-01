@@ -1,5 +1,5 @@
 <?php
-namespace users\validators;
+namespace fields\validators;
 
 use fields\models\FieldValidator;
 use yii\base\InvalidConfigException;
@@ -11,7 +11,7 @@ use yii\validators\Validator;
 /**
  * Class PropertiesValidator
  *
- * @package users\validators
+ * @package fields\validators
  */
 class PropertiesValidator extends Validator
 {

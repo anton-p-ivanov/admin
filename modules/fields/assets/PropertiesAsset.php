@@ -1,19 +1,19 @@
 <?php
-namespace users\assets;
+namespace fields\assets;
 
 use yii\web\AssetBundle;
 
 /**
  * Class PropertiesAsset
  *
- * @package users\assets
+ * @package fields\assets
  */
 class PropertiesAsset extends AssetBundle
 {
     /**
      * @var string
      */
-    public $sourcePath = '@users/views/properties/assets';
+    public $sourcePath = '@fields/views/properties/assets';
     /**
      * @var string
      */
