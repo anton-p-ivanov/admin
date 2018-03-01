@@ -8,7 +8,7 @@ use training\models\Question;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (Question $model) use ($selected) {
             return [

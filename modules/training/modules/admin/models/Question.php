@@ -48,7 +48,7 @@ class Question extends \training\models\Question
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -97,7 +97,7 @@ class Question extends \training\models\Question
     {
         return [
             [['lesson_uuid', 'title'], 'required', 'message' => self::t('{attribute} is required.')],
-            ['lesson_uuid', 'exist', 'targetClass' => Lesson::className(), 'targetAttribute' => 'uuid'],
+            ['lesson_uuid', 'exist', 'targetClass' => Lesson::class, 'targetAttribute' => 'uuid'],
             ['title', 'string', 'max' => 500, 'message' => self::t('Maximum {max, number} characters allowed.')],
             ['description', 'safe'],
             ['description', 'default', 'value' => ''],
@@ -140,7 +140,7 @@ class Question extends \training\models\Question
      */
     public function getAnswers()
     {
-        return $this->hasMany(Answer::className(), ['question_uuid' => 'uuid']);
+        return $this->hasMany(Answer::class, ['question_uuid' => 'uuid']);
     }
 
     /**

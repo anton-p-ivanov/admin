@@ -76,7 +76,7 @@ class Question extends ActiveRecord
      */
     public function getLesson()
     {
-        return $this->hasOne(Lesson::className(), ['uuid' => 'lesson_uuid']);
+        return $this->hasOne(Lesson::class, ['uuid' => 'lesson_uuid']);
     }
 
     /**
@@ -84,6 +84,6 @@ class Question extends ActiveRecord
      */
     public function getAnswers()
     {
-        return $this->hasMany(Answer::className(), ['question_uuid' => 'uuid']);
+        return $this->hasMany(Answer::class, ['question_uuid' => 'uuid']);
     }
 }

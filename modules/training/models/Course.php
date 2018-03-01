@@ -67,7 +67,7 @@ class Course extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -75,7 +75,7 @@ class Course extends ActiveRecord
      */
     public function getLessons()
     {
-        return $this->hasMany(Lesson::className(), ['course_uuid' => 'uuid']);
+        return $this->hasMany(Lesson::class, ['course_uuid' => 'uuid']);
     }
 
     /**
@@ -83,6 +83,6 @@ class Course extends ActiveRecord
      */
     public function getTests()
     {
-        return $this->hasMany(Test::className(), ['course_uuid' => 'uuid']);
+        return $this->hasMany(Test::class, ['course_uuid' => 'uuid']);
     }
 }

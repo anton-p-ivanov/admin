@@ -61,7 +61,7 @@ class Test extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -69,7 +69,7 @@ class Test extends ActiveRecord
      */
     public function getCourse()
     {
-        return $this->hasOne(Course::className(), ['uuid' => 'course_uuid']);
+        return $this->hasOne(Course::class, ['uuid' => 'course_uuid']);
     }
 
     /**
@@ -77,7 +77,7 @@ class Test extends ActiveRecord
      */
     public function getQuestions()
     {
-        return $this->hasMany(Question::className(), ['uuid' => 'question_uuid'])
+        return $this->hasMany(Question::class, ['uuid' => 'question_uuid'])
             ->viaTable(TestQuestion::tableName(), ['test_uuid' => 'uuid']);
     }
 }

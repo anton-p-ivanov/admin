@@ -49,10 +49,10 @@ class Lesson extends \training\models\Lesson
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['wf'] = WorkflowBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['wf'] = WorkflowBehavior::class;
         $behaviors['sl'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'title',
             'slugAttribute' => 'code',
             'ensureUnique' => true
@@ -103,7 +103,7 @@ class Lesson extends \training\models\Lesson
     {
         return [
             [['course_uuid', 'title'], 'required', 'message' => self::t('{attribute} is required.')],
-            ['course_uuid', 'exist', 'targetClass' => Course::className(), 'targetAttribute' => 'uuid'],
+            ['course_uuid', 'exist', 'targetClass' => Course::class, 'targetAttribute' => 'uuid'],
             ['sort', 'integer', 'min' => 0, 'message' => self::t('{attribute} value must be greater than {min, number}.')],
             ['sort', 'default', 'value' => 100],
             [['title', 'code'], 'string', 'max' => 255, 'message' => self::t('Maximum {max, number} characters allowed.')],
@@ -154,6 +154,6 @@ class Lesson extends \training\models\Lesson
      */
     public function getQuestions()
     {
-        return $this->hasMany(Question::className(), ['lesson_uuid' => 'uuid']);
+        return $this->hasMany(Question::class, ['lesson_uuid' => 'uuid']);
     }
 }

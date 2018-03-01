@@ -30,10 +30,10 @@ class Course extends \training\models\Course
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['wf'] = WorkflowBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['wf'] = WorkflowBehavior::class;
         $behaviors['sl'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'title',
             'slugAttribute' => 'code',
             'ensureUnique' => true
@@ -179,7 +179,7 @@ class Course extends \training\models\Course
      */
     public function getLessons()
     {
-        return $this->hasMany(Lesson::className(), ['course_uuid' => 'uuid']);
+        return $this->hasMany(Lesson::class, ['course_uuid' => 'uuid']);
     }
 
     /**
@@ -187,6 +187,6 @@ class Course extends \training\models\Course
      */
     public function getTests()
     {
-        return $this->hasMany(Test::className(), ['course_uuid' => 'uuid']);
+        return $this->hasMany(Test::class, ['course_uuid' => 'uuid']);
     }
 }

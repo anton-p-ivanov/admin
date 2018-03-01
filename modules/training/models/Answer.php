@@ -50,6 +50,6 @@ class Answer extends ActiveRecord
      */
     public function getQuestion()
     {
-        return $this->hasOne(Question::className(), ['uuid' => 'question_uuid']);
+        return $this->hasOne(Question::class, ['uuid' => 'question_uuid']);
     }
 }

@@ -47,7 +47,7 @@ class Answer extends \training\models\Answer
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }

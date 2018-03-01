@@ -21,8 +21,8 @@ class Test extends \training\models\Test
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['wf'] = WorkflowBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['wf'] = WorkflowBehavior::class;
 
         return $behaviors;
     }

@@ -17,7 +17,7 @@ class Attempt extends \training\models\Attempt
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
