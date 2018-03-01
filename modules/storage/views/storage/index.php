@@ -42,6 +42,6 @@ storage\assets\IndexAsset::register($this);
     <?= $this->render('upload'); ?>
 </div>
 
-<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+<div class="modal modal_warning" id="confirm-modal" role="dialog" data-persistent="true">
     <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

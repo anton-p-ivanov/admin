@@ -2,8 +2,6 @@
 /**
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
- * @var \accounts\models\AccountSettings $settings
- * @var boolean $isFiltered
  */
 
 $this->title = sprintf('%s — %s',
@@ -19,7 +17,6 @@ $this->title = sprintf('%s — %s',
 
     <?= \app\widgets\Toolbar::widget([
         'buttons' => require_once ".toolbar.php",
-        'isFiltered' => $isFiltered
     ]); ?>
 
     <?= \app\widgets\grid\GridView::widget([
@@ -34,6 +31,6 @@ $this->title = sprintf('%s — %s',
 
 </div>
 
-<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+<div class="modal modal_warning" id="confirm-modal" role="dialog" data-persistent="true">
     <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

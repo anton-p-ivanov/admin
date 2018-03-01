@@ -34,6 +34,6 @@ forms\modules\admin\assets\FormsAsset::register($this);
 
 </div>
 
-<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+<div class="modal modal_warning" id="confirm-modal" role="dialog" data-persistent="true">
     <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

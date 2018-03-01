@@ -14,7 +14,7 @@ $this->title = sprintf('%s — %s: %s',
 );
 
 // Registering assets
-catalogs\assets\IndexAsset::register($this);
+catalogs\assets\ElementsAsset::register($this);
 
 ?>
 <div id="elements-pjax" data-pjax-container="true">
@@ -35,6 +35,6 @@ catalogs\assets\IndexAsset::register($this);
 
 </div>
 
-<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+<div class="modal modal_warning" id="confirm-modal" role="dialog" data-persistent="true">
     <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>
