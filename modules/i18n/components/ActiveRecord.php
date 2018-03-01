@@ -28,7 +28,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         $behaviors = parent::behaviors();
         $behaviors['ml'] = [
-            'class' => MultilingualBehavior::className(),
+            'class' => MultilingualBehavior::class,
         ];
 
         return $behaviors;

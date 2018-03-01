@@ -28,7 +28,7 @@ class LanguagesTest extends Unit
     public function _fixtures()
     {
         return [
-            'languages' => LanguageFixture::className(),
+            'languages' => LanguageFixture::class,
         ];
     }
 
