@@ -46,7 +46,7 @@ class UserRole extends AuthAssignment
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -141,7 +141,7 @@ class UserRole extends AuthAssignment
      */
     public function getRole()
     {
-        return $this->hasOne(AuthItem::className(), ['name' => 'item_name']);
+        return $this->hasOne(AuthItem::class, ['name' => 'item_name']);
     }
 
     /**

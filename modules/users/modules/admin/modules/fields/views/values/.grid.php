@@ -4,7 +4,7 @@ use users\modules\admin\modules\fields\models\FieldValue;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (FieldValue $model) {
             return ['value' => $model->uuid];
@@ -21,7 +21,7 @@ return [
         'options' => ['width' => 100],
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

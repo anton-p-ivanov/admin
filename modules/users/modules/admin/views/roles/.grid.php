@@ -5,7 +5,7 @@ use yii\helpers\Html;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (Role $model) {
             return ['value' => $model->name];
@@ -28,7 +28,7 @@ return [
     'created_at:datetime',
     'updated_at:datetime',
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

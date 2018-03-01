@@ -5,7 +5,7 @@ use yii\helpers\Html;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (UserAccount $model) {
             return ['value' => $model->uuid];
@@ -26,7 +26,7 @@ return [
     ],
     'position:text',
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

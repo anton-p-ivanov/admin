@@ -52,7 +52,7 @@ class UserAccount extends ActiveRecord
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -91,7 +91,7 @@ class UserAccount extends ActiveRecord
     {
         return [
             ['account_uuid', 'required', 'message' => self::t('{attribute} is required.')],
-            ['account_uuid', 'exist', 'targetClass' => Account::className(), 'targetAttribute' => 'uuid', 'message' => self::t('Invalid account selected.')],
+            ['account_uuid', 'exist', 'targetClass' => Account::class, 'targetAttribute' => 'uuid', 'message' => self::t('Invalid account selected.')],
             ['account_uuid', 'unique', 'targetAttribute' => ['account_uuid', 'user_uuid'], 'message' => self::t('Account already linked.')],
             ['position', 'string', 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
         ];
@@ -102,7 +102,7 @@ class UserAccount extends ActiveRecord
      */
     public function getAccount()
     {
-        return $this->hasOne(Account::className(), ['uuid' => 'account_uuid']);
+        return $this->hasOne(Account::class, ['uuid' => 'account_uuid']);
     }
 
     /**

@@ -132,7 +132,7 @@ class UserFilter extends Filter
         return [
             ['owner', 'in', 'range' => array_keys(self::getOwners()), 'message' => self::t('Invalid {attribute} value.')],
             [['email', 'fullname'], 'string', 'max' => 255, 'message' => self::t('Maximum {max, number} characters allowed.')],
-            ['account_uuid', 'exist', 'targetClass' => Account::className(), 'targetAttribute' => 'uuid', 'message' => self::t('Invalid {attribute} value.')],
+            ['account_uuid', 'exist', 'targetClass' => Account::class, 'targetAttribute' => 'uuid', 'message' => self::t('Invalid {attribute} value.')],
             ['role', 'in', 'range' => array_keys(self::getRoles()), 'message' => self::t('Invalid {attribute} value.')],
             ['site', 'in', 'range' => array_keys(self::getSites()), 'message' => self::t('Invalid {attribute} value.')]
         ];
@@ -148,7 +148,7 @@ class UserFilter extends Filter
 
         if ($isValid) {
             $this->query = Json::encode([
-                'class' => md5(self::className()),
+                'class' => md5(self::class),
                 'owner' => $this->owner,
                 'fullname' => $this->fullname,
                 'email' => $this->email,

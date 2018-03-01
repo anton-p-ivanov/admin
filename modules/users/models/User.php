@@ -49,8 +49,8 @@ class User extends \app\models\User
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
-        $behaviors[] = WorkflowBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
+        $behaviors[] = WorkflowBehavior::class;
 
         return $behaviors;
     }
@@ -101,7 +101,7 @@ class User extends \app\models\User
             [['fname', 'lname', 'sname'], 'string', 'max' => 100, 'message' => self::t('Maximum {max, number} characters allowed.')],
 
             ['data', 'safe'],
-            ['data', PropertiesValidator::className()]
+            ['data', PropertiesValidator::class]
         ];
     }
 
@@ -166,7 +166,7 @@ class User extends \app\models\User
      */
     public function getUserAccounts()
     {
-        return $this->hasMany(UserAccount::className(), ['user_uuid' => 'uuid']);
+        return $this->hasMany(UserAccount::class, ['user_uuid' => 'uuid']);
     }
 
     /**
@@ -174,7 +174,7 @@ class User extends \app\models\User
      */
     public function getAccounts()
     {
-        return $this->hasMany(Account::className(), ['uuid' => 'account_uuid'])->via('userAccounts');
+        return $this->hasMany(Account::class, ['uuid' => 'account_uuid'])->via('userAccounts');
     }
 
     /**
@@ -182,7 +182,7 @@ class User extends \app\models\User
      */
     public function getPasswords()
     {
-        return $this->hasMany(UserPassword::className(), ['user_uuid' => 'uuid'])->orderBy(['created_date' => SORT_DESC]);
+        return $this->hasMany(UserPassword::class, ['user_uuid' => 'uuid'])->orderBy(['created_date' => SORT_DESC]);
     }
 
     /**
@@ -190,7 +190,7 @@ class User extends \app\models\User
      */
     public function getUserRoles()
     {
-        return $this->hasMany(UserRole::className(), ['user_id' => 'uuid']);
+        return $this->hasMany(UserRole::class, ['user_id' => 'uuid']);
     }
 
     /**
@@ -206,7 +206,7 @@ class User extends \app\models\User
      */
     public function getUserSites()
     {
-        return $this->hasMany(UserSite::className(), ['user_uuid' => 'uuid']);
+        return $this->hasMany(UserSite::class, ['user_uuid' => 'uuid']);
     }
 
     /**
@@ -222,7 +222,7 @@ class User extends \app\models\User
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**

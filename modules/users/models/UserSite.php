@@ -64,7 +64,7 @@ class UserSite extends ActiveRecord
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -109,7 +109,7 @@ class UserSite extends ActiveRecord
             [
                 'site_uuid',
                 'exist',
-                'targetClass' => Site::className(),
+                'targetClass' => Site::class,
                 'targetAttribute' => 'uuid',
                 'message' => self::t('Invalid site.')
             ],
@@ -167,7 +167,7 @@ class UserSite extends ActiveRecord
      */
     public function getSite()
     {
-        return $this->hasOne(Site::className(), ['uuid' => 'site_uuid']);
+        return $this->hasOne(Site::class, ['uuid' => 'site_uuid']);
     }
 
     /**

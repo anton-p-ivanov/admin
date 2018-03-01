@@ -31,9 +31,9 @@ class FieldsTest extends Unit
     public function _fixtures()
     {
         return [
-            'field_values' => FieldValueFixture::className(),
-            'field_validators' => FieldValidatorFixture::className(),
-            'user_data' => UserDataFixture::className(),
+            'field_values' => FieldValueFixture::class,
+            'field_validators' => FieldValidatorFixture::class,
+            'user_data' => UserDataFixture::class,
         ];
     }
 

@@ -25,7 +25,7 @@ class Field extends \fields\models\Field
      */
     public function getFieldValidators()
     {
-        return $this->hasMany(FieldValidator::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValidator::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -33,7 +33,7 @@ class Field extends \fields\models\Field
      */
     public function getFieldValues()
     {
-        return $this->hasMany(FieldValue::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValue::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -61,7 +61,7 @@ class Field extends \fields\models\Field
         $rules = parent::rules();
         $rules[] = [
             'code',
-            UniqueValidator::className(),
+            UniqueValidator::class,
             'message' => self::t('Field with code `{value}` is already exists.')
         ];
 
