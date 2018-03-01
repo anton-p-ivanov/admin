@@ -38,6 +38,14 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
+        'label' => Yii::t('users', 'Custom fields'),
+        'url' => ['properties/index', 'user_uuid' => $model->uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
+        ]),
+    ],
+    ['options' => ['class' => 'dropdown__divider']],
+    [
         'label' => Yii::t('users', 'Accounts'),
         'url' => ['accounts/index', 'user_uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [

@@ -96,7 +96,7 @@ class UserPassword extends ActiveRecord
             [
                 'expired_date',
                 'date',
-                'format' => \Yii::$app->formatter->datetimeFormat,
+                'format' => \Yii::$app->formatter->dateFormat,
                 'timestampAttribute' => 'expired_date',
                 'message' => self::t('Invalid date format.')
             ]

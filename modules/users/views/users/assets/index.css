@@ -1,19 +1,6 @@
 #confirm-modal {
     z-index: 1100;
 }
-/*#users-modal .modal__container {*/
-    /*width: 900px;*/
-/*}*/
-.modal__alert {
-    padding-left: 24px;
-    padding-right: 24px;
-    margin: 0 -24px;
-}
 #users-modal .tabs-pane {
-    position: relative;
-    min-height: 400px;
-}
-#passwords-modal .modal__container {
-    width: 400px;
-    min-width: 400px;
+    min-height: 345px;
 }

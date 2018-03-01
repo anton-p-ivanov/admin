@@ -35,60 +35,10 @@ return [
         'format' => 'email',
     ],
     [
-        'attribute' => 'accounts',
-        'format' => 'raw',
-        'options' => ['width' => 150],
-        'headerOptions' => ['class' => 'text_right'],
-        'contentOptions' => ['class' => 'text_right'],
-        'value' => function (User $model) use ($accounts) {
-            $count = 0;
-
-            if (array_key_exists($model->uuid, $accounts)) {
-                $count = $accounts[$model->uuid];
-            }
-
-            return Html::a($count, ['accounts/index', 'user_uuid' => $model->uuid], [
-                'data-pjax' => 'false'
-            ]);
-        }
-    ],
-    [
-        'attribute' => 'roles',
-        'label' => Yii::t('users', 'Roles'),
-        'format' => 'raw',
-        'options' => ['width' => 100],
-        'headerOptions' => ['class' => 'text_right'],
-        'contentOptions' => ['class' => 'text_right'],
-        'value' => function (User $model) use ($roles) {
-            $count = 0;
-
-            if (array_key_exists($model->uuid, $roles)) {
-                $count = $roles[$model->uuid];
-            }
-
-            return Html::a($count, ['roles/index', 'user_uuid' => $model->uuid], [
-                'data-pjax' => 'false'
-            ]);
-        }
-    ],
-    [
-        'attribute' => 'sites',
-        'label' => Yii::t('users', 'Sites'),
-        'format' => 'raw',
-        'options' => ['width' => 100],
-        'headerOptions' => ['class' => 'text_right'],
-        'contentOptions' => ['class' => 'text_right'],
-        'value' => function (User $model) use ($sites) {
-            $count = 0;
-
-            if (array_key_exists($model->uuid, $sites)) {
-                $count = $sites[$model->uuid];
-            }
-
-            return Html::a($count, ['sites/index', 'user_uuid' => $model->uuid], [
-                'data-pjax' => 'false'
-            ]);
-        }
+        'label' => Yii::t('users', 'Registered'),
+        'attribute' => 'workflow.created_date',
+        'format' => 'datetime',
+        'options' => ['width' => 200]
     ],
     [
         'attribute' => 'workflow.modified_date',

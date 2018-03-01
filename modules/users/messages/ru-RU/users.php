@@ -111,4 +111,6 @@ return [
     'Roles for user' => 'Роли пользователя',
     'Sites for user' => 'Сайты пользователя',
     'Back to users` list' => 'Вернуться к списку пользователей',
+    'Custom fields' => 'Настраиваемые поля',
+    'Registered' => 'Зарегистрирован',
 ];

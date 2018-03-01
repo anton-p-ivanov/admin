@@ -11,6 +11,7 @@ use users\models\UserPassword;
 use users\models\UserRole;
 use users\models\UserSite;
 use yii\filters\AjaxFilter;
+use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -53,26 +54,26 @@ class UsersController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
             ]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
             'except' => ['index']
         ];
-//        $behaviors['cn'] = [
-//            'class' => ContentNegotiator::className(),
-//            'only' => ['list', 'get'],
-//            'formats' => [
-//                'application/json' => Response::FORMAT_JSON,
-//            ]
-//        ];
+        $behaviors['cn'] = [
+            'class' => ContentNegotiator::class,
+            'only' => ['list', 'get'],
+            'formats' => [
+                'application/json' => Response::FORMAT_JSON,
+            ]
+        ];
 
         return $behaviors;
     }
@@ -204,40 +205,40 @@ class UsersController extends Controller
 
         return $counter === count($models);
     }
-//
-//    /**
-//     * This method searches for accounts by their name or its part.
-//     * Used in select boxes.
-//     *
-//     * @param string $search
-//     * @return array
-//     */
-//    public function actionList($search = '')
-//    {
-//        $query = User::find()->where(['like', 'CONCAT_WS(" ", `fname`, `lname`)', $search]);
-//
-//        if (\Yii::$app->request->method === 'OPTIONS') {
-//            $count = $query->count();
-//            if ($count > 50) {
-//                return ['count' => $count];
-//            }
-//        }
-//
-//        return $query
-//            ->select(['title' => 'CONCAT(`fname`, " ", `lname`, " (", `email`, ")")'])
-//            ->indexBy('uuid')
-//            ->orderBy('title')
-//            ->column();
-//    }
-//
-//    /**
-//     * @param string $uuid
-//     * @return array|null|\yii\db\ActiveRecord
-//     */
-//    public function actionGet($uuid)
-//    {
-//        return User::find()->where(['uuid' => $uuid])->one();
-//    }
+
+    /**
+     * This method searches for accounts by their name or its part.
+     * Used in select boxes.
+     *
+     * @param string $search
+     * @return array
+     */
+    public function actionList($search = '')
+    {
+        $query = User::find()->where(['like', 'CONCAT_WS(" ", `fname`, `lname`)', $search]);
+
+        if (\Yii::$app->request->method === 'OPTIONS') {
+            $count = $query->count();
+            if ($count > 50) {
+                return ['count' => $count];
+            }
+        }
+
+        return $query
+            ->select(['title' => 'CONCAT(`fname`, " ", `lname`, " (", `email`, ")")'])
+            ->indexBy('uuid')
+            ->orderBy('title')
+            ->column();
+    }
+
+    /**
+     * @param string $uuid
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function actionGet($uuid)
+    {
+        return User::find()->where(['uuid' => $uuid])->one();
+    }
 
     /**
      * @param User $model

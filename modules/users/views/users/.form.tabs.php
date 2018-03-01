@@ -10,10 +10,6 @@ return [
         'active' => true,
     ],
     [
-        'id' => 'tab-fields',
-        'title' => Yii::t('users', 'Fields'),
-    ],
-    [
         'id' => 'tab-password',
         'title' => Yii::t('users', 'Password'),
     ],
