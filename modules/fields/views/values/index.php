@@ -5,7 +5,7 @@
  * @var \fields\models\Field $field
  */
 
-\fields\assets\ValidatorsAsset::register($this);
+\fields\assets\ValuesAsset::register($this);
 ?>
 <div class="field-title">
     <?= Yii::t('fields/values', 'Values for field'); ?> "<?= $field->label; ?>"
