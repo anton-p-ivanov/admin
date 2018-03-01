@@ -3,6 +3,7 @@
 namespace app\models;
 
 use i18n\components\ActiveRecord;
+use i18n\components\MultilingualBehavior;
 
 /**
  * Class AuthItem
@@ -39,6 +40,21 @@ class AuthItem extends ActiveRecord
         return new AuthItemQuery(get_called_class());
     }
 
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['ml'] = [
+            'class' => MultilingualBehavior::class,
+            'langForeignKey' => 'item_name',
+            'tableName' => '{{%auth_items_i18n}}',
+            'attributes' => ['description']
+        ];
+
+        return $behaviors;
+    }
     /**
      * @return array
      */

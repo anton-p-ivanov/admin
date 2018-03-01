@@ -6,7 +6,6 @@ use i18n\models\Language;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class Role
@@ -40,14 +39,9 @@ class Role extends AuthItem
     {
         $behaviors = parent::behaviors();
         $behaviors['ts'] = [
-            'class' => TimestampBehavior::className(),
+            'class' => TimestampBehavior::class,
             'value' => new Expression('NOW()')
         ];
-        $behaviors['ml'] = ArrayHelper::merge($behaviors['ml'], [
-            'langForeignKey' => 'item_name',
-            'tableName' => '{{%auth_items_i18n}}',
-            'attributes' => ['description']
-        ]);
 
         return $behaviors;
     }
