@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \accounts\models\Field $model
+ * @var \users\models\Field $model
  */
 ?>
 <?= $this->render('@fields/views/properties/edit', [

@@ -52,6 +52,6 @@ class Field extends ActiveRecord
      */
     public function isMultiple()
     {
-        return (int) $this->multiple = true;
+        return (int) $this->multiple === 1;
     }
 }
