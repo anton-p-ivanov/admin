@@ -1,7 +1,7 @@
 <?php
 namespace users\modules\admin\modules\fields\tests\fixtures;
 
-use users\models\UserData;
+use users\models\UserProperty;
 use yii\test\ActiveFixture;
 
 /**
@@ -14,7 +14,7 @@ class UserDataFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $modelClass = UserData::class;
+    public $modelClass = UserProperty::class;
     /**
      * @var string
      */

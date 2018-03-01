@@ -4,7 +4,7 @@ namespace users\modules\admin\modules\fields\tests;
 
 use app\models\Workflow;
 use Codeception\Test\Unit;
-use users\models\UserData;
+use users\models\UserProperty;
 use users\modules\admin\modules\fields\tests\fixtures\FieldValidatorFixture;
 use users\modules\admin\modules\fields\tests\fixtures\FieldValueFixture;
 use users\modules\admin\modules\fields\tests\fixtures\UserDataFixture;
@@ -165,7 +165,7 @@ class FieldsTest extends Unit
         $this->assertNull($field->getWorkflow()->one());
         $this->assertTrue((int)$field->getFieldValues()->count() === 0);
         $this->assertTrue((int)$field->getFieldValidators()->count() === 0);
-        $this->assertTrue((int)UserData::find()->where(['field_uuid' => $field->uuid])->count() === 0);
+        $this->assertTrue((int)UserProperty::find()->where(['field_uuid' => $field->uuid])->count() === 0);
     }
 
     /**
@@ -178,6 +178,6 @@ class FieldsTest extends Unit
         $this->assertTrue($field->workflow instanceof Workflow);
         $this->assertCount(10, $field->fieldValues);
         $this->assertCount(count(FieldValidator::getTypes()), $field->fieldValidators);
-        $this->assertTrue((int)UserData::find()->where(['field_uuid' => $field->uuid])->count() > 0);
+        $this->assertTrue((int)UserProperty::find()->where(['field_uuid' => $field->uuid])->count() > 0);
     }
 }
