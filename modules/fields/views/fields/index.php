@@ -3,6 +3,8 @@
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
  */
+
+\fields\assets\FieldsAsset::register($this);
 ?>
 <div id="fields-pjax" data-pjax-container="true">
 
@@ -22,6 +24,6 @@
 
 </div>
 
-<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+<div class="modal modal_warning" id="confirm-modal" role="dialog" data-persistent="true">
     <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

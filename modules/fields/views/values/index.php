@@ -4,6 +4,8 @@
  * @var \yii\data\ActiveDataProvider $dataProvider
  * @var \fields\models\Field $field
  */
+
+\fields\assets\ValidatorsAsset::register($this);
 ?>
 <div class="field-title">
     <?= Yii::t('fields/values', 'Values for field'); ?> "<?= $field->label; ?>"
@@ -26,6 +28,6 @@
 
 </div>
 
-<div class="modal" id="confirm-modal" role="dialog" data-persistent="true">
+<div class="modal modal_warning" id="confirm-modal" role="dialog" data-persistent="true">
     <?= $this->render('@app/views/layouts/confirm'); ?>
 </div>

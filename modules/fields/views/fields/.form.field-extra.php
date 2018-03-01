@@ -8,7 +8,7 @@
 
 <div class="grid">
     <div class="grid__item">
-        <?= $form->field($model, 'default'); ?>
+        <?= $form->field($model, 'code'); ?>
     </div>
     <div class="grid__item">
         <?= $form->field($model, 'sort'); ?>

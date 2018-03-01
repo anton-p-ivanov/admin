@@ -5,7 +5,7 @@
 return [
     [
         'label' => Yii::t('fields/validators', 'Edit'),
-        'url' => ['validators/edit', 'uuid' => $model->uuid],
+        'url' => ['edit', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#validators-modal',
@@ -16,7 +16,7 @@ return [
     ],
     [
         'label' => Yii::t('fields/validators', 'Copy'),
-        'url' => ['validators/copy', 'uuid' => $model->uuid],
+        'url' => ['copy', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-toggle' => 'modal',
             'data-target' => '#validators-modal',
@@ -28,7 +28,7 @@ return [
     ['options' => ['class' => 'dropdown__divider']],
     [
         'label' => Yii::t('fields/validators', 'Delete'),
-        'url' => ['validators/delete', 'uuid' => $model->uuid],
+        'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-confirm' => 'true',
             'data-http-method' => 'delete',

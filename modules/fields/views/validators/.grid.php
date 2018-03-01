@@ -1,12 +1,15 @@
 <?php
 
+use app\widgets\grid\ActionColumn;
+use app\widgets\grid\CheckboxColumn;
 use fields\models\FieldValidator;
+use yii\helpers\Html;
 
 $types = FieldValidator::getTypes();
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (FieldValidator $model) {
             return ['value' => $model->uuid];
@@ -14,25 +17,38 @@ return [
     ],
     [
         'attribute' => 'type',
-        'value' => function (FieldValidator $model) use ($types) {
-            if (array_key_exists($model->type, $types)) {
-                return $types[$model->type];
-            }
-
-            return null;
+        'format' => 'raw',
+        'value' => function (FieldValidator $model, $key) {
+            return Html::a(FieldValidator::getTypes()[$model->type], ['edit', 'uuid' => $key], [
+                'data-toggle' => 'modal',
+                'data-target' => '#validators-modal',
+                'data-pjax' => 'false',
+                'data-reload' => 'true',
+                'data-persistent' => 'true'
+            ]);
         }
     ],
-    'options',
+    [
+        'attribute' => 'active',
+        'label' => Yii::t('fields', 'Act.'),
+        'options' => ['width' => 100],
+        'contentOptions' => ['class' => 'text_center'],
+        'headerOptions' => ['class' => 'text_center'],
+        'format' => 'html',
+        'value' => function (FieldValidator $model) {
+            return $model->isActive() ? '<i class="material-icons">check</i>' : '';
+        }
+    ],
     [
         'attribute' => 'sort',
-        'label' => Yii::t('fields/validators', 'Sort.'),
+        'label' => Yii::t('fields', 'Sort.'),
         'format' => 'integer',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
-        'options' => ['width' => 100],
+        'options' => ['width' => 80],
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

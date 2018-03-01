@@ -6,6 +6,17 @@
 return [
     'group-1' => [
         [
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('fields/validators', 'Back to fields` list'),
+                'data-pjax' => 'false'
+            ],
+            'url' => [
+                'fields/index',
+            ],
+        ],
+        [
             'label' => Yii::t('fields/validators', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
@@ -15,7 +26,7 @@ return [
                 'data-persistent' => 'true'
             ],
             'url' => [
-                'validators/create', 'field_uuid' => $field->uuid
+                'create', 'field_uuid' => $field->uuid
             ],
         ]
     ],
@@ -36,7 +47,7 @@ return [
         [
             'label' => '<i class="material-icons">delete</i>',
             'encode' => false,
-            'url' => ['validators/delete'],
+            'url' => ['delete'],
             'options' => [
                 'data-http-method' => 'delete',
                 'data-confirm' => 'true',

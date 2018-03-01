@@ -1,11 +1,21 @@
 <?php
 /**
- * @var string $field_uuid
- * @var string $updateUrl
+ * @var \fields\models\Field $field
  */
 
 return [
     'group-1' => [
+        [
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('fields/values', 'Back to fields` list'),
+                'data-pjax' => 'false'
+            ],
+            'url' => [
+                'fields/index',
+            ],
+        ],
         [
             'label' => Yii::t('fields/values', 'Add'),
             'options' => [
@@ -16,7 +26,7 @@ return [
                 'data-persistent' => 'true'
             ],
             'url' => [
-                'values/create', 'field_uuid' => $field_uuid
+                'create', 'field_uuid' => $field->uuid
             ],
         ]
     ],
@@ -28,7 +38,7 @@ return [
             'items' => [
                 [
                     'label' => Yii::t('fields/values', 'Refresh'),
-                    'url' => $updateUrl,
+                    'url' => \yii\helpers\Url::current(),
                     'template' => \yii\helpers\Html::a('{label}', '{url}', [
                         'data-toggle' => 'pjax',
                         'data-target' => '#values-pjax',
@@ -41,7 +51,7 @@ return [
         [
             'label' => '<i class="material-icons">delete</i>',
             'encode' => false,
-            'url' => ['values/delete'],
+            'url' => ['delete'],
             'options' => [
                 'data-http-method' => 'delete',
                 'data-confirm' => 'true',

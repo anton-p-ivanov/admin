@@ -10,6 +10,9 @@ $(function () {
         // Enable interactive form
         $('#validators-form').Form();
 
+        // Enable DropDowns
+        $modal.find('.form-group_dropdown > input:text').dropDownInput();
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#validators-form')

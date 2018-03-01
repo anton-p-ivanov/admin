@@ -1,0 +1,10 @@
+#confirm-modal {
+    z-index: 1100;
+}
+#field-description,
+#field-options {
+    min-height: 6rem;
+}
+#fields-modal .tabs-pane {
+    min-height: 330px;
+}

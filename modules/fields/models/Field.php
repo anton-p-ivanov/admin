@@ -175,7 +175,7 @@ class Field extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['type', 'label', 'code'], 'required', 'message' => self::t('{attribute} is required.')],
+            ['label', 'required', 'message' => self::t('{attribute} is required.')],
             [['label', 'default'], 'string', 'max' => 250, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
             [['active', 'multiple', 'list'], 'boolean'],
             [
@@ -192,7 +192,8 @@ class Field extends ActiveRecord
             ['code', 'match', 'pattern' => '/^[a-z_\-\d]*$/i', 'message' => self::t('Invalid code.')],
             ['type', 'validateValues'],
             ['list', 'validateList'],
-            ['options', JsonValidator::className()]
+            ['options', JsonValidator::class],
+            ['type', 'default', 'value' => self::FIELD_TYPE_DEFAULT],
         ];
     }
 
@@ -242,14 +243,14 @@ class Field extends ActiveRecord
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors['wf'] = WorkflowBehavior::className();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
+        $behaviors['wf'] = WorkflowBehavior::class;
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
         $behaviors['sg'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'label',
             'slugAttribute' => 'code',
             'ensureUnique' => true,
-            'uniqueValidator' => ['class' => UniqueValidator::className()],
+            'uniqueValidator' => ['class' => UniqueValidator::class],
             'immutable' => true
         ];
 
@@ -327,7 +328,7 @@ class Field extends ActiveRecord
      */
     public function getFieldValidators()
     {
-        return $this->hasMany(FieldValidator::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValidator::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -335,7 +336,7 @@ class Field extends ActiveRecord
      */
     public function getFieldValues()
     {
-        return $this->hasMany(FieldValue::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValue::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -343,7 +344,7 @@ class Field extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**

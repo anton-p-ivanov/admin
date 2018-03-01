@@ -36,6 +36,7 @@ return [
     'Refresh' => 'Обновить',
 
     'Properties' => 'Свойства',
+    'Settings' => 'Настройки',
     'Extra' => 'Дополнительно',
 
     'Whether field is displayed.' => 'Отображать поле в форме.',

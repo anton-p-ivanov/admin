@@ -1,19 +1,19 @@
 <?php
-namespace accounts\modules\admin\modules\fields\assets;
+namespace fields\assets;
 
 use yii\web\AssetBundle;
 
 /**
- * Class FieldsAsset
+ * Class ValidatorsAsset
  *
- * @package accounts\modules\admin\modules\fields\assets
+ * @package fields\assets
  */
-class FieldsAsset extends AssetBundle
+class ValidatorsAsset extends AssetBundle
 {
     /**
      * @var string
      */
-    public $sourcePath = '@accounts/modules/admin/modules/fields/views/fields/assets';
+    public $sourcePath = '@fields/views/validators/assets';
     /**
      * @var string
      */
@@ -34,7 +34,6 @@ class FieldsAsset extends AssetBundle
         'app\themes\material\assets\GridAsset',
         'app\themes\material\assets\FormAsset',
         'app\widgets\form\DropDownInputAsset',
-        'app\widgets\TabsAsset',
         'yii\widgets\PjaxAsset',
     ];
 }

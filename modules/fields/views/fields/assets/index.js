@@ -13,6 +13,9 @@ $(function () {
         // Enable tabs
         $('[data-toggle="tab"]').tabs();
 
+        // Enable DropDowns
+        $modal.find('.form-group_dropdown > input:text').dropDownInput();
+
         // Trigger on change field type
         $modal.on('change', '#field-type:hidden', function () {
             let self = $(this),
@@ -38,11 +41,9 @@ $(function () {
             .on('afterSubmit.Form', '#fields-form', function () {
                 // Close modal window
                 $modal.Modal().hide();
-            });
-    });
 
-    // This handler will trigger after `#forms-modal` was hidden
-    $(document).on('hidden.Modal', '#fields-modal', function () {
-        grid.reload('#fields-pjax');
+                // Reload main grid
+                grid.reload('#fields-pjax');
+            });
     });
 });

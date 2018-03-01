@@ -7,6 +7,8 @@ use app\models\User;
 use app\models\Workflow;
 use fields\components\traits\Duplicator;
 use fields\models\Field;
+use fields\models\FieldValidator;
+use fields\models\FieldValue;
 use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -19,14 +21,22 @@ use yii\widgets\ActiveForm;
  *
  * @package fields\controllers
  */
-abstract class FieldsController extends Controller
+class FieldsController extends Controller
 {
     use Duplicator;
 
     /**
-     * @var string|\yii\db\ActiveRecord
+     * @var Field
      */
     public $modelClass = Field::class;
+    /**
+     * @var FieldValue
+     */
+    public $valueClass = FieldValue::class;
+    /**
+     * @var FieldValidator
+     */
+    public $validatorClass = FieldValidator::class;
 
     /**
      * @param \yii\base\Action $action
@@ -55,17 +65,17 @@ abstract class FieldsController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
             ]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
             'except' => ['index']
         ];
 
@@ -75,7 +85,32 @@ abstract class FieldsController extends Controller
     /**
      * @return string
      */
-    abstract public function actionIndex();
+
+    /**
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $dataProvider = $this->modelClass::search();
+
+        $params = [
+            'dataProvider' => $dataProvider,
+            'validators' => $this->validatorClass::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('field_uuid')
+                ->indexBy('field_uuid')->column(),
+            'values' => $this->valueClass::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('field_uuid')
+                ->indexBy('field_uuid')->column(),
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
+    }
 
     /**
      * @return array|string

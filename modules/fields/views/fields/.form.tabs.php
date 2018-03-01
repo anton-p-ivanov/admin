@@ -10,6 +10,10 @@ return [
         'active' => true
     ],
     [
+        'id' => 'field-settings',
+        'title' => Yii::t('fields', 'Settings'),
+    ],
+    [
         'id' => 'field-extra',
         'title' => Yii::t('fields', 'Extra'),
     ],

@@ -38,6 +38,22 @@ return [
     ],
     ['options' => ['class' => 'dropdown__divider']],
     [
+        'label' => Yii::t('fields', 'Validators'),
+        'url' => ['validators/index', 'field_uuid' => $model->uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
+        ]),
+    ],
+    [
+        'label' => Yii::t('fields', 'Values'),
+        'url' => ['values/index', 'field_uuid' => $model->uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
+        ]),
+        'visible' => $model->hasValues()
+    ],
+    ['options' => ['class' => 'dropdown__divider']],
+    [
         'label' => Yii::t('fields', 'Delete'),
         'url' => ['delete', 'uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [

@@ -1,11 +1,6 @@
 #confirm-modal {
     z-index: 1100;
 }
-.modal__alert {
-    padding-left: 24px;
-    padding-right: 24px;
-    margin: 0 -24px;
-}
 .field-title {
     line-height: 64px;
     margin: 0;
@@ -15,4 +10,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+#fieldvalidator-options {
+    min-height: 6rem;
 }
