@@ -6,7 +6,7 @@ use yii\helpers\Html;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (Language $model) {
             return ['value' => $model->code];
@@ -32,17 +32,19 @@ return [
     ],
     [
         'attribute' => 'default',
+        'label' => \Yii::t('i18n', 'Def.'),
         'format' => 'boolean',
-        'options' => ['width' => 200],
+        'options' => ['width' => 80],
     ],
     [
         'attribute' => 'sort',
+        'label' => \Yii::t('i18n', 'Sort.'),
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
-        'options' => ['width' => 150],
+        'options' => ['width' => 80],
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {
