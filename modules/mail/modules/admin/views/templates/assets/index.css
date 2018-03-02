@@ -1,0 +1,13 @@
+#confirm-modal {
+    z-index: 1100;
+}
+#templates-modal .tabs-pane {
+    min-height: 345px;
+}
+.form-group_text .form-group__input {
+    min-height: 12em;
+}
+textarea.form-group__input {
+    font-family: monospace;
+    font-size: 17px;
+}

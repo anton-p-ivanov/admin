@@ -43,6 +43,10 @@ class Module extends \yii\base\Module
         \Yii::$app->i18n->translations['mail*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@mail/messages',
+            'fileMap' => [
+                'mail/types' => 'types.php',
+                'mail/templates' => 'templates.php',
+            ]
         ];
     }
 }
