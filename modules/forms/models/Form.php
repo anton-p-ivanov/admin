@@ -106,7 +106,7 @@ class Form extends ActiveRecord
      */
     public function getFields()
     {
-        return $this->hasMany(Field::className(), ['form_uuid' => 'uuid']);
+        return $this->hasMany(Field::class, ['form_uuid' => 'uuid']);
     }
 
     /**
@@ -114,7 +114,7 @@ class Form extends ActiveRecord
      */
     public function getResults()
     {
-        return $this->hasMany(FormResult::className(), ['form_uuid' => 'uuid']);
+        return $this->hasMany(FormResult::class, ['form_uuid' => 'uuid']);
     }
 
     /**
@@ -122,7 +122,7 @@ class Form extends ActiveRecord
      */
     public function getStatuses()
     {
-        return $this->hasMany(FormStatus::className(), ['form_uuid' => 'uuid']);
+        return $this->hasMany(FormStatus::class, ['form_uuid' => 'uuid']);
     }
 
     /**
@@ -130,7 +130,7 @@ class Form extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**

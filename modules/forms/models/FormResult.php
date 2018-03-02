@@ -64,8 +64,8 @@ class FormResult extends ActiveRecord
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
-        $behaviors[] = WorkflowBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
+        $behaviors[] = WorkflowBehavior::class;
 
         return $behaviors;
     }
@@ -80,12 +80,12 @@ class FormResult extends ActiveRecord
             [
                 'status_uuid',
                 'exist',
-                'targetClass' => FormStatus::className(),
+                'targetClass' => FormStatus::class,
                 'targetAttribute' => 'uuid',
                 'message' => self::t('Invalid status.')
             ],
             ['data', 'safe'],
-            ['data', PropertiesValidator::className()]
+            ['data', PropertiesValidator::class]
         ];
     }
 
@@ -181,7 +181,7 @@ class FormResult extends ActiveRecord
      */
     public function getForm()
     {
-        return $this->hasOne(Form::className(), ['uuid' => 'form_uuid']);
+        return $this->hasOne(Form::class, ['uuid' => 'form_uuid']);
     }
 
     /**
@@ -189,7 +189,7 @@ class FormResult extends ActiveRecord
      */
     public function getStatus()
     {
-        return $this->hasOne(FormStatus::className(), ['uuid' => 'status_uuid']);
+        return $this->hasOne(FormStatus::class, ['uuid' => 'status_uuid']);
     }
 
     /**
@@ -197,7 +197,7 @@ class FormResult extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**

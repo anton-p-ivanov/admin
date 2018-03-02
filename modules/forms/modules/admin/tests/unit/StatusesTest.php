@@ -32,7 +32,7 @@ class StatusesTest extends Unit
     public function _fixtures()
     {
         return [
-            FormStatusFixture::className(),
+            FormStatusFixture::class,
         ];
     }
 

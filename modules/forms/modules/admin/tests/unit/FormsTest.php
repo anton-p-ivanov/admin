@@ -33,10 +33,10 @@ class FormsTest extends Unit
     public function _fixtures()
     {
         return [
-            FormFixture::className(),
-            FormStatusFixture::className(),
-            FormFieldFixture::className(),
-            FormResultFixture::className(),
+            FormFixture::class,
+            FormStatusFixture::class,
+            FormFieldFixture::class,
+            FormResultFixture::class,
         ];
     }
 

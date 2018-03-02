@@ -48,7 +48,7 @@ class Field extends \fields\models\Field
     public function rules(): array
     {
         $rules = parent::rules();
-        $rules[] = ['code', UniqueCodeValidator::className(), 'message' => self::t('Field with code `{value}` is already exists.')];
+        $rules[] = ['code', UniqueCodeValidator::class, 'message' => self::t('Field with code `{value}` is already exists.')];
 
         return $rules;
     }
@@ -60,11 +60,11 @@ class Field extends \fields\models\Field
     {
         $behaviors = parent::behaviors();
         $behaviors['sg'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'label',
             'slugAttribute' => 'code',
             'ensureUnique' => true,
-            'uniqueValidator' => ['class' => UniqueCodeValidator::className()],
+            'uniqueValidator' => ['class' => UniqueCodeValidator::class],
             'immutable' => true
         ];
 
@@ -115,7 +115,7 @@ class Field extends \fields\models\Field
      */
     public function getFieldValidators()
     {
-        return $this->hasMany(FieldValidator::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValidator::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -123,7 +123,7 @@ class Field extends \fields\models\Field
      */
     public function getFieldValues()
     {
-        return $this->hasMany(FieldValue::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValue::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -131,7 +131,7 @@ class Field extends \fields\models\Field
      */
     public function getForm()
     {
-        return $this->hasOne(Form::className(), ['uuid' => 'form_uuid']);
+        return $this->hasOne(Form::class, ['uuid' => 'form_uuid']);
     }
 
     /**

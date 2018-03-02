@@ -133,7 +133,7 @@ class FormFilter extends Filter
 
         if ($isValid) {
             $this->query = Json::encode([
-                'class' => md5(self::className()),
+                'class' => md5(self::class),
                 'owner' => $this->owner,
                 'title' => $this->title,
                 'code' => $this->code,

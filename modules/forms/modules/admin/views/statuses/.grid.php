@@ -4,7 +4,7 @@ use forms\models\FormStatus;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function (FormStatus $model) {
             return ['value' => $model->uuid];
@@ -59,7 +59,7 @@ return [
         'options' => ['width' => 200]
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

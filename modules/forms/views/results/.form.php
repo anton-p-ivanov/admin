@@ -32,7 +32,7 @@ use forms\models\FormStatus;
             }
             ?>
             <?= $f->label($field->label)->hint($field->description)
-                ->widget(FormInput::className(), ['formField' => $field]); ?>
+                ->widget(FormInput::class, ['formField' => $field]); ?>
 
         <?php endforeach; ?>
 

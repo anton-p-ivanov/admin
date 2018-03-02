@@ -67,7 +67,7 @@ class FormStatus extends \forms\models\FormStatus
             ['title', 'string', 'max' => 255, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
             [['active', 'default'], 'boolean'],
             ['description', 'safe'],
-            ['form_uuid', 'exist', 'targetClass' => Form::className(), 'targetAttribute' => 'uuid'],
+            ['form_uuid', 'exist', 'targetClass' => Form::class, 'targetAttribute' => 'uuid'],
             // Sort field
             [
                 'sort',
@@ -98,8 +98,8 @@ class FormStatus extends \forms\models\FormStatus
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
-        $behaviors[] = WorkflowBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
+        $behaviors[] = WorkflowBehavior::class;
 
         return $behaviors;
     }
@@ -183,6 +183,6 @@ class FormStatus extends \forms\models\FormStatus
      */
     public function getForm()
     {
-        return $this->hasOne(Form::className(), ['uuid' => 'form_uuid']);
+        return $this->hasOne(Form::class, ['uuid' => 'form_uuid']);
     }
 }

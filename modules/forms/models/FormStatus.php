@@ -47,7 +47,7 @@ class FormStatus extends ActiveRecord
      */
     public function getForm()
     {
-        return $this->hasOne(Form::className(), ['uuid' => 'form_uuid']);
+        return $this->hasOne(Form::class, ['uuid' => 'form_uuid']);
     }
 
     /**
@@ -55,7 +55,7 @@ class FormStatus extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
