@@ -10,6 +10,15 @@ $(function () {
         // Enable interactive form
         $modal.find('#questions-form').Form();
 
+        // Enable tabs
+        $modal.find('[data-toggle="tab"]').tabs();
+
+        // Enable dropdowns
+        $modal.find('.form-group_dropdown input:text').dropDownInput();
+
+        // Focus on first input
+        $modal.find('textarea:first').focus();
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#questions-form')

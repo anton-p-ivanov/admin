@@ -23,18 +23,16 @@ use app\widgets\form\ActiveForm;
     <div class="modal__body">
         <?php if ($model->question->type === \training\models\Question::TYPE_SINGLE): ?>
             <div class="alert alert_warning modal__alert">
-                <?= Yii::t('training/answers', 'Only one correct answer is allowable for selected question.'); ?>
+                <?= Yii::t('training/answers', 'ONLY ONE correct answer allowed.'); ?>
             </div>
         <?php endif; ?>
         <?= $form->field($model, 'valid')->switch(); ?>
-        <?= $form->field($model, 'answer')->multilineInput(); ?>
+        <?= $form->field($model, 'answer')->textarea(); ?>
         <?= $form->field($model, 'sort'); ?>
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('training/answers', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>

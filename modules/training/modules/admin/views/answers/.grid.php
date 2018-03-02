@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var \training\modules\admin\models\Question $question
+ */
 
 use training\modules\admin\models\Answer;
 use yii\helpers\Html;
@@ -30,12 +33,17 @@ return [
         'label' => Yii::t('training/answers', 'Val.'),
         'format' => 'boolean',
         'options' => ['width' => 100],
+        'headerOptions' => [
+            'class' => !$question->hasValidAnswer() ? 'no-valid' : null,
+            'title' => !$question->hasValidAnswer() ? Yii::t('training/answers', 'There is no any valid answer for selected question. Please, choose a valid one.') : null
+        ],
     ],
     [
         'attribute' => 'sort',
+        'label' => Yii::t('training/answers', 'Sort.'),
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
-        'options' => ['width' => 150],
+        'options' => ['width' => 100],
     ],
     [
         'class' => \app\widgets\grid\ActionColumn::class,

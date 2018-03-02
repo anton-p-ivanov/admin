@@ -2,8 +2,7 @@
     z-index: 1100;
 }
 .modal__alert {
-    margin-left: -24px;
-    margin-right: -24px;
+    margin: -24px -24px 24px -24px;
     padding-left: 24px;
     padding-right: 24px;
 }
@@ -16,4 +15,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+#answer-answer {
+    min-height: 6rem;
+}
+#answers-grid .grid-view__table thead th.no-valid a::before {
+    content: 'warning';
+    color: #f7941e;
 }

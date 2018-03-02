@@ -5,11 +5,18 @@
  * @var \app\models\Workflow $workflow
  * @var \app\widgets\form\ActiveForm $form
  */
+
+use app\models\WorkflowStatus;
+
 ?>
 
-<?= $form->field($model, 'code'); ?>
-<?= $form->field($model, 'sort'); ?>
-<?= $form->field($workflow, 'status')->dropDownList(
-    \app\models\WorkflowStatus::getList(),
-    ['dropdown' => ['class' => 'dropdown dropdown_wide dropdown_up']]
-); ?>
+<div class="grid">
+    <div class="grid__item">
+        <?= $form->field($model, 'code'); ?>
+    </div>
+    <div class="grid__item">
+        <?= $form->field($model, 'sort'); ?>
+    </div>
+</div>
+
+<?= $form->field($workflow, 'status')->dropDownList(WorkflowStatus::getList()); ?>

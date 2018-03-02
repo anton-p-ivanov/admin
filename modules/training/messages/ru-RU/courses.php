@@ -6,10 +6,11 @@ return [
     'Title' => 'Название',
     'Lessons' => 'Уроки',
     'Tests' => 'Тесты',
-    'Code' => 'Код',
+    'Code' => 'Символьный код',
     'Act.' => 'Акт.',
     'Active' => 'Активность',
     'Sort' => 'Сортировка',
+    'Sort.' => 'Сорт.',
     'Description' => 'Описание',
 
     'View & edit course properties' => 'Изменить свойства курса',

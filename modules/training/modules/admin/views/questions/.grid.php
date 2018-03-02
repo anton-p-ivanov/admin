@@ -58,13 +58,14 @@ return [
         'label' => Yii::t('training/courses', 'Act.'),
         'attribute' => 'active',
         'format' => 'boolean',
-        'options' => ['width' => 150],
+        'options' => ['width' => 80],
     ],
     [
+        'label' => Yii::t('training/courses', 'Sort.'),
         'attribute' => 'sort',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],
-        'options' => ['width' => 150],
+        'options' => ['width' => 100],
     ],
     [
         'class' => \app\widgets\grid\ActionColumn::class,

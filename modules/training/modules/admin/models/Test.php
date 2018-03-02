@@ -5,6 +5,8 @@ namespace training\modules\admin\models;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\components\traits\ActiveSearch;
+use app\models\WorkflowStatus;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Test
@@ -136,5 +138,55 @@ class Test extends \training\models\Test
         $clone->course_uuid = $this->course_uuid;
 
         return $clone;
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            $this->assignQuestions();
+        }
+    }
+
+    /**
+     * @return int
+     */
+    protected function assignQuestions()
+    {
+        $questions = [];
+        $conditions = [
+            'course_uuid' => $this->course_uuid,
+            'active' => true,
+            '{{%workflow}}.[[status]]' => WorkflowStatus::WORKFLOW_STATUS_PUBLISHED
+        ];
+
+        /* @var Lesson[] $lessons */
+        $lessons = Lesson::find()->joinWith('workflow')->where($conditions)->all();
+
+        foreach ($lessons as $lesson) {
+            $conditions = ['lesson_uuid' => $lesson->uuid, 'active' => true];
+            $uuid = Question::find()->where($conditions)->select('uuid')->column();
+            $questions = ArrayHelper::merge($questions, $uuid);
+        }
+
+        $questions = array_map([$this, 'prepareQuestions'], $questions);
+
+        return \Yii::$app->db->createCommand()
+            ->batchInsert(TestQuestion::tableName(), ['test_uuid', 'question_uuid'], $questions)
+            ->execute();
+    }
+
+    /**
+     * @param string $question_uuid
+     * @return array
+     */
+    protected function prepareQuestions($question_uuid)
+    {
+        return ['test_uuid' => $this->uuid, 'question_uuid' => $question_uuid];
     }
 }

@@ -21,13 +21,6 @@ $this->title = sprintf('%s — %s: %s',
 </div>
 <div id="answers-pjax" data-pjax-container="true">
 
-    <?php if (!$question->hasValidAnswer()): ?>
-        <div class="alert alert_warning">
-            There is no any valid answer for selected question.
-            Please, choose a valid one.
-        </div>
-    <?php endif; ?>
-
     <?= \app\widgets\Toolbar::widget([
         'buttons' => require_once ".toolbar.php",
     ]); ?>

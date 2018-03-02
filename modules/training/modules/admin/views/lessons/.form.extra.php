@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \training\modules\admin\models\Test $model
+ * @var \training\modules\admin\models\Lesson $model
  * @var \app\models\Workflow $workflow
  * @var \app\widgets\form\ActiveForm $form
  */
@@ -12,10 +12,10 @@ use app\models\WorkflowStatus;
 
 <div class="grid">
     <div class="grid__item">
-        <?= $form->field($model, 'questions_random')->switch(); ?>
+        <?= $form->field($model, 'code'); ?>
     </div>
     <div class="grid__item">
-        <?= $form->field($model, 'answers_random')->switch(); ?>
+        <?= $form->field($model, 'sort'); ?>
     </div>
 </div>
 

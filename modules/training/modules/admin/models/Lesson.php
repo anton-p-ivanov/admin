@@ -102,8 +102,7 @@ class Lesson extends \training\models\Lesson
     public function rules()
     {
         return [
-            [['course_uuid', 'title'], 'required', 'message' => self::t('{attribute} is required.')],
-            ['course_uuid', 'exist', 'targetClass' => Course::class, 'targetAttribute' => 'uuid'],
+            ['title', 'required', 'message' => self::t('{attribute} is required.')],
             ['sort', 'integer', 'min' => 0, 'message' => self::t('{attribute} value must be greater than {min, number}.')],
             ['sort', 'default', 'value' => 100],
             [['title', 'code'], 'string', 'max' => 255, 'message' => self::t('Maximum {max, number} characters allowed.')],
@@ -136,7 +135,9 @@ class Lesson extends \training\models\Lesson
      */
     public function duplicate()
     {
-        $clone = new self();
+        $clone = new self([
+            'course_uuid' => $this->course_uuid
+        ]);
 
         foreach ($this->attributes as $attribute => $value) {
             if ($this->isAttributeSafe($attribute)) {

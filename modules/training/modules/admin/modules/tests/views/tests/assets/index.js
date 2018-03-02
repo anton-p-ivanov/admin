@@ -13,6 +13,12 @@ $(function () {
         // Enable tabs
         $modal.find('[data-toggle="tab"]').tabs();
 
+        // Enable dropdowns
+        $modal.find('.form-group_dropdown input:text').dropDownInput();
+
+        // Focus on first input
+        $modal.find('text:input:first').focus();
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#tests-form')

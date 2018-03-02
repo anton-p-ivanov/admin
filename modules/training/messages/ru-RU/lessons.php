@@ -5,15 +5,19 @@ return [
 
     'Title' => 'Название',
     'Questions' => 'Вопросы',
-    'Code' => 'Код',
+    'Code' => 'Символьный код',
     'Act.' => 'Акт.',
     'Active' => 'Активность',
     'Sort' => 'Сортировка',
+    'Sort.' => 'Сорт.',
     'Description' => 'Описание',
     'Course' => 'Курс',
 
     'View & edit lesson properties' => 'Изменить свойства урока',
     'Lessons for course' => 'Уроки курса',
+
+    'Properties' => 'Свойства',
+    'Extra' => 'Дополнительно',
 
     'Create' => 'Создать',
     'Edit' => 'Изменить',

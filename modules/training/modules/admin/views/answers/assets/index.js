@@ -10,6 +10,9 @@ $(function () {
         // Enable interactive form
         $modal.find('#answers-form').Form();
 
+        // Focus on first input
+        $modal.find('text:input:first').focus();
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#answers-form')

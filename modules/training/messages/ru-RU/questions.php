@@ -9,12 +9,17 @@ return [
     'Act.' => 'Акт.',
     'Active' => 'Активность',
     'Sort' => 'Сортировка',
+    'Sort.' => 'Сорт.',
     'Lesson' => 'Урок',
     'Description' => 'Описание',
     'Score' => 'Баллы',
 
     'View & edit question properties' => 'Изменить свойства вопроса',
     'Questions for lesson' => 'Вопросы урока',
+
+    'Properties' => 'Свойства',
+    'Extra' => 'Дополнительно',
+    'Settings' => 'Настройки',
 
     'Single answer' => 'Одиночный ответ',
     'Multiple answers' => 'Множественный ответ',
