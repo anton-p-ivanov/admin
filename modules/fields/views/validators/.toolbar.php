@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \fields\models\Field $field
+ * @var string $returnUrl
  */
 
 return [
@@ -13,7 +14,7 @@ return [
                 'data-pjax' => 'false'
             ],
             'url' => [
-                'fields/index',
+                isset($returnUrl) ? $returnUrl : 'fields/index',
             ],
         ],
         [

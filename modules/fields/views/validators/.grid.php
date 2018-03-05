@@ -36,7 +36,7 @@ return [
         'headerOptions' => ['class' => 'text_center'],
         'format' => 'html',
         'value' => function (FieldValidator $model) {
-            return $model->isActive() ? '<i class="material-icons">check</i>' : '';
+            return $model->isActive() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [

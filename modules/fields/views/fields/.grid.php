@@ -70,22 +70,22 @@ return [
         'attribute' => 'multiple',
         'label' => Yii::t('fields', 'Mult.'),
         'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'field_multiple'],
+        'contentOptions' => ['class' => 'text_center'],
         'headerOptions' => ['class' => 'text_center'],
         'format' => 'html',
         'value' => function (Field $model) {
-            return $model->isMultiple() ? '<i class="material-icons">check</i>' : '';
+            return $model->isMultiple() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [
         'attribute' => 'active',
         'label' => Yii::t('fields', 'Act.'),
         'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'field_active'],
+        'contentOptions' => ['class' => 'text_center'],
         'headerOptions' => ['class' => 'text_center'],
         'format' => 'html',
         'value' => function (Field $model) {
-            return $model->isActive() ? '<i class="material-icons">check</i>' : '';
+            return $model->isActive() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [

@@ -3,6 +3,7 @@
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
  * @var \fields\models\Field $field
+ * @var string $returnUrl
  */
 
 \fields\assets\ValuesAsset::register($this);
