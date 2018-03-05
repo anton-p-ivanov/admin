@@ -20,11 +20,6 @@ $this->title = sprintf('%s — %s: %s',
     <?= Yii::t('forms/statuses', 'Statuses for form'); ?> "<?= $form->title; ?>"
 </div>
 <div id="statuses-pjax" data-pjax-container="true">
-    <?php if (!$defaultStatus): ?>
-        <div class="alert alert_warning">
-            <?= Yii::t('forms/statuses', 'There is no default status. Default status is required for web form.'); ?>
-        </div>
-    <?php endif; ?>
 
     <?= \app\widgets\Toolbar::widget([
         'buttons' => require_once ".toolbar.php",

@@ -52,6 +52,7 @@ class FormStatus extends \forms\models\FormStatus
             'default' => 'Assign this status for each new form result by default.',
             'description' => 'Describe purpose of status.',
             'sort' => 'Sorting index. Default is 100.',
+            'mail_template_uuid' => 'Select one of available templates.',
         ];
 
         return array_map('self::t', $hints);
@@ -62,13 +63,17 @@ class FormStatus extends \forms\models\FormStatus
      */
     public function rules()
     {
-        $rules = [
+        return [
             ['title', 'required', 'message' => self::t('{attribute} is required.')],
-            ['title', 'string', 'max' => 255, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
-            [['active', 'default'], 'boolean'],
+            [
+                'title',
+                'string',
+                'max' => 255,
+                'tooLong' => self::t('Maximum {max, number} characters allowed.')
+            ],
+            ['default', 'boolean'],
             ['description', 'safe'],
             ['form_uuid', 'exist', 'targetClass' => Form::class, 'targetAttribute' => 'uuid'],
-            // Sort field
             [
                 'sort',
                 'integer',
@@ -76,20 +81,16 @@ class FormStatus extends \forms\models\FormStatus
                 'tooSmall' => self::t('Value must be greater or equal than {min, number}.'),
                 'message' => self::t('Value must be a integer.')
             ],
-        ];
-
-        $className = '\mail\models\Template';
-        if (class_exists($className)) {
-            $rules[] = ['mail_template_uuid', 'default', 'value' => null];
-            $rules[] = [
+            [
                 'mail_template_uuid',
                 'exist',
-                'targetClass' => $className,
-                'targetAttribute' => 'uuid'
-            ];
-        }
-
-        return $rules;
+                'targetClass' => '\mail\models\Template',
+                'targetAttribute' => 'uuid',
+                'message' => self::t('Invalid template selected.')
+            ],
+            ['active', 'default', 'value' => true],
+            ['mail_template_uuid', 'default', 'value' => null]
+        ];
     }
 
     /**

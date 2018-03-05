@@ -35,71 +35,14 @@ return [
         'options' => ['width' => 200],
     ],
     [
-        'attribute' => 'fields',
-        'label' => Yii::t('forms', 'Fields'),
-        'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'text_right'],
-        'headerOptions' => ['class' => 'text_right'],
-        'format' => 'raw',
-        'value' => function (Form $form) use ($fields) {
-            $count = 0;
-
-            if (array_key_exists($form->uuid, $fields)) {
-                $count = $fields[$form->uuid];
-            }
-
-            return Html::a($count, ['fields/fields/index', 'form_uuid' => $form->uuid], [
-                'data-pjax' => 'false'
-            ]);
-        }
-    ],
-    [
-        'attribute' => 'statuses',
-        'label' => Yii::t('forms', 'Statuses'),
-        'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'text_right'],
-        'headerOptions' => ['class' => 'text_right'],
-        'format' => 'raw',
-        'value' => function (Form $form) use ($statuses) {
-            $count = 0;
-
-            if (array_key_exists($form->uuid, $statuses)) {
-                $count = $statuses[$form->uuid];
-            }
-
-            return Html::a($count, ['statuses/index', 'form_uuid' => $form->uuid], [
-                'data-pjax' => 'false'
-            ]);
-        }
-    ],
-    [
-        'attribute' => 'results',
-        'label' => Yii::t('forms', 'Res.'),
-        'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'text_right'],
-        'headerOptions' => ['class' => 'text_right'],
-        'format' => 'raw',
-        'value' => function (Form $form) use ($results) {
-            $count = 0;
-
-            if (array_key_exists($form->uuid, $results)) {
-                $count = $results[$form->uuid];
-            }
-
-            return Html::a($count, ['/forms/results/index', 'form_uuid' => $form->uuid], [
-                'data-pjax' => 'false'
-            ]);
-        }
-    ],
-    [
         'attribute' => 'active',
         'label' => Yii::t('forms', 'Use'),
-        'options' => ['width' => 100],
+        'options' => ['width' => 80],
         'contentOptions' => ['class' => 'text_center'],
         'headerOptions' => ['class' => 'text_center'],
         'format' => 'html',
         'value' => function (Form $form) {
-            return $form->isActive() ? '<i class="material-icons">check</i>' : '';
+            return $form->isActive() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [
@@ -113,7 +56,7 @@ return [
     [
         'attribute' => 'workflow.modified_date',
         'format' => 'datetime',
-        'options' => ['width' => 250]
+        'options' => ['width' => 200]
     ],
     [
         'class' => \app\widgets\grid\ActionColumn::class,

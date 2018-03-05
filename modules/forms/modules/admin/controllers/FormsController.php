@@ -7,13 +7,13 @@ use app\models\User;
 use app\models\Workflow;
 use fields\components\traits\Duplicator;
 use forms\modules\admin\models\Form;
-use forms\modules\admin\models\FormResult;
 use forms\modules\admin\models\FormStatus;
 use forms\modules\admin\modules\fields\models\Field;
 use yii\base\InvalidConfigException;
 use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -84,22 +84,8 @@ class FormsController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = Form::search();
-
         $params = [
-            'dataProvider' => $dataProvider,
-            'fields' => Field::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('form_uuid')
-                ->indexBy('form_uuid')->column(),
-            'statuses' => FormStatus::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('form_uuid')
-                ->indexBy('form_uuid')->column(),
-            'results' => FormResult::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('form_uuid')
-                ->indexBy('form_uuid')->column()
+            'dataProvider' => Form::search(),
         ];
 
         if (\Yii::$app->request->isAjax) {
@@ -119,7 +105,6 @@ class FormsController extends Controller
             'active_dates' => ['active_from_date' => \Yii::$app->formatter->asDatetime(date('Y-m-d H:i:s'))],
             'sort' => 100,
             'title' => \Yii::t('forms', 'New Web-form'),
-            'code' => mb_strtoupper('WEB_FORM_' . date('YmdHi'))
         ]);
 
         if ($model->load(\Yii::$app->request->post())) {
@@ -224,6 +209,37 @@ class FormsController extends Controller
         }
 
         return $className::getList($type_uuid);
+    }
+
+    /**
+     * @param string $form_uuid
+     * @return string
+     * @throws HttpException
+     */
+    public function actionHelp($form_uuid)
+    {
+        /* @var Form $model */
+        $model = Form::findOne($form_uuid);
+
+        if (!$model) {
+            throw new HttpException(404, 'Form not found.');
+        }
+
+        $extra = [
+            'FORM_FIELD_AUTH' => 'User authentication widget',
+            'FORM_FIELD_CAPTCHA' => 'CAPTCHA widget',
+        ];
+
+        $fields = $model->getFields()
+            ->filterWhere(['active' => true])
+            ->orderBy(['sort' => SORT_ASC, 'code' => SORT_ASC, 'label' => SORT_DESC])
+            ->select('label')
+            ->indexBy('code')
+            ->column();
+
+        $fields = ArrayHelper::merge($fields, $extra);
+
+        return $this->renderPartial('help', ['fields' => $fields]);
     }
 
     /**

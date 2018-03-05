@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var \forms\modules\admin\models\FormStatus $defaultStatus
+ */
 use forms\models\FormStatus;
 
 return [
@@ -27,22 +29,25 @@ return [
         'attribute' => 'default',
         'label' => Yii::t('forms/statuses', 'Def.'),
         'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'status__default'],
-        'headerOptions' => ['class' => 'text_center'],
+        'contentOptions' => ['class' => 'text_center'],
+        'headerOptions' => [
+            'class' => !$defaultStatus ? 'text_center no-valid' : 'text_center',
+            'title' => !$defaultStatus ? Yii::t('forms/statuses', 'There is no default status. Default status is required for web form.') : null
+        ],
         'format' => 'html',
-        'value' => function (FormStatus $model) {
-            return $model->isDefault() ? '<i class="material-icons">check</i>' : '';
+        'value' => function (FormStatus $status) {
+            return $status->isDefault() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [
-        'attribute' => 'active',
-        'label' => Yii::t('forms/statuses', 'Act.'),
+        'attribute' => 'mail_template_uuid',
+        'label' => Yii::t('forms/statuses', 'Temp.'),
         'options' => ['width' => 100],
-        'contentOptions' => ['class' => 'status__active'],
+        'contentOptions' => ['class' => 'text_center'],
         'headerOptions' => ['class' => 'text_center'],
         'format' => 'html',
         'value' => function (FormStatus $model) {
-            return $model->isActive() ? '<i class="material-icons">check</i>' : '';
+            return $model->hasTemplate() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [

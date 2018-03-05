@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
  * @property boolean $default
  * @property int $sort
  * @property string $form_uuid
+ * @property string $mail_template_uuid
  * @property string $workflow_uuid
  *
  * @property Workflow $workflow
@@ -72,6 +73,14 @@ class FormStatus extends ActiveRecord
     public function isActive(): bool
     {
         return $this->active === 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTemplate()
+    {
+        return $this->mail_template_uuid !== null;
     }
 
     /**

@@ -1,50 +1,49 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \forms\modules\admin\models\FormStatus $model
- * @var \app\models\Workflow $workflow
+ * @var \forms\models\FormStatus $model
  * @var string $title
- * @var \mail\models\Template $templateClassName
  */
 
-$templateClassName = '\mail\models\Template';
+use app\widgets\form\ActiveForm;
+use yii\helpers\Html;
+
 ?>
 <div class="modal__container">
 
-    <?php $form = \app\widgets\form\ActiveForm::begin(['options' => [
-        'id' => 'statuses-form',
-        'data-type' => 'active-form',
-    ]]); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'id' => 'statuses-form',
+            'data-type' => 'active-form',
+        ]
+    ]); ?>
 
     <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('forms/statuses', $title); ?></div>
     </div>
     <div class="modal__body">
 
-        <div class="grid">
-            <div class="grid__item">
-                <?= $form->field($model, 'active')->switch(); ?>
-            </div>
-            <div class="grid__item">
-                <?= $form->field($model, 'default')->switch(); ?>
-            </div>
-        </div>
-
-        <?= $form->field($model, 'title'); ?>
-        <?= $form->field($model, 'description')->multilineInput(); ?>
-        <?= $form->field($model, 'sort'); ?>
-
-        <?php if (class_exists($templateClassName)): ?>
-            <?= $form->field($model, 'mail_template_uuid')
-                ->dropDownList($templateClassName::getList($model->form->{'event'})); ?>
-        <?php endif; ?>
+        <?php $widget = \app\widgets\Tabs::begin([
+            'items' => require_once ".form.tabs.php"
+        ]); ?>
+            <?php foreach ($widget->items as $index => $item): ?>
+                <?= Html::beginTag('div', [
+                    'class' => 'tabs-pane' . ($item['active'] === true ? ' active' : ''),
+                    'id' => $item['id'],
+                    'data-remote' => isset($item['options']['data-remote']) ? $item['id'] : null
+                ]); ?>
+                    <?= $this->render('.form.' . $item['id'] . '.php', [
+                        'model' => $model,
+                        'form' => $form,
+                    ]); ?>
+                <?= Html::endTag('div'); ?>
+            <?php endforeach; ?>
+        <?php \app\widgets\Tabs::end(); ?>
 
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('forms/statuses', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>
@@ -52,6 +51,6 @@ $templateClassName = '\mail\models\Template';
         </div>
     </div>
 
-    <?php \app\widgets\form\ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

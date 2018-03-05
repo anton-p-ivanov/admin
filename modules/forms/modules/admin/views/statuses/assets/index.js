@@ -10,6 +10,15 @@ $(function () {
         // Enable interactive form
         $modal.find('#statuses-form').Form();
 
+        // Enable tabs
+        $modal.find('[data-toggle="tab"]').tabs();
+
+        // Enable dropdowns
+        $modal.find('.form-group_dropdown input:text').dropDownInput();
+
+        // Focus on element
+        $('#formstatus-title').focus();
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#statuses-form')

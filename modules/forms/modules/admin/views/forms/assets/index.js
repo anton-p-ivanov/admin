@@ -17,7 +17,13 @@ $(function () {
         $('#forms-form').Form();
 
         // Enable tabs
-        $('[data-toggle="tab"]').tabs();
+        $modal.find('[data-toggle="tab"]').tabs();
+
+        // Enable dropdowns
+        $modal.find('.form-group_dropdown input:text').dropDownInput();
+
+        // Focus on element
+        $('#form-title').focus();
 
         // Enable datepicker
         $dtPickerFields.DateTimePicker({'format': dateTimeFormat})
@@ -42,30 +48,37 @@ $(function () {
         });
 
         $modal
-            .off('change', '#form-event:hidden')
-            .on('change', '#form-event:hidden', function (e) {
+            .off('change', '#form-event ~ input:hidden')
+            .on('change', '#form-event ~ input:hidden', function (e) {
                 e.preventDefault();
 
-                $.ajax({
-                    url: $(this).data('url'),
-                    data: {'type_uuid': $(this).val()},
-                    success: function (response) {
-                        let input = $('#form-mail_template_uuid'),
-                            dropdown = input.closest('.form-group').find('ul.dropdown');
+                let value = $(this).val(),
+                    input = $('#form-mail_template_uuid'),
+                    dropdown = input.closest('.form-group').find('ul.dropdown');
 
-                        // Clearing values
-                        input.val('');
-                        dropdown.find('li').remove();
+                if (!value) {
+                    input.val('').attr('disabled', true);
+                    dropdown.find('li').remove();
+                }
+                else {
+                    $.ajax({
+                        url: $(this).data('url'),
+                        data: {'type_uuid': $(this).val()},
+                        success: function (response) {
+                            // Clearing values
+                            input.val('').attr('disabled', false);
+                            dropdown.find('li').remove();
 
-                        for (let i in response) {
-                            if (response.hasOwnProperty(i)) {
-                                dropdown.append($('<li>').append(
-                                    $('<a>').attr({'href': '#', 'data-value': i}).text(response[i])
-                                ));
+                            for (let i in response) {
+                                if (response.hasOwnProperty(i)) {
+                                    dropdown.append($('<li>').append(
+                                        $('<a>').attr({'href': '#', 'data-value': i}).text(response[i])
+                                    ));
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             });
 
         // After submit form handler
