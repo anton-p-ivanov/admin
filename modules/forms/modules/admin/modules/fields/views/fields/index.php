@@ -14,6 +14,7 @@ $this->title = sprintf('%s — %s: %s',
 );
 
 // Registering assets
+\fields\assets\FieldsAsset::register($this);
 \forms\modules\admin\modules\fields\assets\FieldsAsset::register($this);
 
 ?>

@@ -17,6 +17,13 @@ class Module extends \yii\base\Module
      * @var array
      */
     public $controllerMap = [
+//        'fields' => [
+//            'class' => 'fields\controllers\FieldsController',
+//            'modelClass' => Field::class,
+//            'valueClass' => FieldValue::class,
+//            'validatorClass' => FieldValidator::class,
+//            'viewPath' => '@forms/modules/admin/modules/fields/views/fields'
+//        ],
         'values' => [
             'class' => 'fields\controllers\ValuesController',
             'modelClass' => FieldValue::class,
@@ -27,7 +34,7 @@ class Module extends \yii\base\Module
             'class' => 'fields\controllers\ValidatorsController',
             'modelClass' => FieldValidator::class,
             'fieldClass' => Field::class,
-            'viewPath' => '@forms/modules/admin/modules/fields/views/validators'
+            'viewPath' => '@forms/modules/admin/modules/fields/views/validators',
         ],
     ];
 
