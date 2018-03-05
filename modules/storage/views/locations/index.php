@@ -10,7 +10,7 @@ $tree_uuid = Yii::$app->request->get("tree_uuid");
 $updateUrl = \yii\helpers\Url::to(['locations', 'tree_uuid' => $tree_uuid]);
 ?>
 
-<div class="modal__container modal__container_locations">
+<div class="modal__container">
     <div class="modal__header">
         <div class="modal__heading"><?= Yii::t('storage', 'Select location'); ?></div>
     </div>

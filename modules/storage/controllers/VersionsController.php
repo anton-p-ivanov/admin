@@ -25,19 +25,6 @@ class VersionsController extends Controller
     /**
      * @return array
      */
-    public function actions()
-    {
-        return [
-            'delete' => [
-                'class' => 'app\actions\DeleteAction',
-                'modelClass' => StorageFile::class
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -60,6 +47,7 @@ class VersionsController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::class,
+            'except' => ['index']
         ];
 
         return $behaviors;
@@ -75,16 +63,29 @@ class VersionsController extends Controller
         $model = Storage::findOne($storage_uuid);
 
         if (!$model) {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Storage element not found.');
         }
+
+        $currentNode = $model->tree[0];
+        $parentNode = $currentNode ? $currentNode->parents(1)->one() : null;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $model->getVersions(),
-            'pagination' => ['defaultPageSize' => 3],
             'sort' => false
         ]);
 
-        return $this->renderPartial('index', ['dataProvider' => $dataProvider, 'storage_uuid' => $model->uuid]);
+        $params = [
+            'dataProvider' => $dataProvider,
+            'storage' => $model,
+            'currentNode' => $currentNode,
+            'parentNode' => $parentNode
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
+        return $this->render('index', $params);
     }
 
     /**
@@ -182,5 +183,21 @@ class VersionsController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function actionDelete()
+    {
+        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
+        $models = StorageFile::findAll(['uuid' => $selected]);
+        $counter = 0;
+
+        foreach ($models as $model) {
+            $counter += (int) $model->delete();
+        }
+
+        return $counter === count($models);
     }
 }

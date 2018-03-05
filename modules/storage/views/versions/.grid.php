@@ -1,28 +1,44 @@
 <?php
 
 use storage\models\StorageVersion;
+use yii\helpers\Html;
 
 return [
     [
-        'attribute' => 'file.name',
-        'label' => Yii::t('storage', 'File'),
-        'format' => 'html',
-        'value' => function (StorageVersion $model) {
-            return '<b>' . $model->file->name . '</b><span class="version__description">'
-                . Yii::$app->formatter->asShortSize($model->file->size) . ' / '
-                . $model->file->type . '</span>';
+        'class' => \app\widgets\grid\CheckboxColumn::class,
+        'options' => ['width' => 72],
+        'checkboxOptions' => function (StorageVersion $model) {
+            return ['value' => $model->file_uuid];
         }
     ],
     [
-        'attribute' => 'active',
-        'header' => \yii\helpers\Html::tag('i', 'check', [
-            'class' => "material-icons",
-            'title' => Yii::t('storage', 'Activity')
-        ]),
-        'options' => ['width' => 60],
+        'attribute' => 'file.name',
+        'label' => Yii::t('storage/versions', 'File'),
         'format' => 'raw',
         'value' => function (StorageVersion $model) {
-            return $model->isActive() ? '<i class="material-icons text_success version_active">check</i>' : '';
+            return Html::a($model->file->name, ['edit', 'uuid' => $model->file_uuid], [
+                'title' => Yii::t('storage', 'Rename file'),
+                'data-toggle' => 'modal',
+                'data-target' => '#versions-modal',
+                'data-pjax' => 'false',
+                'data-reload' => 'true'
+            ]);
+        }
+    ],
+    [
+        'attribute' => 'file.size',
+        'format' => 'shortSize',
+        'options' => ['width' => 150],
+    ],
+    [
+        'attribute' => 'active',
+        'label' => Yii::t('storage/versions', 'Act.'),
+        'options' => ['width' => 80],
+        'contentOptions' => ['class' => 'text_center'],
+        'headerOptions' => ['class' => 'text_center'],
+        'format' => 'html',
+        'value' => function (StorageVersion $model) {
+            return $model->isActive() ? '<i class="material-icons text_success">check</i>' : '';
         }
     ],
     [

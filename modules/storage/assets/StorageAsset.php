@@ -4,9 +4,9 @@ namespace storage\assets;
 use yii\web\AssetBundle;
 
 /**
- * Class IndexAsset
+ * Class StorageAsset
  */
-class IndexAsset extends AssetBundle
+class StorageAsset extends AssetBundle
 {
     /**
      * @var string
@@ -32,7 +32,6 @@ class IndexAsset extends AssetBundle
         'app\themes\material\assets\FormAsset',
         'app\themes\material\assets\GridAsset',
         'storage\assets\UploaderAsset',
-        'app\widgets\TabsAsset',
         'yii\widgets\PjaxAsset',
     ];
 }

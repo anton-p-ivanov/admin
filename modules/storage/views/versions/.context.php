@@ -4,7 +4,7 @@
  */
 return [
     [
-        'label' => Yii::t('storage', 'Activate'),
+        'label' => Yii::t('storage/versions', 'Activate'),
         'options' => ['class' => 'default'],
         'url' => ['versions/activate', 'uuid' => $model->file_uuid],
         'visible' => !$model->isActive(),
@@ -15,17 +15,17 @@ return [
         ]),
     ],
     [
-        'label' => Yii::t('storage', 'Rename'),
+        'label' => Yii::t('storage/versions', 'Rename'),
         'url' => ['versions/edit', 'uuid' => $model->file_uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-pjax' => 'false',
             'data-toggle' => 'modal',
-            'data-target' => '#version-modal',
+            'data-target' => '#versions-modal',
             'data-reload' => 'true'
         ]),
     ],
     [
-        'label' => Yii::t('storage', 'Download'),
+        'label' => Yii::t('storage/versions', 'Download'),
         'url' => ['storage/download', 'uuid' => $model->file_uuid, 'original' => true],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-pjax' => 'false',
@@ -36,7 +36,7 @@ return [
         'visible' => !$model->isActive()
     ],
     [
-        'label' => Yii::t('storage', 'Delete'),
+        'label' => Yii::t('storage/versions', 'Delete'),
         'url' => ['versions/delete', 'uuid' => $model->file_uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-pjax' => 'false',

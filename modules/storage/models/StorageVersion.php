@@ -50,7 +50,7 @@ class StorageVersion extends ActiveRecord
      */
     public static function t($label)
     {
-        return \Yii::t('storage', $label);
+        return \Yii::t('storage/versions', $label);
     }
 
     /**

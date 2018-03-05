@@ -13,6 +13,10 @@ class Module extends \yii\base\Module
     /**
      * @var string
      */
+    public static $title = 'Storage';
+    /**
+     * @var string
+     */
     public $defaultRoute = 'storage';
 
     /**

@@ -5,19 +5,19 @@
 ?>
 <div class="modal__container">
     <div class="modal__header">
-        <div class="modal__heading">File upload <span class="hidden">done</span></div>
+        <div class="modal__heading">Загрузка файлов <span class="hidden">завершена</span></div>
     </div>
     <div class="modal__body">
-        <div>Uploading file <span data-file-index="1">{index}</span> of <span data-file-total>{total}</span>:</div>
+        <div>Загружается файл <span data-file-index="1">{index}</span> из <span data-file-total>{total}</span>:</div>
         <div class="progress-bar progress-bar_light" data-file="{file}">
             <div class="progress-bar__ribbon"></div>
         </div>
         <ul class="upload-errors"></ul>
     </div>
     <div class="modal__body modal__body_done hidden">
-        <p class="text_center">All selected files uploaded!</p>
+        <p class="text_center">Все выбранные файлы загружены!</p>
     </div>
     <div class="modal__footer text_center">
-        <button type="button" class="btn btn_default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn_default" data-dismiss="modal">Закрыть</button>
     </div>
 </div>

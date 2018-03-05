@@ -22,13 +22,24 @@ return [
     [
         'label' => Yii::t('storage', 'Download'),
         'url' => ['download', 'uuid' => $model['storage']['file']['uuid']],
-        'options' => ['class' => !$model->storage->isDirectory() ? 'default' : null],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-pjax' => 'false',
         ]),
         'visible' => !$model->storage->isDirectory()
     ],
     ['options' => ['class' => 'dropdown__divider']],
+    [
+        'label' => Yii::t('storage', 'Versions'),
+        'url' => ['versions/index', 'storage_uuid' => $model->storage_uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
+        ]),
+        'visible' => !$model->storage->isDirectory()
+    ],
+    [
+        'options' => ['class' => 'dropdown__divider'],
+        'visible' => !$model->storage->isDirectory()
+    ],
     [
         'label' => Yii::t('storage', 'Delete'),
         'url' => ['delete', 'uuid' => $model->tree_uuid],

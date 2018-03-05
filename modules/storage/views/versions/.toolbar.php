@@ -1,23 +1,32 @@
 <?php
 /**
- * @var string $storage_uuid
- * @var string $updateUrl
+ * @var \storage\models\Storage $storage
+ * @var \storage\models\StorageTree $parentNode
  */
 
 return [
     'group-1' => [
         [
-            'label' => Yii::t('storage', 'Add version'),
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('storage/versions', 'Back to storage'),
+                'data-pjax' => 'false'
+            ],
+            'url' => ['storage/index', 'tree_uuid' => $parentNode ? $parentNode->tree_uuid : null],
+        ],
+        [
+            'label' => Yii::t('storage/versions', 'Add version'),
             'options' => [
                 'data-toggle' => 'upload',
                 'data-target' => '#versions-pjax',
-                'data-url' => $updateUrl,
+                'data-pjax' => 'false'
             ],
             'url' => [
-                'versions/upload',
-                'storage_uuid' => $storage_uuid
+                'upload',
+                'storage_uuid' => $storage->uuid
             ],
-        ]
+        ],
     ],
     'group-2' => [
         [
@@ -26,8 +35,8 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('storage', 'Refresh'),
-                    'url' => $updateUrl,
+                    'label' => Yii::t('storage/versions', 'Refresh'),
+                    'url' => \yii\helpers\Url::current(),
                     'template' => \yii\helpers\Html::a('{label}', '{url}', [
                         'data-toggle' => 'pjax',
                         'data-target' => '#versions-pjax',
@@ -35,5 +44,19 @@ return [
                 ]
             ]
         ],
-    ]
+    ],
+    'selected' => [
+        [
+            'label' => '<i class="material-icons">delete</i>',
+            'encode' => false,
+            'url' => ['delete'],
+            'options' => [
+                'data-http-method' => 'delete',
+                'data-confirm' => 'true',
+                'data-toggle' => 'action',
+                'data-pjax' => 'false',
+                'title' => Yii::t('storage/versions', 'Delete selected items')
+            ],
+        ],
+    ],
 ];

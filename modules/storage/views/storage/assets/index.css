@@ -6,35 +6,43 @@ input[type="file"] {
 #confirm-modal {
     z-index: 1100;
 }
+#storage-dir-modal textarea,
+#storage-file-modal textarea {
+    min-height: 6rem;
+}
+/*
 #upload-modal .modal__container,
 #confirm-modal .modal__container {
     width: 600px;
 }
+*/
 #locations-modal .modal__container {
-    max-width: none;
-    width: 1000px;
+    min-width: 900px;
 }
 #locations-modal .toolbar__title {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 800px;
 }
+/*
 #storage-file-modal .modal__body {
     min-height: 415px;
 }
+*/
 #storage-file-modal .tabs-pane {
-    min-height: 400px;
+    min-height: 355px;
 }
 #versions-pjax,
 #locations-pjax {
-    margin-left: -24px;
-    margin-right: -24px;
+    margin: -24px;
 }
+/*
 #settings-modal .modal__footer,
 #filter-modal .modal__footer {
     padding: 12px;
     justify-content: space-between;
 }
+*/
 .storage__title {
     display: inline;
 }

@@ -11,7 +11,7 @@
 $this->title = 'Панель управления — Библиотека файлов';
 
 // Registering assets
-storage\assets\IndexAsset::register($this);
+storage\assets\StorageAsset::register($this);
 ?>
 <div id="storage-pjax" data-pjax-container="true">
 

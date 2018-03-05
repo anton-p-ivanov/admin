@@ -6,6 +6,7 @@ return [
     [
         'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
+        'multiple' => false,
         'checkboxOptions' => function ($data) {
             $value = ['title' => $data['storage']['title'], 'uuid' => $data['tree_uuid']];
             return ['value' => \yii\helpers\Json::encode($value)];

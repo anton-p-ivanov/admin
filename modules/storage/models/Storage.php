@@ -74,8 +74,9 @@ class Storage extends ActiveRecord
         $hints = [
             'title' => $this->isDirectory()
                 ? 'Folder name up to 200 chars length.'
-                : 'This name will be used when downloading the file. To update it rename active version.',
-            'description' => 'Describe file or folder contents. 500 chars max.'
+                : 'This name will be used when downloading the file.',
+            'description' => 'Describe file or folder contents. 500 chars max.',
+            'locations' => 'Select one of available folders.'
         ];
 
         return array_map('self::t', $hints);

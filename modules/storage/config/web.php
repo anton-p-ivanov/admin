@@ -8,6 +8,10 @@ return [
                 'storage*' => [
                     'class' => yii\i18n\PhpMessageSource::class,
                     'basePath' => '@storage/messages',
+                    'fileMap' => [
+                        'storage' => 'storage.php',
+                        'storage/versions' => 'versions.php',
+                    ]
                 ]
             ]
         ]

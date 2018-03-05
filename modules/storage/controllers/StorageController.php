@@ -80,7 +80,7 @@ class StorageController extends Controller
         ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::class,
-            'except' => ['index']
+            'except' => ['index', 'download']
         ];
 
         return $behaviors;
