@@ -4,6 +4,7 @@ namespace app\widgets\grid;
 
 use yii\base\InvalidConfigException;
 use yii\grid\Column;
+use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
@@ -58,6 +59,18 @@ class CheckboxColumn extends \yii\grid\CheckboxColumn
     public function setView($view)
     {
         $this->_view = $view;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderHeaderCellContent()
+    {
+        if (!$this->multiple) {
+            return Html::checkbox($this->getHeaderCheckBoxName(), false, ['disabled' => true]);
+        }
+
+        return parent::renderHeaderCellContent();
     }
 
     /**

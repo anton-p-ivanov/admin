@@ -60,6 +60,12 @@
                 let $target = $(e.target).parents('table'),
                     count = $target.find('input[name="' + name + '"]:checkbox').not(':checked').length;
 
+                if (!this.multiple) {
+                    $target.find('input[name="' + name + '"]:checked')
+                        .not(e.target)
+                        .prop('checked', false);
+                }
+
                 $target.find('input[name="' + checkAll + '"]:checkbox').prop('checked', count === 0);
 
                 countSelected($target, name);
