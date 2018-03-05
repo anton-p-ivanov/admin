@@ -57,7 +57,6 @@ class FormsTest extends Unit
 
         // Empty required fields
         $this->assertFalse($form->validate(['title']));
-        $this->assertFalse($form->validate(['code']));
 
         // Non-unique code
         $form->code = 'FORM_0';

@@ -58,9 +58,7 @@ class StatusesTest extends Unit
         $status->title = $this->faker->text(500);
         $this->assertFalse($status->validate(['title']));
 
-        $status->active = -1;
         $status->default = -1;
-        $this->assertFalse($status->validate(['active']));
         $this->assertFalse($status->validate(['default']));
 
         $status->form_uuid = Uuid::uuid4()->toString();
