@@ -61,9 +61,9 @@ class StorageFile extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
         $behaviors['purify'] = [
-            'class' => PurifyBehavior::className(),
+            'class' => PurifyBehavior::class,
             'attributes' => ['name', 'type'],
         ];
 
@@ -258,7 +258,7 @@ class StorageFile extends ActiveRecord
      */
     public function getImage()
     {
-        return $this->hasOne(StorageImage::className(), ['file_uuid' => 'uuid']);
+        return $this->hasOne(StorageImage::class, ['file_uuid' => 'uuid']);
     }
 
     /**
@@ -278,7 +278,7 @@ class StorageFile extends ActiveRecord
      */
     public function getStorage()
     {
-        return $this->hasOne(Storage::className(), ['uuid' => 'storage_uuid'])
+        return $this->hasOne(Storage::class, ['uuid' => 'storage_uuid'])
             ->viaTable(StorageVersion::tableName(), ['file_uuid' => 'uuid']);
     }
 }

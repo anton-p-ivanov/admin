@@ -140,8 +140,8 @@ class Storage extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['workflow'] = WorkflowBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['workflow'] = WorkflowBehavior::class;
 
         return $behaviors;
     }
@@ -159,7 +159,7 @@ class Storage extends ActiveRecord
 
             // Prepare uploaded files
             if ($this->files) {
-                $this->files = array_map([StorageFile::className(), 'normalizeFiles'], Json::decode($this->files));
+                $this->files = array_map([StorageFile::class, 'normalizeFiles'], Json::decode($this->files));
             }
         }
 
@@ -398,7 +398,7 @@ class Storage extends ActiveRecord
      */
     public function getFile()
     {
-        return $this->hasOne(StorageFile::className(), ['uuid' => 'file_uuid'])
+        return $this->hasOne(StorageFile::class, ['uuid' => 'file_uuid'])
             ->viaTable(StorageVersion::tableName(), ['storage_uuid' => 'uuid'], function (ActiveQuery $query) {
                 $query->where(['or',
                     StorageVersion::tableName() . '.[[active]] = :active',
@@ -412,7 +412,7 @@ class Storage extends ActiveRecord
      */
     public function getTree()
     {
-        return $this->hasMany(StorageTree::className(), ['storage_uuid' => 'uuid']);
+        return $this->hasMany(StorageTree::class, ['storage_uuid' => 'uuid']);
     }
 
     /**
@@ -420,7 +420,7 @@ class Storage extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -428,7 +428,7 @@ class Storage extends ActiveRecord
      */
     public function getVersions()
     {
-        return $this->hasMany(StorageVersion::className(), ['storage_uuid' => 'uuid'])
+        return $this->hasMany(StorageVersion::class, ['storage_uuid' => 'uuid'])
             ->joinWith(['file', 'workflow'])
             ->orderBy(['{{%workflow}}.[[created_date]]' => SORT_DESC]);
     }
@@ -438,6 +438,6 @@ class Storage extends ActiveRecord
      */
     public function getRoles()
     {
-        return $this->hasMany(StorageRole::className(), ['storage_uuid' => 'uuid']);
+        return $this->hasMany(StorageRole::class, ['storage_uuid' => 'uuid']);
     }
 }

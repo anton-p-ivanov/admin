@@ -28,7 +28,7 @@ class StorageImage extends ActiveRecord
     public function rules()
     {
         return [
-            ['file_uuid', 'exist', 'targetClass' => StorageFile::className(), 'targetAttribute' => 'uuid'],
+            ['file_uuid', 'exist', 'targetClass' => StorageFile::class, 'targetAttribute' => 'uuid'],
             [['width', 'height'], 'integer', 'min' => 0]
         ];
     }

@@ -30,7 +30,7 @@ class VersionsController extends Controller
         return [
             'delete' => [
                 'class' => 'app\actions\DeleteAction',
-                'modelClass' => StorageFile::className()
+                'modelClass' => StorageFile::class
             ],
         ];
     }
@@ -42,7 +42,7 @@ class VersionsController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
                 'upload' => ['put'],
@@ -50,16 +50,16 @@ class VersionsController extends Controller
             ]
         ];
         $behaviors['cn'] = [
-            'class' => ContentNegotiator::className(),
+            'class' => ContentNegotiator::class,
             'only' => ['upload'],
             'formats' => ['application/json' => Response::FORMAT_JSON]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete', 'activate']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
         ];
 
         return $behaviors;

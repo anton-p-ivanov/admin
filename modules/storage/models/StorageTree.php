@@ -72,10 +72,10 @@ class StorageTree extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = ['class' => PrimaryKeyBehavior::className(), 'attribute' => 'tree_uuid'];
-        $behaviors['storage'] = ['class' => StorageTreeBehavior::className()];
+        $behaviors['pk'] = ['class' => PrimaryKeyBehavior::class, 'attribute' => 'tree_uuid'];
+        $behaviors['storage'] = ['class' => StorageTreeBehavior::class];
         $behaviors['tree'] = [
-            'class' => NestedSetsBehavior::className(),
+            'class' => NestedSetsBehavior::class,
             'leftAttribute' => 'left',
             'rightAttribute' => 'right',
             'treeAttribute' => 'root',
@@ -100,7 +100,7 @@ class StorageTree extends ActiveRecord
      */
     public function getStorage()
     {
-        return $this->hasOne(Storage::className(), ['uuid' => 'storage_uuid']);
+        return $this->hasOne(Storage::class, ['uuid' => 'storage_uuid']);
     }
 
     /**

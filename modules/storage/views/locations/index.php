@@ -38,7 +38,7 @@ $updateUrl = \yii\helpers\Url::to(['locations', 'tree_uuid' => $tree_uuid]);
                 ])],
                 'columns' => require_once ".grid.php",
                 'pager' => [
-                    'class' => \app\widgets\grid\Pager::className(),
+                    'class' => \app\widgets\grid\Pager::class,
                     'options' => ['class' => 'pager pager_light']
                 ]
             ]); ?>

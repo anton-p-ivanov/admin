@@ -59,7 +59,7 @@ class StorageVersion extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['workflow'] = WorkflowBehavior::className();
+        $behaviors['workflow'] = WorkflowBehavior::class;
 
         return $behaviors;
     }
@@ -103,7 +103,7 @@ class StorageVersion extends ActiveRecord
      */
     public function getFile()
     {
-        return $this->hasOne(StorageFile::className(), ['uuid' => 'file_uuid']);
+        return $this->hasOne(StorageFile::class, ['uuid' => 'file_uuid']);
     }
 
     /**
@@ -111,7 +111,7 @@ class StorageVersion extends ActiveRecord
      */
     public function getStorage()
     {
-        return $this->hasOne(Storage::className(), ['uuid' => 'storage_uuid']);
+        return $this->hasOne(Storage::class, ['uuid' => 'storage_uuid']);
     }
 
     /**
@@ -119,7 +119,7 @@ class StorageVersion extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**

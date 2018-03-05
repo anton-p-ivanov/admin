@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'checkboxOptions' => function ($data) {
             $value = ['title' => $data['storage']['title'], 'uuid' => $data['tree_uuid']];

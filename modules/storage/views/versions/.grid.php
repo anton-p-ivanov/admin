@@ -31,7 +31,7 @@ return [
         'format' => 'datetime',
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

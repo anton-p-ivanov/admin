@@ -169,7 +169,7 @@ class StorageFilter extends Filter
 
         if ($isValid) {
             $this->query = Json::encode([
-                'class' => md5(self::className()),
+                'class' => md5(self::class),
                 'owner' => $this->owner,
                 'type' => $this->type,
                 'size' => $this->size
