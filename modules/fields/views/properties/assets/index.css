@@ -21,3 +21,8 @@
 .property__title {
     color: white;
 }
+.toolbar-btn_title {
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

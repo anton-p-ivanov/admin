@@ -5,4 +5,6 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'New field`s group']); ?>
+<?= $this->render('@fields/views/groups/create.php', [
+    'model' => $model,
+]); ?>

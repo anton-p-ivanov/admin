@@ -1,6 +1,6 @@
 <?php
 
-use catalogs\modules\admin\modules\fields\models\Group;
+use fields\models\Group;
 use yii\helpers\Html;
 
 return [
@@ -16,7 +16,7 @@ return [
         'format' => 'raw',
         'value' => function (Group $data) {
             return Html::a($data->title, ['edit', 'uuid' => $data->uuid], [
-                'title' => Yii::t('catalogs/fields/groups', 'View & edit field`s group properties'),
+                'title' => Yii::t('fields/groups', 'View & edit field`s group properties'),
                 'data-toggle' => 'modal',
                 'data-target' => '#groups-modal',
                 'data-pjax' => 'false',
@@ -26,12 +26,15 @@ return [
         }
     ],
     [
-        'label' => Yii::t('catalogs/fields/groups', 'Act.'),
+        'label' => Yii::t('fields/groups', 'Act.'),
         'attribute' => 'active',
+        'contentOptions' => ['class' => 'text_center'],
+        'headerOptions' => ['class' => 'text_center'],
         'format' => 'boolean',
-        'options' => ['width' => 150],
+        'options' => ['width' => 100],
     ],
     [
+        'label' => Yii::t('fields/groups', 'Sort.'),
         'attribute' => 'sort',
         'contentOptions' => ['class' => 'text_right'],
         'headerOptions' => ['class' => 'text_right'],

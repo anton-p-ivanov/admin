@@ -6,6 +6,7 @@
  */
 
 use fields\models\Field;
+use fields\models\Group;
 
 ?>
 <div class="grid">
@@ -17,5 +18,13 @@ use fields\models\Field;
     </div>
 </div>
 
-<?= $form->field($model, 'type')->dropDownList(Field::getTypes()); ?>
-<?= $form->field($model, 'default'); ?>
+<div class="grid">
+    <div class="grid__item">
+        <?= $form->field($model, 'type')->dropDownList(Field::getTypes()); ?>
+    </div>
+    <div class="grid__item">
+        <?= $form->field($model, 'default'); ?>
+    </div>
+</div>
+
+<?= $form->field($model, 'group_uuid')->dropDownList(Group::getList()); ?>

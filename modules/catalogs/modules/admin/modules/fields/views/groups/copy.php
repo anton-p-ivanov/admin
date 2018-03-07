@@ -5,4 +5,6 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Copy field`s group']); ?>
+<?= $this->render('@fields/views/groups/copy.php', [
+    'model' => $model,
+]); ?>

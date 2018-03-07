@@ -5,4 +5,4 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'title' => 'Edit field`s group']); ?>
+<?= $this->render('@fields/views/groups/edit.php', ['model' => $model]); ?>

@@ -26,10 +26,12 @@ use yii\validators\UniqueValidator;
  * @property bool $active
  * @property bool $list
  * @property integer $sort
+ * @property string $group_uuid
  * @property string $workflow_uuid
  *
  * @property FieldValidator[] $fieldValidators
  * @property FieldValue[] $fieldValues
+ * @property Group $group
  * @property Workflow $workflow
  *
  * @package fields\models
@@ -144,6 +146,7 @@ class Field extends ActiveRecord
             'workflow.modified_date' => 'Modified',
             'validators' => 'Validators',
             'values' => 'Values',
+            'group_uuid' => 'Group',
         ];
 
         return array_map('self::t', $labels);
@@ -163,7 +166,8 @@ class Field extends ActiveRecord
             'sort' => 'The numerical value that determines the position of the field in various lists. Default value is `100`.',
             'type' => 'Affects how the field is rendered and validated.',
             'default' => 'Default value is used when no value is set.',
-            'options' => 'Provide valid JSON-string, ex. {"name": "value"}.'
+            'options' => 'Provide valid JSON-string, ex. {"name": "value"}.',
+            'group_uuid' => 'Select one of available groups.'
         ];
 
         return array_map('self::t', $hints);
@@ -192,6 +196,7 @@ class Field extends ActiveRecord
             ['code', 'match', 'pattern' => '/^[a-z_\-\d]*$/i', 'message' => self::t('Invalid code.')],
             ['type', 'validateValues'],
             ['list', 'validateList'],
+            ['group_uuid', 'exist', 'targetClass' => Group::class, 'targetAttribute' => 'uuid'],
             ['options', JsonValidator::class],
             ['type', 'default', 'value' => self::FIELD_TYPE_DEFAULT],
         ];
@@ -342,6 +347,14 @@ class Field extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getGroup()
+    {
+        return $this->hasOne(Group::class, ['uuid' => 'group_uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getWorkflow()
     {
         return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
@@ -370,21 +383,6 @@ class Field extends ActiveRecord
     {
         return in_array(FieldValidator::TYPE_REQUIRED, ArrayHelper::getColumn($this->fieldValidators, 'type'));
     }
-//
-//    /**
-//     * @param int $length
-//     * @return string
-//     */
-//    protected static function generateCodeAppendix($length = 6)
-//    {
-//        $alphabet = str_split('abcdefghijklmnopqrstuvwxyz');
-//        $appendix = '';
-//        for ($i = 0; $i < $length + 1; $i++) {
-//            $appendix .= $alphabet[random_int(0, count($alphabet) - 1)];
-//        }
-//
-//        return $appendix;
-//    }
 
     /**
      * @return Field|bool

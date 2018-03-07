@@ -1,6 +1,7 @@
 <?php
 /**
- * @var \catalogs\modules\admin\modules\fields\models\Field $field
+ * @var \fields\models\Field $field
+ * @var string $returnUrl
  */
 
 return [
@@ -9,25 +10,23 @@ return [
             'label' => '<i class="material-icons">arrow_back</i>',
             'encode' => false,
             'options' => [
-                'title' => Yii::t('fields/values', 'Back to fields` list'),
+                'title' => Yii::t('catalogs/fields', 'Back to fields` list'),
                 'data-pjax' => 'false'
             ],
             'url' => [
-                '/catalogs/admin/fields/fields/index',
-                'catalog_uuid' => $field->catalog_uuid
+                isset($returnUrl) ? $returnUrl : 'fields/index',
             ],
         ],
         [
-            'label' => Yii::t('fields/values', 'Create'),
+            'label' => Yii::t('fields/groups', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
-                'data-target' => '#values-modal',
+                'data-target' => '#groups-modal',
                 'data-reload' => 'true',
                 'data-persistent' => 'true'
             ],
             'url' => [
                 'create',
-                'field_uuid' => $field->uuid,
             ],
         ]
     ],
@@ -38,7 +37,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('fields/values', 'Refresh'),
+                    'label' => Yii::t('fields/groups', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]
@@ -54,8 +53,8 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('fields/values', 'Delete selected items')
+                'title' => Yii::t('fields/groups', 'Delete selected items')
             ],
         ],
-    ],
+    ]
 ];

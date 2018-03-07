@@ -17,6 +17,9 @@ return [
         ],
         [
             'label' => $title,
+            'options' => [
+                'class' => 'toolbar-btn toolbar-btn_title',
+            ],
         ]
     ],
     'group-2' => [

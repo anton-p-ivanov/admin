@@ -3,6 +3,18 @@
 return [
     'group-1' => [
         [
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('fields', 'Back to elements` list'),
+                'data-pjax' => 'false'
+            ],
+            'visible' => isset($returnUrl),
+            'url' => [
+                isset($returnUrl) ? $returnUrl : null,
+            ],
+        ],
+        [
             'label' => Yii::t('fields', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
@@ -12,6 +24,15 @@ return [
             ],
             'url' => [
                 'create',
+            ],
+        ],
+        [
+            'label' => Yii::t('fields', 'Groups'),
+            'options' => [
+                'data-pjax' => 'false',
+            ],
+            'url' => [
+                'groups/index',
             ],
         ]
     ],
