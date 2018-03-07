@@ -49,11 +49,9 @@ use yii\helpers\Html;
         <?php \app\widgets\Tabs::end(); ?>
 
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('catalogs', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>

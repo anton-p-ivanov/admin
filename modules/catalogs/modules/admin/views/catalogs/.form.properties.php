@@ -9,7 +9,15 @@ use catalogs\modules\admin\models\Type;
 
 ?>
 
-<?= $form->field($model, 'active')->switch(); ?>
+<div class="grid">
+    <div class="grid__item">
+        <?= $form->field($model, 'active')->switch(); ?>
+    </div>
+    <div class="grid__item">
+        <?= $form->field($model, 'trade')->switch(); ?>
+    </div>
+</div>
+
 <?= $form->field($model, 'type_uuid')->dropDownList(Type::getList()); ?>
 
 <?= \app\widgets\form\FieldSelector::widget([
@@ -18,16 +26,6 @@ use catalogs\modules\admin\models\Type;
     'attributes' => \i18n\models\Language::getLangAttributeNames('title'),
     'options' => [
         'fieldType' => 'textInput',
-        'action-icon' => 'language'
-    ]
-]); ?>
-
-<?= \app\widgets\form\FieldSelector::widget([
-    'form' => $form,
-    'model' => $model,
-    'attributes' => \i18n\models\Language::getLangAttributeNames('description'),
-    'options' => [
-        'fieldType' => 'textarea',
         'action-icon' => 'language'
     ]
 ]); ?>

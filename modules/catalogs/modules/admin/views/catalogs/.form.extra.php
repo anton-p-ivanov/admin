@@ -5,12 +5,16 @@
  * @var \yii\widgets\ActiveForm $form
  */
 ?>
+<?= $form->field($model, 'index')->switch(); ?>
+
+<?= \app\widgets\form\FieldSelector::widget([
+    'form' => $form,
+    'model' => $model,
+    'attributes' => \i18n\models\Language::getLangAttributeNames('description'),
+    'options' => [
+        'fieldType' => 'textarea',
+        'action-icon' => 'language'
+    ]
+]); ?>
 <?= $form->field($model, 'code'); ?>
-<div class="grid">
-    <div class="grid__item">
-        <?= $form->field($model, 'trade')->switch(); ?>
-    </div>
-    <div class="grid__item">
-        <?= $form->field($model, 'index')->switch(); ?>
-    </div>
-</div>
+

@@ -12,6 +12,7 @@ use catalogs\modules\admin\modules\fields\models\Group;
  */
 trait Duplicator
 {
+    use \fields\components\traits\Duplicator;
     /**
      * @var array
      */

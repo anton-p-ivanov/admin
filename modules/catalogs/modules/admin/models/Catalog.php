@@ -157,7 +157,7 @@ class Catalog extends \catalogs\models\Catalog
     public function rules()
     {
         return [
-            [['title', 'code', 'type_uuid'], 'required', 'message' => self::t('{attribute} is required.')],
+            [['title', 'type_uuid'], 'required', 'message' => self::t('{attribute} is required.')],
             [['title', 'code'], 'string', 'max' => 255, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
             [['active', 'trade', 'index'], 'boolean'],
             ['active', 'default', 'value' => 1],

@@ -24,7 +24,11 @@ use app\widgets\form\ActiveForm;
         <?= \app\widgets\form\FieldSelector::widget([
             'form' => $form,
             'model' => $model,
-            'attributes' => \i18n\models\Language::getLangAttributeNames('title')
+            'attributes' => \i18n\models\Language::getLangAttributeNames('title'),
+            'options' => [
+                'fieldType' => 'textInput',
+                'action-icon' => 'language'
+            ]
         ]); ?>
         <div class="grid">
             <div class="grid__item">
@@ -35,11 +39,9 @@ use app\widgets\form\ActiveForm;
             </div>
         </div>
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('catalogs/types', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>

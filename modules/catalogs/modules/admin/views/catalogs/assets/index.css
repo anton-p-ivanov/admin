@@ -1,11 +1,9 @@
 #confirm-modal {
     z-index: 1100;
 }
-.modal__alert {
-    padding-left: 24px;
-    padding-right: 24px;
-    margin: 0 -24px;
-}
 #catalogs-modal .tabs-pane {
-    min-height: 570px;
+    min-height: 355px;
+}
+#catalogs-modal textarea {
+    min-height: 6rem;
 }
