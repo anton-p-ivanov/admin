@@ -47,6 +47,7 @@ class Module extends \yii\base\Module
                 'fields' => 'fields.php',
                 'fields/validators' => 'validators.php',
                 'fields/values' => 'values.php',
+                'fields/groups' => 'groups.php',
             ]
         ];
 
@@ -60,7 +61,6 @@ class Module extends \yii\base\Module
                 'catalogs/locations' => 'locations.php',
                 'catalogs/types' => 'types.php',
                 'catalogs/fields' => 'fields.php',
-                'catalogs/fields/groups' => 'fields/groups.php',
             ]
         ];
     }

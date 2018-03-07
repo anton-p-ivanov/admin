@@ -13,8 +13,14 @@
 .catalog__title {
     font-size: 24px;
     margin-bottom: 15px;
+    max-height: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .catalog__description {
     color: #999;
     margin-bottom: 15px;
+    max-height: 104px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

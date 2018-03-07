@@ -6,4 +6,5 @@ return [
     'Fields for catalog' => 'Поля каталога',
     'Back to catalogs` list' => 'Назад к списку каталогов',
     'Groups' => 'Группы',
+    'Fields` groups for catalog' => 'Группы полей каталога',
 ];
