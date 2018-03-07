@@ -5,55 +5,16 @@ namespace accounts\controllers;
 use accounts\models\Account;
 use accounts\models\AccountProperty;
 use accounts\models\Field;
-use app\models\User;
-use yii\filters\AjaxFilter;
 use yii\helpers\Json;
-use yii\web\Controller;
 use yii\web\HttpException;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * Class PropertiesController
  *
  * @package accounts\controllers
  */
-class PropertiesController extends Controller
+class PropertiesController extends \fields\controllers\PropertiesController
 {
-    /**
-     * @param \yii\base\Action $action
-     * @return bool
-     */
-    public function beforeAction($action)
-    {
-        $isValid = parent::beforeAction($action);
-
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
-
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
-        }
-
-        return $isValid;
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
-    }
-
     /**
      * @param string $account_uuid
      * @return string
@@ -121,24 +82,5 @@ class PropertiesController extends Controller
         return $this->renderPartial('edit', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * @param AccountProperty $model
-     * @return array
-     */
-    protected function postUpdate($model)
-    {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
-        }
-
-        $model->save(false);
-
-        return $model->attributes;
     }
 }
