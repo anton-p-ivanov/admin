@@ -87,7 +87,7 @@ class Catalog extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -95,7 +95,7 @@ class Catalog extends ActiveRecord
      */
     public function getType()
     {
-        return $this->hasOne(Type::className(), ['uuid' => 'type_uuid']);
+        return $this->hasOne(Type::class, ['uuid' => 'type_uuid']);
     }
 
     /**

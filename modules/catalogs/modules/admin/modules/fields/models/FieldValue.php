@@ -24,6 +24,6 @@ class FieldValue extends \fields\models\FieldValue
      */
     public function getField()
     {
-        return $this->hasOne(Field::className(), ['uuid' => 'field_uuid']);
+        return $this->hasOne(Field::class, ['uuid' => 'field_uuid']);
     }
 }

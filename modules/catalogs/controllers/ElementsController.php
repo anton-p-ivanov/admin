@@ -7,10 +7,12 @@ use app\models\User;
 use app\models\Workflow;
 use catalogs\models\Catalog;
 use catalogs\models\Element;
+use catalogs\models\ElementField;
 use catalogs\models\ElementTree;
 use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -50,21 +52,21 @@ class ElementsController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
             ]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
             'except' => ['index']
         ];
         $behaviors['json'] = [
-            'class' => ContentNegotiator::className(),
+            'class' => ContentNegotiator::class,
             'only' => ['get-canonical-path'],
             'formats' => [
                 'application/json' => Response::FORMAT_JSON
@@ -85,11 +87,19 @@ class ElementsController extends Controller
         /* @var ElementTree $currentNode */
         extract($this->loadModels($tree_uuid));
 
+        $dataProvider = ElementTree::search(['tree_uuid' => $currentNode->tree_uuid]);
+
         $params = [
-            'dataProvider' => ElementTree::search(['tree_uuid' => $currentNode->tree_uuid]),
+            'dataProvider' => $dataProvider,
             'currentNode' => $currentNode,
             'parentNode' => $parentNode,
-            'catalog' => $catalog
+            'catalog' => $catalog,
+            'properties' => ElementField::find()
+                ->where(['element_uuid' => ArrayHelper::getColumn($dataProvider->models, 'element_uuid')])
+                ->select('COUNT(*)')
+                ->indexBy('element_uuid')
+                ->groupBy('element_uuid')
+                ->column()
         ];
 
         if (\Yii::$app->request->isAjax) {

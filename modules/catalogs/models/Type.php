@@ -77,6 +77,6 @@ class Type extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 }

@@ -4,9 +4,9 @@ namespace catalogs\assets;
 use yii\web\AssetBundle;
 
 /**
- * Class IndexAsset
+ * Class ElementsAsset
  */
-class IndexAsset extends AssetBundle
+class ElementsAsset extends AssetBundle
 {
     /**
      * @var string
@@ -32,6 +32,7 @@ class IndexAsset extends AssetBundle
         'app\themes\material\assets\FormAsset',
         'app\themes\material\assets\GridAsset',
         'app\themes\material\assets\DateTimePickerAsset',
+        'app\themes\material\assets\CodeMirrorThemeAsset',
         'app\widgets\TabsAsset',
         'yii\widgets\PjaxAsset',
     ];

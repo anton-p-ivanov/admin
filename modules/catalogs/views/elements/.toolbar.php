@@ -15,7 +15,7 @@ return [
             'url' => ['index', 'tree_uuid' => $parentNode ? $parentNode->tree_uuid : null],
             'options' => [
                 'title' => Yii::t('catalogs/elements', 'Up to previous level'),
-                'class' => 'toolbar-btn toolbar-btn_back'
+                'class' => 'toolbar-btn toolbar-btn_back',
             ],
             'visible' => !$currentNode->isRoot()
         ],

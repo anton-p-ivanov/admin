@@ -91,15 +91,15 @@ class Element extends ActiveRecord
     {
         $hints = [
             'title' => 'Up to 200 characters length. Inline HTML-tags allowed.',
-            'description' => 'Describe contents of section. Maximum 500 characters allowed. Inline HTML-tags allowed.',
+            'description' => 'Maximum 500 characters allowed. Inline HTML-tags allowed.',
             'content' => 'Element content. HTML is allowed.',
             'locations' => 'Select one of available locations.',
             'active' => 'Whether an element is active for public use.',
             'active_from_date' => 'Specifies the date after that an element should be visible.',
             'active_to_date' => 'Specifies the date after that an element will be blocked for public use.',
             'sites' => 'Select sites where an element will be available.',
-            'code' => 'Unique symbolic code. Will be auto-generated if empty.',
-            'sort' => 'Sorting index. Default is 100.'
+            'code' => 'Will be generated if empty.',
+            'sort' => 'Default is 100.'
         ];
 
         return array_map('self::t', $hints);
@@ -118,8 +118,9 @@ class Element extends ActiveRecord
             'active' => 'Active',
             'active_from_date' => 'Active from',
             'active_to_date' => 'Active to',
-            'sort' => 'Sort',
+            'sort' => 'Sorting index',
             'sites' => 'Sites',
+            'code' => 'Symbolic code'
         ];
 
         return array_map('self::t', $labels);
@@ -141,7 +142,7 @@ class Element extends ActiveRecord
             ['code', 'match', 'pattern' => '/^[\w\d\-\_]+$/'],
             ['description', 'string', 'max' => 500],
             ['content', 'safe'],
-            ['sites', 'exist', 'targetClass' => Site::className(), 'targetAttribute' => 'uuid', 'allowArray' => true],
+            ['sites', 'exist', 'targetClass' => Site::class, 'targetAttribute' => 'uuid', 'allowArray' => true],
             ['sites', 'required', 'when' => function (Element $model) {
                 return !$model->isSection();
             }],
@@ -229,17 +230,17 @@ class Element extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['wf'] = WorkflowBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['wf'] = WorkflowBehavior::class;
         $behaviors['sl'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'title',
             'slugAttribute' => 'code',
             'ensureUnique' => true,
             'immutable' => true
         ];
         $behaviors['pf'] = [
-            'class' => PurifyBehavior::className(),
+            'class' => PurifyBehavior::class,
             'attributes' => ['title', 'description'],
             'config' => [
                 'AutoFormat.RemoveEmpty' => true,
@@ -473,7 +474,7 @@ class Element extends ActiveRecord
      */
     public function getTree()
     {
-        return $this->hasMany(ElementTree::className(), ['element_uuid' => 'uuid']);
+        return $this->hasMany(ElementTree::class, ['element_uuid' => 'uuid']);
     }
 
     /**
@@ -481,7 +482,7 @@ class Element extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(ElementTree::className(), ['element_uuid' => 'uuid']);
+        return $this->hasOne(ElementTree::class, ['element_uuid' => 'uuid']);
     }
 
     /**
@@ -489,7 +490,7 @@ class Element extends ActiveRecord
      */
     public function getCatalog()
     {
-        return $this->hasOne(Catalog::className(), ['uuid' => 'catalog_uuid']);
+        return $this->hasOne(Catalog::class, ['uuid' => 'catalog_uuid']);
     }
 
     /**
@@ -497,7 +498,7 @@ class Element extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -507,7 +508,7 @@ class Element extends ActiveRecord
     {
         if ($this->_sites === null) {
             $this->_sites = $this
-                ->hasMany(ElementSite::className(), ['element_uuid' => 'uuid'])
+                ->hasMany(ElementSite::class, ['element_uuid' => 'uuid'])
                 ->select('site_uuid')
                 ->column();
         }

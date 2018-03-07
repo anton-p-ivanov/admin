@@ -33,6 +33,18 @@ return [
             'data-reload' => 'true'
         ]),
     ],
+    [
+        'options' => ['class' => 'dropdown__divider'],
+        'visible' => !$model->element->isSection(),
+    ],
+    [
+        'label' => Yii::t('catalogs/elements', 'Custom fields'),
+        'url' => ['properties/index', 'element_uuid' => $model->element_uuid, 'tree_uuid' => Yii::$app->request->get('tree_uuid')],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
+        ]),
+        'visible' => !$model->element->isSection(),
+    ],
     ['options' => ['class' => 'dropdown__divider']],
     [
         'label' => Yii::t('catalogs/elements', 'Delete'),

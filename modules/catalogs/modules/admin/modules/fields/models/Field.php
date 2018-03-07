@@ -69,7 +69,7 @@ class Field extends \fields\models\Field
         $rules = parent::rules();
 
         $rules[] = [
-            'group_uuid', 'exist', 'targetClass' => Group::className(), 'targetAttribute' => 'uuid'
+            'group_uuid', 'exist', 'targetClass' => Group::class, 'targetAttribute' => 'uuid'
         ];
 
         $rules[] = [
@@ -113,7 +113,7 @@ class Field extends \fields\models\Field
      */
     public function getFieldValidators()
     {
-        return $this->hasMany(FieldValidator::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValidator::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -121,7 +121,7 @@ class Field extends \fields\models\Field
      */
     public function getFieldValues()
     {
-        return $this->hasMany(FieldValue::className(), ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
+        return $this->hasMany(FieldValue::class, ['field_uuid' => 'uuid'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**
@@ -129,7 +129,7 @@ class Field extends \fields\models\Field
      */
     public function getCatalog()
     {
-        return $this->hasOne(Catalog::className(), ['uuid' => 'catalog_uuid']);
+        return $this->hasOne(Catalog::class, ['uuid' => 'catalog_uuid']);
     }
 
     /**
@@ -137,6 +137,18 @@ class Field extends \fields\models\Field
      */
     public function getGroup()
     {
-        return $this->hasOne(Group::className(), ['uuid' => 'group_uuid']);
+        return $this->hasOne(Group::class, ['uuid' => 'group_uuid']);
+    }
+
+    /**
+     * @return Field[]
+     */
+    public static function getList()
+    {
+        return Field::find()
+            ->where(['active' => true])
+            ->orderBy(['sort' => SORT_ASC])
+            ->indexBy('uuid')
+            ->all();
     }
 }

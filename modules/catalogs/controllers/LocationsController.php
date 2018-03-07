@@ -37,7 +37,7 @@ class LocationsController extends Controller
     {
         $behaviors = parent::behaviors();
 //        $behaviors['ajax'] = [
-//            'class' => AjaxFilter::className(),
+//            'class' => AjaxFilter::class,
 //        ];
 
         return $behaviors;

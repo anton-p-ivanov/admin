@@ -18,7 +18,7 @@ use yii\helpers\Html;
             'readonly' => 'true',
             'value' => ElementHelper::getLocationTitle($model->locations),
         ]); ?>
-        <?= Html::activeHiddenInput($model, 'locations[0]'); ?>
+        <?= Html::activeHiddenInput($model, 'locations[0]', ['id' => false]); ?>
         <div class="input-group__buttons">
             <?= Html::a('<i class="material-icons">apps</i>',
                 ['locations/index', 'tree_uuid' => $model->locations[0]],
@@ -40,4 +40,4 @@ use yii\helpers\Html;
 </div>
 
 <?= $form->field($model, 'title'); ?>
-<?= $form->field($model, 'description')->multilineInput(); ?>
+<?= $form->field($model, 'description')->textarea(); ?>

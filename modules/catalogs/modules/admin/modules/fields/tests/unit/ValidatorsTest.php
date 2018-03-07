@@ -30,7 +30,7 @@ class ValidatorsTest extends Unit
     public function _fixtures()
     {
         return [
-            'validators' => ValidatorsFixture::className(),
+            'validators' => ValidatorsFixture::class,
         ];
     }
 

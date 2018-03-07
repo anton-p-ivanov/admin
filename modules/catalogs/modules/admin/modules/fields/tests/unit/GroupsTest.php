@@ -34,8 +34,8 @@ class GroupsTest extends Unit
     public function _fixtures()
     {
         return [
-            'groups' => GroupFixture::className(),
-            'fields' => FieldFixture::className(),
+            'groups' => GroupFixture::class,
+            'fields' => FieldFixture::class,
         ];
     }
 

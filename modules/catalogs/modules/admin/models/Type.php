@@ -121,9 +121,9 @@ class Type extends \catalogs\models\Type
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
         $behaviors['sg'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'title',
             'slugAttribute' => 'code',
             'ensureUnique' => true,

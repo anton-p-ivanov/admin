@@ -80,10 +80,10 @@ class Catalog extends \catalogs\models\Catalog
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = PrimaryKeyBehavior::className();
-        $behaviors['wf'] = WorkflowBehavior::className();
+        $behaviors['pk'] = PrimaryKeyBehavior::class;
+        $behaviors['wf'] = WorkflowBehavior::class;
         $behaviors['sg'] = [
-            'class' => SluggableBehavior::className(),
+            'class' => SluggableBehavior::class,
             'attribute' => 'title',
             'slugAttribute' => 'code',
             'ensureUnique' => true,
@@ -162,7 +162,7 @@ class Catalog extends \catalogs\models\Catalog
             [['active', 'trade', 'index'], 'boolean'],
             ['active', 'default', 'value' => 1],
             [['trade', 'index'], 'default', 'value' => 0],
-            ['type_uuid', 'exist', 'targetClass' => Type::className(), 'targetAttribute' => 'uuid'],
+            ['type_uuid', 'exist', 'targetClass' => Type::class, 'targetAttribute' => 'uuid'],
             [
                 'sort',
                 'integer',
@@ -240,7 +240,7 @@ class Catalog extends \catalogs\models\Catalog
      */
     public function getFields()
     {
-        return $this->hasMany(Field::className(), ['catalog_uuid' => 'uuid']);
+        return $this->hasMany(Field::class, ['catalog_uuid' => 'uuid']);
     }
 
     /**
@@ -248,6 +248,6 @@ class Catalog extends \catalogs\models\Catalog
      */
     public function getGroups()
     {
-        return $this->hasMany(Group::className(), ['catalog_uuid' => 'uuid']);
+        return $this->hasMany(Group::class, ['catalog_uuid' => 'uuid']);
     }
 }

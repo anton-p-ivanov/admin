@@ -4,8 +4,9 @@ use yii\helpers\Html;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
+        'multiple' => false,
         'checkboxOptions' => function ($data) {
             $value = ['title' => $data['element']['title'], 'uuid' => $data['tree_uuid']];
             return ['value' => \yii\helpers\Json::encode($value)];

@@ -29,7 +29,7 @@ class ValuesTest extends Unit
     public function _fixtures()
     {
         return [
-            'values' => ValueFixture::className(),
+            'values' => ValueFixture::class,
         ];
     }
 

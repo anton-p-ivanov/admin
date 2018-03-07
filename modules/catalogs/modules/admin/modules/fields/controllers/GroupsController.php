@@ -48,17 +48,17 @@ class GroupsController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['delete'],
             ]
         ];
         $behaviors['confirm'] = [
-            'class' => ConfirmFilter::className(),
+            'class' => ConfirmFilter::class,
             'actions' => ['delete']
         ];
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
             'except' => ['index']
         ];
 

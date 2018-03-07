@@ -123,8 +123,8 @@ class Group extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = WorkflowBehavior::className();
-        $behaviors[] = PrimaryKeyBehavior::className();
+        $behaviors[] = WorkflowBehavior::class;
+        $behaviors[] = PrimaryKeyBehavior::class;
 
         return $behaviors;
     }
@@ -139,7 +139,7 @@ class Group extends ActiveRecord
             ['title', 'string', 'max' => 255, 'tooLong' => 'Maximum {max, number} characters allowed.'],
             ['active', 'boolean'],
             ['sort', 'integer', 'min' => 0, 'tooSmall' => '{attribute} value must be greater or equal {min, number}.'],
-            ['catalog_uuid', 'exist', 'targetClass' => Catalog::className(), 'targetAttribute' => 'uuid'],
+            ['catalog_uuid', 'exist', 'targetClass' => Catalog::class, 'targetAttribute' => 'uuid'],
         ];
     }
 
@@ -148,7 +148,7 @@ class Group extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -156,7 +156,7 @@ class Group extends ActiveRecord
      */
     public function getCatalog()
     {
-        return $this->hasOne(Catalog::className(), ['uuid' => 'catalog_uuid']);
+        return $this->hasOne(Catalog::class, ['uuid' => 'catalog_uuid']);
     }
 
     /**+
@@ -164,6 +164,6 @@ class Group extends ActiveRecord
      */
     public function getFields()
     {
-        return $this->hasMany(Field::className(), ['group_uuid' => 'uuid']);
+        return $this->hasMany(Field::class, ['group_uuid' => 'uuid']);
     }
 }

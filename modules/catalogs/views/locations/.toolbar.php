@@ -7,13 +7,12 @@
 return [
     'group-1' => [
         [
-            'label' => '<i class="material-icons">arrow_back</i>',
+            'label' => $parentNode ? '<i class="material-icons">arrow_back</i>' : '<i class="material-icons">apps</i>',
             'encode' => false,
             'url' => ['index', 'tree_uuid' => $parentNode ? $parentNode->tree_uuid : null],
             'options' => [
                 'title' => Yii::t('catalogs/locations', 'Up to previous level')
             ],
-            'visible' => !$currentNode->isRoot()
         ],
         [
             'label' => $currentNode->isRoot() ? Yii::t('catalogs/locations', 'Catalog root') : $currentNode->element->title,

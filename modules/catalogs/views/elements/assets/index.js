@@ -41,6 +41,24 @@ $(function () {
         // Enable tabs
         $('[data-toggle="tab"]').tabs();
 
+        // Enable code editor
+        $modal.find('[data-toggle="editor"]').each(function (index, item) {
+            $(item).on('focus', function () {
+                let container = $(this).closest('.form-group_text'),
+                    cm = CodeMirror.fromTextArea(item, {
+                        lineNumbers: true,
+                        lineWrapping: true
+                    });
+
+                container.toggleClass('form-group_focused', true);
+
+                cm.on('blur', function () {
+                    container.toggleClass('form-group_focused', false);
+                    cm.toTextArea();
+                });
+            });
+        });
+
         $modal.on('click', '[data-toggle="location-remove"]', function (e) {
             e.preventDefault();
 

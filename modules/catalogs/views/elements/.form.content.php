@@ -6,5 +6,5 @@
  */
 ?>
 
-<?= $form->field($model, 'description')->textarea(); ?>
-<?= $form->field($model, 'content')->textarea(); ?>
+<?= $form->field($model, 'description')->textarea(['data-toggle' => 'editor']); ?>
+<?= $form->field($model, 'content')->textarea(['data-toggle' => 'editor']); ?>

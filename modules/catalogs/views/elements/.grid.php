@@ -1,11 +1,14 @@
 <?php
+/**
+ * @var array $properties
+ */
 
 use catalogs\models\ElementTree;
 use yii\helpers\Html;
 
 return [
     [
-        'class' => \app\widgets\grid\CheckboxColumn::className(),
+        'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 68],
         'checkboxOptions' => function (ElementTree $model) {
             return ['value' => $model->tree_uuid];
@@ -35,6 +38,29 @@ return [
             return Html::tag('span', $title, [
                 'class' => 'elements__title elements__title_' . strtolower($data->element->type)
             ]);
+        }
+    ],
+    [
+        'label' => Yii::t('catalogs/elements', 'Prop.'),
+        'options' => ['width' => 100],
+        'contentOptions' => ['class' => 'text_right'],
+        'headerOptions' => ['class' => 'text_right'],
+        'format' => 'raw',
+        'value' => function (ElementTree $data) use ($properties) {
+            if (!$data->element->isSection()) {
+                $count = 0;
+
+                if (array_key_exists($data->element_uuid, $properties)) {
+                    $count = $properties[$data->element_uuid];
+                }
+
+                return Html::a($count, ['properties/index', 'element_uuid' => $data->element_uuid, 'tree_uuid' => Yii::$app->request->get('tree_uuid')], [
+                    'title' => Yii::t('catalogs/elements', 'View element properties'),
+                    'data-pjax' => 'false',
+                ]);
+            }
+
+            return '';
         }
     ],
     [
@@ -86,7 +112,7 @@ return [
         }
     ],
     [
-        'class' => \app\widgets\grid\ActionColumn::className(),
+        'class' => \app\widgets\grid\ActionColumn::class,
         'items' => function (
             /** @noinspection PhpUnusedParameterInspection */ $model
         ) {

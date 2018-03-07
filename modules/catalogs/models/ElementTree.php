@@ -78,10 +78,10 @@ class ElementTree extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['pk'] = ['class' => PrimaryKeyBehavior::className(), 'attribute' => 'tree_uuid'];
-        $behaviors['element'] = ['class' => ElementTreeBehavior::className()];
+        $behaviors['pk'] = ['class' => PrimaryKeyBehavior::class, 'attribute' => 'tree_uuid'];
+        $behaviors['element'] = ['class' => ElementTreeBehavior::class];
         $behaviors['tree'] = [
-            'class' => NestedSetsBehavior::className(),
+            'class' => NestedSetsBehavior::class,
             'leftAttribute' => 'left',
             'rightAttribute' => 'right',
             'treeAttribute' => 'root',
@@ -106,7 +106,7 @@ class ElementTree extends ActiveRecord
      */
     public function getElement()
     {
-        return $this->hasOne(Element::className(), ['uuid' => 'element_uuid']);
+        return $this->hasOne(Element::class, ['uuid' => 'element_uuid']);
     }
 
     /**
@@ -188,7 +188,7 @@ class ElementTree extends ActiveRecord
      * @param array $params
      * @return ElementTreeQuery
      */
-    protected static function prepareSearchQuery($params = [])
+    public static function prepareSearchQuery($params = [])
     {
         /* @var ElementTreeQuery $root */
         $root = self::find()->where($params)->one();
