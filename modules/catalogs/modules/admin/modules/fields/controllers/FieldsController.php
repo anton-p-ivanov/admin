@@ -59,15 +59,19 @@ class FieldsController extends \fields\controllers\FieldsController
         $params = [
             'dataProvider' => Field::search(['catalog_uuid' => $catalog_uuid]),
             'catalog' => $catalog,
-            'validators' => FieldValidator::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('field_uuid')
-                ->indexBy('field_uuid')->column(),
-            'values' => FieldValue::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('field_uuid')
-                ->indexBy('field_uuid')->column(),
         ];
+
+        $relations = [
+            'values' => FieldValue::class,
+            'validators' => FieldValidator::class
+        ];
+
+        foreach ($relations as $name => $className) {
+            $params[$name] = $className::find()
+                ->select(['count' => 'COUNT(*)'])
+                ->groupBy('field_uuid')
+                ->indexBy('field_uuid')->column();
+        }
 
         if (\Yii::$app->request->isAjax) {
             return $this->renderPartial('index', $params);
@@ -110,103 +114,4 @@ class FieldsController extends \fields\controllers\FieldsController
             'workflow' => new Workflow()
         ]);
     }
-//
-//    /**
-//     * @param string $uuid
-//     * @return array|string
-//     * @throws HttpException
-//     */
-//    public function actionEdit($uuid)
-//    {
-//        /* @var Field $model */
-//        $model = Field::findOne($uuid);
-//
-//        if (!$model) {
-//            throw new HttpException(404, 'Field not found.');
-//        }
-//
-//        if ($model->load(\Yii::$app->request->post())) {
-//            return $this->postCreate($model);
-//        }
-//
-//        return $this->renderPartial('edit', [
-//            'model' => $model,
-//            'workflow' => $model->workflow ?: new Workflow()
-//        ]);
-//    }
-//
-//    /**
-//     * @param string $uuid
-//     * @param bool $deep
-//     * @return array|string
-//     * @throws HttpException
-//     */
-//    public function actionCopy($uuid, $deep = false)
-//    {
-//        /* @var Field $model */
-//        $model = Field::findOne($uuid);
-//
-//        if (!$model) {
-//            throw new HttpException(404, 'Field not found.');
-//        }
-//
-//        // Makes a model`s copy
-//        /* @var Field $copy */
-//        $copy = $model->duplicate();
-//
-//        if ($copy->load(\Yii::$app->request->post())) {
-//            return $this->postCreate($copy, $deep ? $model : null);
-//        }
-//
-//        return $this->renderPartial('copy', [
-//            'model' => $copy,
-//            'workflow' => new Workflow()
-//        ]);
-//    }
-//
-//    /**
-//     * @return boolean
-//     */
-//    public function actionDelete()
-//    {
-//        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-//        $models = Field::findAll($selected);
-//        $counter = 0;
-//
-//        foreach ($models as $model) {
-//            $counter += (int) $model->delete();
-//        }
-//
-//        return $counter === count($models);
-//    }
-//
-//    /**
-//     * @param Field $model
-//     * @param Field $original
-//     * @return array
-//     */
-//    protected function postCreate($model, $original = null)
-//    {
-//        // Validate user inputs
-//        $errors = ActiveForm::validate($model);
-//
-//        if ($errors) {
-//            \Yii::$app->response->statusCode = 206;
-//            return $errors;
-//        }
-//
-//        $result = $model->save(false);
-//
-//        if ($result && $original) {
-//            foreach ($original->fieldValues as $value) {
-//                $this->duplicateValue($value, $model->uuid);
-//            }
-//
-//            foreach ($original->fieldValidators as $validator) {
-//                $this->duplicateValidator($validator, $model->uuid);
-//            }
-//        }
-//
-//        return $model->attributes;
-//    }
 }

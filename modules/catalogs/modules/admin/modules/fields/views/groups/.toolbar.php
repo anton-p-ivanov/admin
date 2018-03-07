@@ -9,16 +9,16 @@ return [
             'label' => '<i class="material-icons">arrow_back</i>',
             'encode' => false,
             'options' => [
-                'title' => Yii::t('catalogs/fields', 'Back to fields` list'),
+                'title' => Yii::t('fields/groups', 'Back to fields` list'),
                 'data-pjax' => 'false'
             ],
             'url' => [
-                '/catalogs/admin/fields/fields/index',
+                'fields/index',
                 'catalog_uuid' => $catalog->uuid
             ],
         ],
         [
-            'label' => Yii::t('catalogs/fields/groups', 'Create'),
+            'label' => Yii::t('fields/groups', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',
                 'data-target' => '#groups-modal',
@@ -38,7 +38,7 @@ return [
             'menuOptions' => ['class' => 'dropdown dropdown_right'],
             'items' => [
                 [
-                    'label' => Yii::t('catalogs/fields/groups', 'Refresh'),
+                    'label' => Yii::t('fields/groups', 'Refresh'),
                     'url' => \yii\helpers\Url::current()
                 ]
             ]
@@ -54,7 +54,7 @@ return [
                 'data-confirm' => 'true',
                 'data-toggle' => 'action',
                 'data-pjax' => 'false',
-                'title' => Yii::t('catalogs/fields/groups', 'Delete selected items')
+                'title' => Yii::t('fields/groups', 'Delete selected items')
             ],
         ],
     ]

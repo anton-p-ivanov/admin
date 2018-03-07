@@ -2,16 +2,10 @@
 
 namespace catalogs\modules\admin\modules\fields\controllers;
 
-use app\components\behaviors\ConfirmFilter;
-use app\models\User;
 use app\models\Workflow;
 use catalogs\modules\admin\models\Catalog;
 use catalogs\modules\admin\modules\fields\models\Group;
-use yii\filters\AjaxFilter;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\HttpException;
-use yii\web\Response;
 use yii\widgets\ActiveForm;
 
 /**
@@ -19,8 +13,13 @@ use yii\widgets\ActiveForm;
  *
  * @package catalogs\modules\admin\modules\fields\controllers
  */
-class GroupsController extends Controller
+class GroupsController extends \fields\controllers\GroupsController
 {
+    /**
+     * @var Group
+     */
+    public $modelClass = Group::class;
+
     /**
      * @param \yii\base\Action $action
      * @return bool
@@ -29,49 +28,20 @@ class GroupsController extends Controller
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
-
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($isValid) {
+            $this->setViewPath('@catalogs/modules/admin/modules/fields/views/groups');
         }
 
         return $isValid;
     }
 
     /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
-        ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
-    }
-
-    /**
-     * @param string $catalog_uuid
      * @return string
      * @throws HttpException
      */
-    public function actionIndex($catalog_uuid)
+    public function actionIndex()
     {
+        $catalog_uuid = \Yii::$app->request->get('catalog_uuid');
         $catalog = Catalog::find()->where(['uuid' => $catalog_uuid])->multilingual()->one();
 
         if (!$catalog) {
@@ -79,7 +49,7 @@ class GroupsController extends Controller
         }
 
         $params = [
-            'dataProvider' => Group::search($catalog_uuid),
+            'dataProvider' => Group::search(['catalog_uuid' => $catalog_uuid]),
             'catalog' => $catalog,
         ];
 
@@ -91,12 +61,12 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param string $catalog_uuid
      * @return array|string
      * @throws HttpException
      */
-    public function actionCreate($catalog_uuid)
+    public function actionCreate()
     {
+        $catalog_uuid = \Yii::$app->request->get('catalog_uuid');
         $catalog = Catalog::find()->where(['uuid' => $catalog_uuid])->multilingual()->one();
 
         if (!$catalog) {

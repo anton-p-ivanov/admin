@@ -3,6 +3,8 @@
  * @var \yii\web\View $this
  * @var \yii\data\ActiveDataProvider $dataProvider
  * @var \catalogs\modules\admin\models\Catalog $catalog
+ * @var array $validators
+ * @var array $values
  */
 
 $this->title = sprintf('%s — %s: %s',

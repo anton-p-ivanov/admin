@@ -2,34 +2,18 @@
 
 namespace catalogs\modules\admin\modules\fields\models;
 
-use app\components\behaviors\PrimaryKeyBehavior;
-use app\components\behaviors\WorkflowBehavior;
-use app\components\traits\ActiveSearch;
-use app\models\Workflow;
 use catalogs\modules\admin\models\Catalog;
-use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 
 /**
  * Class Group
- *
- * @property string $uuid
- * @property string $title
- * @property boolean $active
- * @property integer $sort
+
  * @property string $catalog_uuid
- * @property string $workflow_uuid
- *
  * @property Catalog $catalog
- * @property Field[] $fields
- * @property Workflow $workflow
  *
  * @package catalogs\modules\admin\modules\fields\models
  */
-class Group extends ActiveRecord
+class Group extends \fields\models\Group
 {
-    use ActiveSearch;
-
     /**
      * @return string
      */
@@ -39,65 +23,12 @@ class Group extends ActiveRecord
     }
 
     /**
-     * @param string $catalog_uuid
-     * @return ActiveDataProvider
-     */
-    public static function search($catalog_uuid)
-    {
-        return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($catalog_uuid),
-            'sort' => [
-                'defaultOrder' => ['title' => SORT_ASC],
-                'attributes' => self::getSortAttributes()
-            ]
-        ]);
-    }
-
-    /**
-     * @param string $catalog_uuid
-     * @return \yii\db\ActiveQuery
-     */
-    protected static function prepareSearchQuery($catalog_uuid)
-    {
-        return self::find()->where(['catalog_uuid' => $catalog_uuid]);
-    }
-    
-    /**
-     * @param string $catalog_uuid
-     * @return array
-     */
-    public static function getList($catalog_uuid)
-    {
-        return self::find()
-            ->where(['catalog_uuid' => $catalog_uuid])
-            ->select('title')
-            ->orderBy(['sort' => SORT_ASC, 'title' => SORT_ASC])
-            ->indexBy('uuid')
-            ->column();
-    }
-
-
-    /**
-     * @param string $message
-     * @param array $params
-     * @return string
-     */
-    public static function t($message, $params = [])
-    {
-        return \Yii::t('catalogs/fields/groups', $message, $params);
-    }
-
-    /**
      * @return array
      */
     public function attributeLabels()
     {
-        $labels = [
-            'active' => 'Active',
-            'sort' => 'Sort',
-            'title' => 'Title',
-            'catalog_uuid' => 'Catalog',
-        ];
+        $labels = parent::attributeLabels();
+        $labels['catalog_uuid'] = 'Catalog';
 
         return array_map('self::t', $labels);
     }
@@ -107,48 +38,10 @@ class Group extends ActiveRecord
      */
     public function attributeHints()
     {
-        $hints = [
-            'active' => 'Whether group is active.',
-            'sort' => 'Sorting index. Default is 100.',
-            'title' => 'Up to 255 characters length.',
-            'catalog_uuid' => 'Select one of available catalogs.',
-        ];
+        $hints = parent::attributeHints();
+        $hints['catalog_uuid'] = 'Select one of available catalogs.';
 
         return array_map('self::t', $hints);
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors[] = WorkflowBehavior::class;
-        $behaviors[] = PrimaryKeyBehavior::class;
-
-        return $behaviors;
-    }
-
-    /**
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            [['title', 'catalog_uuid'], 'required', 'message' => self::t('{attribute} is required.')],
-            ['title', 'string', 'max' => 255, 'tooLong' => 'Maximum {max, number} characters allowed.'],
-            ['active', 'boolean'],
-            ['sort', 'integer', 'min' => 0, 'tooSmall' => '{attribute} value must be greater or equal {min, number}.'],
-            ['catalog_uuid', 'exist', 'targetClass' => Catalog::class, 'targetAttribute' => 'uuid'],
-        ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorkflow()
-    {
-        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**
@@ -159,11 +52,15 @@ class Group extends ActiveRecord
         return $this->hasOne(Catalog::class, ['uuid' => 'catalog_uuid']);
     }
 
-    /**+
-     * @return \yii\db\ActiveQuery
+    /**
+     * @return Group
      */
-    public function getFields()
+    public function duplicate()
     {
-        return $this->hasMany(Field::class, ['group_uuid' => 'uuid']);
+        /* @var Group $clone */
+        $clone = parent::duplicate();
+        $clone->catalog_uuid = $this->catalog_uuid;
+
+        return $clone;
     }
 }

@@ -8,7 +8,7 @@
 $this->title = sprintf('%s — %s: %s',
     Yii::t('app', 'Control panel'),
     Yii::t('catalogs', \catalogs\modules\admin\Module::$title),
-    Yii::t('catalogs/fields/groups', 'Groups')
+    Yii::t('catalogs/fields', 'Groups')
 );
 
 // Registering assets
@@ -16,7 +16,7 @@ $this->title = sprintf('%s — %s: %s',
 
 ?>
 <div class="catalog-title">
-    <?= Yii::t('catalogs/fields/groups', 'Fields` groups for catalog'); ?> "<?= $catalog->title; ?>"
+    <?= Yii::t('catalogs/fields', 'Fields` groups for catalog'); ?> "<?= $catalog->title; ?>"
 </div>
 <div id="groups-pjax" data-pjax-container="true">
 
@@ -27,7 +27,7 @@ $this->title = sprintf('%s — %s: %s',
     <?= \app\widgets\grid\GridView::widget([
         'id' => 'groups-grid',
         'dataProvider' => $dataProvider,
-        'columns' => require_once ".grid.php",
+        'columns' => require_once Yii::getAlias("@fields/views/groups/.grid.php"),
         'tableOptions' => ['class' => implode(' ', [
             'grid-view__table',
             'grid-view__table_fixed'

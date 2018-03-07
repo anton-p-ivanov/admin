@@ -30,7 +30,7 @@ return [
             ],
         ],
         [
-            'label' => Yii::t('catalogs/fields', 'Groups'),
+            'label' => Yii::t('fields', 'Groups'),
             'options' => [
                 'data-pjax' => 'false',
             ],

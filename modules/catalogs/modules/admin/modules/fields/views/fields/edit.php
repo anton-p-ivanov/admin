@@ -6,4 +6,8 @@
  */
 ?>
 
-<?= $this->render('.form.php', ['model' => $model, 'workflow' => $workflow, 'title' => 'Edit field']); ?>
+<?= $this->render('@fields/views/fields/.form.php', [
+    'model' => $model,
+    'workflow' => $workflow,
+    'title' => 'Edit field'
+]); ?>
