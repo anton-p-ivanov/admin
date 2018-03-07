@@ -3,8 +3,7 @@
 namespace catalogs\controllers;
 
 use catalogs\models\Element;
-use catalogs\models\ElementField;
-use catalogs\models\Property;
+use catalogs\models\ElementProperty;
 use catalogs\modules\admin\modules\fields\models\Field;
 use yii\helpers\Json;
 use yii\web\HttpException;
@@ -29,12 +28,12 @@ class PropertiesController extends \fields\controllers\PropertiesController
             throw new HttpException(404, 'Element not found.');
         }
 
-        $dataProvider = Property::search(['catalog_uuid' => $element->catalog_uuid]);
+        $dataProvider = Field::search(['catalog_uuid' => $element->catalog_uuid]);
 
         $params = [
             'dataProvider' => $dataProvider,
             'element' => $element,
-            'properties' => ElementField::find()
+            'properties' => ElementProperty::find()
                 ->where(['element_uuid' => $element_uuid])
                 ->joinWith('field')
                 ->indexBy('field_uuid')
@@ -71,8 +70,8 @@ class PropertiesController extends \fields\controllers\PropertiesController
             'field_uuid' => $field_uuid,
         ];
 
-        /* @var ElementField $model */
-        $model = ElementField::findOne($params) ?: new ElementField($params);
+        /* @var ElementProperty $model */
+        $model = ElementProperty::findOne($params) ?: new ElementProperty($params);
 
         if ($field->isMultiple()) {
             $model->value = Json::decode($model->value);
