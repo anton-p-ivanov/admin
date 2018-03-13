@@ -29,6 +29,7 @@ class m171004_132506_init extends Migration
         $this->createTable('{{%auth_items}}', [
             'name' => 'varchar(64) not null',
             'type' => 'tinyint(1) not null',
+            'description' => 'text null default null',
             'rule_name' => 'varchar(64)',
             'data' => 'text',
             'created_at' => 'timestamp null default null',

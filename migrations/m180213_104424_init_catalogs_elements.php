@@ -69,6 +69,21 @@ class m180213_104424_init_catalogs_elements extends Migration
         $schema = \catalogs\models\Catalog::getTableSchema();
 
         $this->addForeignKey($schema->name . '_ibfk_tree', '{{%catalogs}}', 'tree_uuid', '{{%catalogs_elements_tree}}', 'tree_uuid', 'SET NULL', 'CASCADE');
+
+        $this->createTable('{{%catalogs_elements_fields}}', [
+            'element_uuid' => 'char(36) not null',
+            'field_uuid' => 'char(36) not null',
+            'value' => 'text not null',
+            'value_bool' => 'tinyint(1) unsigned null default null',
+            'value_int' => 'int(10) null default null',
+            'value_float' => 'decimal(18,4) null default null',
+            'PRIMARY KEY (`element_uuid`, `field_uuid`)',
+            'INDEX `ix_value_bool` (value_bool, element_uuid)',
+            'INDEX `ix_value_int` (value_int, element_uuid)',
+            'INDEX `ix_value_float` (value_float, element_uuid)',
+            'CONSTRAINT FOREIGN KEY (`element_uuid`) REFERENCES {{%catalogs_elements}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%catalogs_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
     }
 
     /**
@@ -76,6 +91,8 @@ class m180213_104424_init_catalogs_elements extends Migration
      */
     public function safeDown()
     {
+        $this->dropTable('{{%catalogs_elements_fields}}');
+
         Yii::setAlias('@catalogs', '@app/modules/catalogs');
         Yii::setAlias('@i18n', '@app/modules/i18n');
         $schema = \catalogs\models\Catalog::getTableSchema();

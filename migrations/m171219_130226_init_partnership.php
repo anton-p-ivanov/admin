@@ -32,10 +32,13 @@ class m171219_130226_init_partnership extends Migration
             $this->execute(file_get_contents(__DIR__ . '/sql/partnership_statuses.sql'));
         }
 
-        $this->createTable('{{%partnership_accounts}}', [
+        $this->createTable('{{%accounts_statuses}}', [
+            'uuid' => 'char(36) not null',
             'account_uuid' => 'char(36) not null',
             'status_uuid' => 'char(36) not null',
-            'PRIMARY KEY (`account_uuid`, `status_uuid`)',
+            'issue_date' => 'datetime null default null',
+            'expire_date' => 'datetime null default null',
+            'PRIMARY KEY (`uuid`)',
             'CONSTRAINT FOREIGN KEY (`account_uuid`) REFERENCES {{%accounts}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
             'CONSTRAINT FOREIGN KEY (`status_uuid`) REFERENCES {{%partnership_statuses}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
@@ -46,7 +49,7 @@ class m171219_130226_init_partnership extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%partnership_accounts}}');
+        $this->dropTable('{{%accounts_statuses}}');
         $this->dropTable('{{%partnership_statuses_i18n}}');
         $this->dropTable('{{%partnership_statuses}}');
     }

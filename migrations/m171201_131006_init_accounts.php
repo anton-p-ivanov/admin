@@ -162,11 +162,13 @@ class m171201_131006_init_accounts extends Migration
             'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%accounts_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 
-        $this->createTable('{{%accounts_data}}', [
+        $this->createTable('{{%accounts_properties}}', [
             'account_uuid' => 'char(36) not null',
-            'data' => 'text not null',
-            'PRIMARY KEY (`account_uuid`)',
+            'field_uuid' => 'char(36) not null',
+            'value' => 'text not null',
+            'PRIMARY KEY (`account_uuid`, `field_uuid`)',
             'CONSTRAINT FOREIGN KEY (`account_uuid`) REFERENCES {{%accounts}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%accounts_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
     }
 
@@ -175,7 +177,7 @@ class m171201_131006_init_accounts extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%accounts_data}}');
+        $this->dropTable('{{%accounts_properties}}');
         $this->dropTable('{{%accounts_fields_values}}');
         $this->dropTable('{{%accounts_fields_validators}}');
         $this->dropTable('{{%accounts_fields}}');
