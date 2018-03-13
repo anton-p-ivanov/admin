@@ -2,8 +2,7 @@ input[type="file"] {
     display: none;
 }
 /* Modals */
-#upload-modal,
-#confirm-modal {
+#upload-modal {
     z-index: 1100;
 }
 .upload-errors {

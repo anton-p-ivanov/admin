@@ -592,3 +592,6 @@ input[type="radio"]:checked::after {
     line-height: 20px;
 }
 /* endregion */
+#confirm-modal {
+    z-index: 1100;
+}
