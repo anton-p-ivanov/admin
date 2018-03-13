@@ -4,3 +4,6 @@
 .field-selector .form-group__action {
     display: inline;
 }
+.field-selector .form-group__input {
+    padding-right: 36px;
+}
