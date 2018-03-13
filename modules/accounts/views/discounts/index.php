@@ -18,5 +18,6 @@ $this->title = sprintf('%s — %s: %s',
 
 <?= $this->render('@sales/modules/discounts/views/discounts/index', [
     'dataProvider' => $dataProvider,
-    'status' => $status
+    'status' => $status,
+    'returnUrl' => ['statuses/index', 'account_uuid' => $status->account_uuid]
 ]); ?>

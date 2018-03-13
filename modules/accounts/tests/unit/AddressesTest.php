@@ -51,7 +51,7 @@ class AddressesTest extends Unit
     /**
      * Testing validations.
      */
-    public function testContactValidate()
+    public function testValidate()
     {
         $address = new Address();
 
@@ -75,7 +75,7 @@ class AddressesTest extends Unit
     /**
      * Testing element creation.
      */
-    public function testAddressCreate()
+    public function testCreate()
     {
         $address = new Address([
             'type_uuid' => AddressType::find()->orderBy(new Expression('RAND()'))->one()->{'uuid'},
@@ -100,7 +100,7 @@ class AddressesTest extends Unit
     /**
      * Testing updating element attributes.
      */
-    public function testAddressUpdate()
+    public function testUpdate()
     {
         $address = Address::findOne(['uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'address-0')->toString()]);
 
@@ -119,7 +119,7 @@ class AddressesTest extends Unit
     /**
      * Testing copying of element.
      */
-    public function testAddressCopy()
+    public function testCopy()
     {
         $account_uuid = Uuid::uuid3(Uuid::NAMESPACE_URL, 'account-0')->toString();
 
@@ -143,7 +143,7 @@ class AddressesTest extends Unit
     /**
      * Testing element deletion with all related records.
      */
-    public function testAddressDelete()
+    public function testDelete()
     {
         $address = Address::findOne(['uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'address-0')->toString()]);
 

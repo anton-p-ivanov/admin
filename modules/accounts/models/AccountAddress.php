@@ -66,25 +66,25 @@ class AccountAddress extends ActiveRecord
     }
 
     /**
-     * @param string $account_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($account_uuid)
+    public static function search($params)
     {
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($account_uuid),
+            'query' => self::prepareSearchQuery($params),
             'sort' => false
         ]);
     }
 
     /**
-     * @param string $account_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($account_uuid)
+    protected static function prepareSearchQuery($params)
     {
         return self::find()->joinWith('address.type')
-            ->where(['account_uuid' => $account_uuid])
+            ->where($params)
             ->orderBy(['{{%addresses_types}}.[[sort]]' => SORT_ASC]);
     }
 }

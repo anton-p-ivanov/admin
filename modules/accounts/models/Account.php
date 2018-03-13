@@ -121,10 +121,10 @@ class Account extends ActiveRecord
             [['active', 'notify'], 'boolean'],
             ['description', 'safe'],
             ['sort', 'integer', 'min' => 0, 'message' => self::t('{attribute} value must be greater than {min, number}.')],
-            ['parent_uuid', 'exist', 'targetClass' => self::className(), 'targetAttribute' => 'uuid', 'message' => self::t('Invalid value.')],
-            ['types', 'exist', 'targetClass' => Type::className(), 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
-            ['sites', 'exist', 'targetClass' => Site::className(), 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
-            ['statuses', 'exist', 'targetClass' => Status::className(), 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
+            ['parent_uuid', 'exist', 'targetClass' => self::class, 'targetAttribute' => 'uuid', 'message' => self::t('Invalid value.')],
+            ['types', 'exist', 'targetClass' => Type::class, 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
+            ['sites', 'exist', 'targetClass' => Site::class, 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
+            ['statuses', 'exist', 'targetClass' => Status::class, 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
             ['parent_uuid', 'validateParent'],
             // Default values
             [['details', 'description'], 'default', 'value' => ''],
@@ -156,22 +156,18 @@ class Account extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::className();
-        $behaviors[] = WorkflowBehavior::className();
+        $behaviors[] = PrimaryKeyBehavior::class;
+        $behaviors[] = WorkflowBehavior::class;
 
         return $behaviors;
     }
 
     /**
-     * @param AccountSettings|null $settings
      * @return ActiveDataProvider
      */
-    public static function search(AccountSettings $settings = null)
+    public static function search()
     {
         $defaultOrder = ['title' => SORT_ASC];
-        if ($settings) {
-            $defaultOrder = [$settings->sortBy => $settings->sortOrder];
-        }
 
         return new ActiveDataProvider([
             'query' => self::prepareSearchQuery(),
@@ -212,7 +208,7 @@ class Account extends ActiveRecord
      */
     public function getAccountCode()
     {
-        return $this->hasOne(AccountCode::className(), ['account_uuid' => 'uuid']);
+        return $this->hasOne(AccountCode::class, ['account_uuid' => 'uuid']);
     }
 
     /**
@@ -220,7 +216,7 @@ class Account extends ActiveRecord
      */
     public function getAccountSites()
     {
-        return $this->hasMany(AccountSite::className(), ['account_uuid' => 'uuid']);
+        return $this->hasMany(AccountSite::class, ['account_uuid' => 'uuid']);
     }
 
     /**
@@ -228,7 +224,7 @@ class Account extends ActiveRecord
      */
     public function getAccountStatuses()
     {
-        return $this->hasMany(AccountStatus::className(), ['account_uuid' => 'uuid']);
+        return $this->hasMany(AccountStatus::class, ['account_uuid' => 'uuid']);
     }
 
     /**
@@ -236,7 +232,7 @@ class Account extends ActiveRecord
      */
     public function getAccountTypes()
     {
-        return $this->hasMany(AccountType::className(), ['account_uuid' => 'uuid']);
+        return $this->hasMany(AccountType::class, ['account_uuid' => 'uuid']);
     }
 
     /**
@@ -244,7 +240,7 @@ class Account extends ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(self::className(), ['uuid' => 'parent_uuid']);
+        return $this->hasOne(self::class, ['uuid' => 'parent_uuid']);
     }
 
     /**
@@ -252,7 +248,7 @@ class Account extends ActiveRecord
      */
     public function getSitesRelation()
     {
-        return $this->hasMany(Site::className(), ['uuid' => 'site_uuid'])->via('accountSites');
+        return $this->hasMany(Site::class, ['uuid' => 'site_uuid'])->via('accountSites');
     }
 
     /**
@@ -280,7 +276,7 @@ class Account extends ActiveRecord
      */
     public function getStatusesRelation()
     {
-        return $this->hasMany(Status::className(), ['uuid' => 'status_uuid'])->via('accountStatuses');
+        return $this->hasMany(Status::class, ['uuid' => 'status_uuid'])->via('accountStatuses');
     }
 
     /**
@@ -308,7 +304,7 @@ class Account extends ActiveRecord
      */
     public function getTypesRelation()
     {
-        return $this->hasMany(Type::className(), ['uuid' => 'type_uuid'])->via('accountTypes');
+        return $this->hasMany(Type::class, ['uuid' => 'type_uuid'])->via('accountTypes');
     }
 
     /**
@@ -336,7 +332,7 @@ class Account extends ActiveRecord
      */
     public function getWorkflow()
     {
-        return $this->hasOne(Workflow::className(), ['uuid' => 'workflow_uuid']);
+        return $this->hasOne(Workflow::class, ['uuid' => 'workflow_uuid']);
     }
 
     /**

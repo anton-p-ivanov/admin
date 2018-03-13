@@ -240,24 +240,24 @@ class AccountStatus extends ActiveRecord
     }
 
     /**
-     * @param string $account_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($account_uuid)
+    public static function search($params)
     {
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($account_uuid),
+            'query' => self::prepareSearchQuery($params),
             'sort' => false
         ]);
     }
 
     /**
-     * @param string $account_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($account_uuid)
+    protected static function prepareSearchQuery($params)
     {
-        return self::find()->joinWith('status')->where(['account_uuid' => $account_uuid]);
+        return self::find()->joinWith('status')->where($params);
     }
 
     /**

@@ -1,37 +1,14 @@
 #confirm-modal {
     z-index: 1100;
 }
-.account__title,
-.account__title:hover {
-    display: inline;
-    text-decoration: none;
-    color: #ffffff;
-}
-.account__description {
-    display: inline;
-    padding-left: 12px;
-    color: #999;
-}
-/*#accounts-modal .modal__body {*/
-    /*overflow: hidden;*/
-/*}*/
-#accounts-modal .modal__container {
-    width: 900px;
-}
-/*#accounts-modal .modal__footer {*/
-    /*position: absolute;*/
-    /*left: 0;*/
-    /*right: 0;*/
-    /*bottom: 0;*/
-/*}*/
 #accounts-modal .tabs-pane {
-    min-height: 460px;
+    min-height: 345px;
 }
 .code-reissue {
     display: block;
     position: absolute;
     right: 4px;
-    top: 30px;
+    top: 10px;
 }
 .code-reissue .material-icons {
     display: block;
@@ -40,28 +17,8 @@
 .code-reissue_inactive {
     color: inherit;
 }
-.grid-view__empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    right: 0;
-}
-.grid-view__empty-content {
-    max-width: 50%;
-    min-width: 300px;
-    text-align: center;
-}
 .modal__alert {
     padding-left: 24px;
     padding-right: 24px;
     margin: 0 -24px;
-}
-#contacts-pjax,
-#addresses-pjax {
-    margin-left: -24px;
-    margin-right: -24px;
 }

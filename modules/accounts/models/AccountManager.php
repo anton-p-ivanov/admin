@@ -130,15 +130,15 @@ class AccountManager extends ActiveRecord
     }
 
     /**
-     * @param string $account_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($account_uuid)
+    public static function search($params)
     {
         $defaultOrder = ['sort' => SORT_ASC];
 
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($account_uuid),
+            'query' => self::prepareSearchQuery($params),
             'sort' => [
                 'defaultOrder' => $defaultOrder,
                 'attributes' => self::getSortAttributes()
@@ -155,12 +155,12 @@ class AccountManager extends ActiveRecord
     }
 
     /**
-     * @param string $account_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($account_uuid)
+    protected static function prepareSearchQuery($params)
     {
-        return self::find()->where(['account_uuid' => $account_uuid]);
+        return self::find()->where($params);
     }
 
     /**

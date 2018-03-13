@@ -23,13 +23,7 @@ use yii\helpers\Html;
         <div class="modal__heading"><?= Yii::t('accounts', $title); ?></div>
     </div>
     <div class="modal__body">
-        <?php if (Yii::$app->session->getFlash('ACCOUNT_CREATED')): ?>
-            <div class="modal__alert alert alert_success">
-                <div class="alert__content"><?= Yii::t('accounts', 'New account has been created. You can edit it attributes.'); ?></div>
-                <a class="alert__dismiss" href="#" data-toggle="dismiss"><i class="material-icons">close</i></a>
-            </div>
-        <?php endif; ?>
-        
+
         <?php $widget = \app\widgets\Tabs::begin([
             'items' => require_once ".form.tabs.php"
         ]); ?>
@@ -49,11 +43,9 @@ use yii\helpers\Html;
         <?php \app\widgets\Tabs::end(); ?>
 
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('accounts', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>

@@ -1,6 +1,7 @@
 <?php
 
 namespace accounts\models;
+use app\models\AddressType;
 
 
 /**
@@ -14,6 +15,19 @@ class Address extends \app\models\Address
      * @var string
      */
     public $account_uuid;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $defaultType = AddressType::getDefault();
+        if ($defaultType) {
+            $this->type_uuid = $defaultType->uuid;
+        }
+    }
 
     /**
      * @param bool $insert

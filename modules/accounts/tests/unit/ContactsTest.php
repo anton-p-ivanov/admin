@@ -49,7 +49,7 @@ class ContactsTest extends Unit
     /**
      * Testing validations.
      */
-    public function testContactValidate()
+    public function testValidate()
     {
         $contact = new AccountContact();
 
@@ -63,14 +63,8 @@ class ContactsTest extends Unit
         $contact->position = null;
         $this->assertFalse($contact->validate(['position']));
 
-        $contact->account_uuid = null;
-        $this->assertFalse($contact->validate(['account_uuid']));
-
         $contact->email = AccountContact::find()->one()->{'email'};
         $this->assertFalse($contact->validate(['email']));
-
-        $contact->account_uuid = Uuid::uuid3(Uuid::NAMESPACE_URL, 'invalid-account-uuid')->toString();
-        $this->assertFalse($contact->validate(['account_uuid']));
 
         $contact->user_uuid = Uuid::uuid3(Uuid::NAMESPACE_URL, 'invalid-user-uuid')->toString();
         $this->assertFalse($contact->validate(['user_uuid']));
@@ -79,7 +73,7 @@ class ContactsTest extends Unit
     /**
      * Testing element creation.
      */
-    public function testContactCreate()
+    public function testCreate()
     {
         $contact = new AccountContact([
             'account_uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'account-0')->toString(),
@@ -102,7 +96,7 @@ class ContactsTest extends Unit
     /**
      * Testing updating element attributes.
      */
-    public function testContactUpdate()
+    public function testUpdate()
     {
         $contact = AccountContact::findOne(['uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'contact-1')->toString()]);
 
@@ -130,7 +124,7 @@ class ContactsTest extends Unit
     /**
      * Testing copying of element.
      */
-    public function testContactCopy()
+    public function testCopy()
     {
         $contact = AccountContact::findOne(['uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'contact-0')->toString()]);
 
@@ -149,7 +143,7 @@ class ContactsTest extends Unit
     /**
      * Testing element deletion with all related records.
      */
-    public function testContactDelete()
+    public function testDelete()
     {
         $contact = AccountContact::findOne(['uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'contact-0')->toString()]);
 

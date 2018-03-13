@@ -41,7 +41,7 @@ return [
                 $count = $discounts[$model->uuid];
             }
 
-            return Html::a($count, ['discounts/index', 'status_uuid' => $model->status_uuid], [
+            return Html::a($count, ['discounts/index', 'status_uuid' => $model->uuid], [
                 'data-pjax' => 'false'
             ]);
         }
