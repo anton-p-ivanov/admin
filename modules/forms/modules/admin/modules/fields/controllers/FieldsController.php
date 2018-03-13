@@ -2,11 +2,11 @@
 
 namespace forms\modules\admin\modules\fields\controllers;
 
-use app\models\Workflow;
-use forms\models\Form;
+use forms\modules\admin\models\Form;
 use forms\modules\admin\modules\fields\models\Field;
 use forms\modules\admin\modules\fields\models\FieldValidator;
 use forms\modules\admin\modules\fields\models\FieldValue;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 
 /**
@@ -17,75 +17,54 @@ use yii\web\HttpException;
 class FieldsController extends \fields\controllers\FieldsController
 {
     /**
-     * @var string|\yii\db\ActiveRecord
+     * @var string
      */
     public $modelClass = Field::class;
+    /**
+     * @var string
+     */
+    public $validatorClass = FieldValidator::class;
+    /**
+     * @var string
+     */
+    public $valueClass = FieldValue::class;
+    /**
+     * @var Form
+     */
+    private $_form;
 
     /**
-     * @return string
-     * @throws HttpException
+     * @inheritdoc
      */
-    public function actionIndex()
+    public function beforeAction($action)
     {
-        $form_uuid = \Yii::$app->request->get('form_uuid', -1);
-        $form = Form::findOne($form_uuid);
+        $isValid = parent::beforeAction($action);
 
-        if (!$form) {
-            throw new HttpException(404, 'Form not found.');
+        if ($isValid && in_array($action->id, ['index', 'create'])) {
+            if (!($form_uuid = \Yii::$app->request->get('form_uuid'))) {
+                throw new BadRequestHttpException();
+            }
+
+            if (!($this->_form = Form::findOne($form_uuid))) {
+                throw new HttpException(404, 'Form not found.');
+            }
         }
 
-        $dataProvider = Field::search(['form_uuid' => $form_uuid]);
-
-        $params = [
-            'dataProvider' => $dataProvider,
-            'form' => $form,
-            'validators' => FieldValidator::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('field_uuid')
-                ->indexBy('field_uuid')->column(),
-            'values' => FieldValue::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('field_uuid')
-                ->indexBy('field_uuid')->column(),
-        ];
-
-        $viewFile = '@forms/modules/admin/modules/fields/views/fields/index';
-
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial($viewFile, $params);
+        if ($action->id === 'index') {
+            $this->viewPath = '@forms/modules/admin/modules/fields/views/fields';
         }
 
-        return $this->render($viewFile, $params);
+        return $isValid;
     }
 
     /**
-     * @return array|string
-     * @throws HttpException
+     * @return array
      */
-    public function actionCreate()
+    public function getIndexParams()
     {
-        $form_uuid = \Yii::$app->request->get('form_uuid', -1);
-        $form = Form::findOne($form_uuid);
+        $params = parent::getIndexParams();
+        $params['form'] = $this->_form;
 
-        if (!$form) {
-            throw new HttpException(404, 'Form not found.');
-        }
-
-        /* @var Field $model */
-        $model = new $this->modelClass([
-            'form_uuid' => $form_uuid,
-            'active' => true,
-            'sort' => 100,
-            'type' => Field::FIELD_TYPE_DEFAULT,
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-            'workflow' => new Workflow()
-        ]);
+        return $params;
     }
 }

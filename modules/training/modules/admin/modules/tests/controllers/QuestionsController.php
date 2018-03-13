@@ -2,42 +2,56 @@
 
 namespace training\modules\admin\modules\tests\controllers;
 
-use app\components\behaviors\ConfirmFilter;
-use app\models\User;
+use app\components\BaseController;
 use training\modules\admin\models\Question;
 use training\modules\admin\models\Test;
 use training\modules\admin\models\TestQuestion;
-use yii\filters\AjaxFilter;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
-use yii\web\Response;
 
 /**
  * Class QuestionsController
  *
  * @package training\modules\admin\modules\tests\controllers
  */
-class QuestionsController extends Controller
+class QuestionsController extends BaseController
 {
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @var string
+     */
+    public $modelClass = TestQuestion::class;
+    /**
+     * @var Test
+     */
+    private $_test;
+
+    /**
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['index', 'select'])) {
+            if (!($test_uuid = \Yii::$app->request->get('test_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if (!($this->_test = Test::findOne($test_uuid))) {
+                throw new HttpException(404, 'Test not found.');
+            }
         }
 
         return $isValid;
+    }
+
+    /**
+     * @return array
+     */
+    public function actions()
+    {
+        return [];
     }
 
     /**
@@ -49,16 +63,9 @@ class QuestionsController extends Controller
         $behaviors['verbs'] = [
             'class' => VerbFilter::class,
             'actions' => [
-                'delete' => ['delete'],
+                'delete' => ['DELETE'],
+                'select' => ['POST']
             ]
-        ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
         ];
 
         return $behaviors;
@@ -67,27 +74,24 @@ class QuestionsController extends Controller
     /**
      * @param string $test_uuid
      * @return string
-     * @throws HttpException
      */
     public function actionIndex($test_uuid)
     {
-        $test = Test::findOne($test_uuid);
-
-        if (!$test) {
-            throw new HttpException(404, 'Test not found.');
-        }
-
         $params = [
-            'test' => $test,
+            'test' => $this->_test,
             'selected' => TestQuestion::find()
                 ->where(['test_uuid' => $test_uuid])
                 ->select('question_uuid')
                 ->column(),
-            'lessons' => $test->course
+            'lessons' => $this->_test->course
                 ->getLessons()
                 ->orderBy(['sort' => SORT_ASC, 'title' => SORT_ASC])
                 ->all()
         ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
 
         return $this->render('index', $params);
     }
@@ -95,39 +99,30 @@ class QuestionsController extends Controller
     /**
      * @param string $test_uuid
      * @return int
-     * @throws HttpException
      */
     public function actionSelect($test_uuid)
     {
-        $test = Test::findOne($test_uuid);
+        TestQuestion::deleteAll(['test_uuid' => $test_uuid]);
 
-        if (!$test) {
-            throw new HttpException(404, 'Test not found.');
-        }
+        if ($post = \Yii::$app->request->post('selection')) {
+            $data = [];
+            $post = Question::find()
+                ->where(['uuid' => $post, 'active' => true])
+                ->select('uuid')
+                ->column();
 
-        if (\Yii::$app->request->isPost) {
-            TestQuestion::deleteAll(['test_uuid' => $test_uuid]);
-
-            if ($post = \Yii::$app->request->post('selection')) {
-                $data = [];
-                $post = Question::find()
-                    ->where(['uuid' => $post, 'active' => true])
-                    ->select('uuid')
-                    ->column();
-
-                foreach ($post as $item) {
-                    $data[] = [
-                        'test_uuid' => $test_uuid,
-                        'question_uuid' => $item
-                    ];
-                }
-
-                return \Yii::$app->db->createCommand()->batchInsert(
-                    TestQuestion::tableName(),
-                    ['test_uuid', 'question_uuid'],
-                    $data
-                )->execute();
+            foreach ($post as $item) {
+                $data[] = [
+                    'test_uuid' => $test_uuid,
+                    'question_uuid' => $item
+                ];
             }
+
+            return \Yii::$app->db->createCommand()->batchInsert(
+                TestQuestion::tableName(),
+                ['test_uuid', 'question_uuid'],
+                $data
+            )->execute();
         }
 
         return 0;

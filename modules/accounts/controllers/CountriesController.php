@@ -11,6 +11,7 @@ use yii\web\Response;
 
 /**
  * Class CountriesController
+ *
  * @package accounts\controllers
  */
 class CountriesController extends Controller
@@ -42,10 +43,10 @@ class CountriesController extends Controller
     {
         $behaviors = parent::behaviors();
         $behaviors['ajax'] = [
-            'class' => AjaxFilter::className(),
+            'class' => AjaxFilter::class,
         ];
         $behaviors['cn'] = [
-            'class' => ContentNegotiator::className(),
+            'class' => ContentNegotiator::class,
             'only' => ['list'],
             'formats' => [
                 'application/json' => Response::FORMAT_JSON,
@@ -64,13 +65,15 @@ class CountriesController extends Controller
      * @param string $lang
      * @return array
      */
-    public function actionList($search = '', $lang = '')
+    public function actionList($search = '', $lang = null)
     {
         $titleField = 'title';
 
-        if ($lang) {
-            $titleField .= '_' . $lang;
+        if (!$lang) {
+            $lang = \Yii::$app->language;
         }
+
+        $titleField .= '_' . $lang;
 
         $query = AddressCountry::find()->where(['like', $titleField, trim($search)]);
 

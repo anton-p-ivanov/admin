@@ -3,39 +3,50 @@
 namespace users\controllers;
 
 use accounts\models\Account;
-use app\components\behaviors\ConfirmFilter;
+use app\components\actions\CopyAction;
+use app\components\actions\CreateAction;
+use app\components\actions\DeleteAction;
+use app\components\actions\EditAction;
+use app\components\actions\IndexAction;
+use app\components\BaseController;
 use users\models\User;
 use users\models\UserAccount;
-use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\HttpException;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * Class AccountsController
  *
  * @package users\controllers
  */
-class AccountsController extends Controller
+class AccountsController extends BaseController
 {
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @var string
+     */
+    public $modelClass = UserAccount::class;
+    /**
+     * @var User
+     */
+    private $_user;
+
+    /**
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['index', 'create'])) {
+            if (!($user_uuid = \Yii::$app->request->get('user_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if (!($this->_user = User::findOne($user_uuid))) {
+                throw new NotFoundHttpException('User not found.');
+            }
         }
 
         return $isValid;
@@ -47,20 +58,6 @@ class AccountsController extends Controller
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
-        ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
         $behaviors['cn'] = [
             'class' => ContentNegotiator::class,
             'only' => ['list'],
@@ -71,119 +68,36 @@ class AccountsController extends Controller
     }
 
     /**
-     * @param string $user_uuid
-     * @return string
-     * @throws HttpException
+     * @return array
      */
-    public function actionIndex($user_uuid)
+    public function actions()
     {
-        $user = User::findOne($user_uuid);
-
-        if (!$user) {
-            throw new HttpException(404, 'User not found.');
-        }
-
-        $params = [
-            'dataProvider' => UserAccount::search($user_uuid),
-            'user' => $user
+        return [
+            'index' => [
+                'class' => IndexAction::class,
+                'params' => [$this, 'getIndexParams']
+            ],
+            'create' => [
+                'class' => CreateAction::class,
+                'modelConfig' => [
+                    'user_uuid' => \Yii::$app->request->get('user_uuid')
+                ]
+            ],
+            'edit' => EditAction::class,
+            'copy' => CopyAction::class,
+            'delete' => DeleteAction::class,
         ];
-
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', $params);
-        }
-
-        return $this->render('index', $params);
     }
 
     /**
-     * @param string $user_uuid
-     * @return array|string
-     * @throws HttpException
+     * @return array
      */
-    public function actionCreate($user_uuid)
+    public function getIndexParams()
     {
-        $user = User::findOne($user_uuid);
-
-        if (!$user) {
-            throw new HttpException(404, 'User not found.');
-        }
-
-        $model = new UserAccount([
-            'user_uuid' => $user_uuid
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionEdit($uuid)
-    {
-        /* @var UserAccount $model */
-        $model = UserAccount::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'User account not found.');
-        }
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('edit', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCopy($uuid)
-    {
-        /* @var UserAccount $model */
-        $model = UserAccount::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'User account not found.');
-        }
-
-        // Makes a status copy
-        $copy = $model->duplicate();
-
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy);
-        }
-
-        return $this->renderPartial('copy', [
-            'model' => $copy,
-        ]);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function actionDelete()
-    {
-        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = UserAccount::findAll($selected);
-        $counter = 0;
-
-        foreach ($models as $model) {
-            $counter += (int) $model->delete();
-        }
-
-        return $counter === count($models);
+        return [
+            'dataProvider' => UserAccount::search(['user_uuid' => $this->_user->uuid]),
+            'user' => $this->_user
+        ];
     }
 
     /**
@@ -209,24 +123,5 @@ class AccountsController extends Controller
             ->indexBy('uuid')
             ->orderBy('title')
             ->column();
-    }
-
-    /**
-     * @param UserAccount $model
-     * @return array
-     */
-    protected function postCreate(UserAccount $model)
-    {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
-        }
-
-        $model->save(false);
-
-        return $model->attributes;
     }
 }

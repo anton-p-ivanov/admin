@@ -3,38 +3,48 @@
 namespace accounts\controllers;
 
 use accounts\models\Account;
+use accounts\models\AccountDiscount;
 use accounts\models\AccountStatus;
-use app\components\behaviors\ConfirmFilter;
-use app\models\User;
-use yii\filters\AjaxFilter;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\HttpException;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+use app\components\actions\CopyAction;
+use app\components\actions\CreateAction;
+use app\components\actions\DeleteAction;
+use app\components\actions\EditAction;
+use app\components\actions\IndexAction;
+use app\components\BaseController;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class StatusesController
  *
  * @package accounts\controllers
  */
-class StatusesController extends Controller
+class StatusesController extends BaseController
 {
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @var string
+     */
+    public $modelClass = AccountStatus::class;
+    /**
+     * @var Account
+     */
+    private $_account;
+
+    /**
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['index', 'create'])) {
+            if (!($account_uuid = \Yii::$app->request->get('account_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if (!($this->_account = Account::findOne($account_uuid))) {
+                throw new NotFoundHttpException('Account not found.');
+            }
         }
 
         return $isValid;
@@ -43,170 +53,50 @@ class StatusesController extends Controller
     /**
      * @return array
      */
-    public function behaviors()
+    public function actions()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
+        return [
+            'index' => [
+                'class' => IndexAction::class,
+                'params' => [$this, 'getIndexParams']
+            ],
+            'create' => [
+                'class' => CreateAction::class,
+                'modelConfig' => [
+                    'account_uuid' => \Yii::$app->request->get('account_uuid'),
+                    'dates' => ['issue_date' => \Yii::$app->formatter->asDatetime(date('Y-m-d H:i:s'))],
+                ]
+            ],
+            'edit' => EditAction::class,
+            'copy' => CopyAction::class,
+            'delete' => DeleteAction::class,
         ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexParams()
+    {
+        return [
+            'dataProvider' => AccountStatus::search([
+                'account_uuid' => $this->_account->uuid
+            ]),
+            'account' => $this->_account,
+            'discounts' => AccountDiscount::find()
+                ->select('COUNT(*)')
+                ->indexBy('status_uuid')
+                ->groupBy('status_uuid')
+                ->column(),
         ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
-    }
-
-    /**
-     * @param string $account_uuid
-     * @return string
-     * @throws HttpException
-     */
-    public function actionIndex($account_uuid)
-    {
-        $account = Account::findOne($account_uuid);
-
-        if (!$account) {
-            throw new HttpException(404, 'Account not found.');
-        }
-
-        $params = [
-            'dataProvider' => AccountStatus::search($account_uuid),
-            'account' => $account
-        ];
-
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', $params);
-        }
-
-        return $this->render('index', $params);
-    }
-
-    /**
-     * @param string $account_uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCreate($account_uuid)
-    {
-        /* @var Account $account */
-        $account = Account::findOne($account_uuid);
-
-        if (!$account) {
-            throw new HttpException(404, 'Account not found.');
-        }
-
-        $model = new AccountStatus([
-            'account_uuid' => $account_uuid,
-            'dates' => ['issue_date' => \Yii::$app->formatter->asDatetime(date('Y-m-d H:i:s'))],
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        // Format dates into human readable format
-        $model->formatDatesArray(['issue_date', 'expire_date']);
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionEdit($uuid)
-    {
-        /* @var AccountStatus $model */
-        $model = AccountStatus::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Account status not found.');
-        }
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        // Format dates into human readable format
-        $model->formatDatesArray(['issue_date', 'expire_date']);
-
-        return $this->renderPartial('edit', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCopy($uuid)
-    {
-        /* @var AccountStatus $model */
-        $model = AccountStatus::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Account status not found.');
-        }
-
-        // Makes a status copy
-        $copy = $model->duplicate();
-
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy);
-        }
-
-        // Format dates into human readable format
-        $copy->formatDatesArray(['issue_date', 'expire_date']);
-
-        return $this->renderPartial('copy', [
-            'model' => $copy,
-        ]);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function actionDelete()
-    {
-        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = AccountStatus::findAll($selected);
-        $counter = 0;
-
-        foreach ($models as $model) {
-            $counter += (int) $model->delete();
-        }
-
-        return $counter === count($models);
     }
 
     /**
      * @param AccountStatus $model
-     * @return array
      */
-    protected function postCreate($model)
+    public function beforeRender($model)
     {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
-        }
-
-        $model->save(false);
-
-        return $model->attributes;
+        // Format dates into human readable format
+        $model->formatDatesArray(['issue_date', 'expire_date']);
     }
 }

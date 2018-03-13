@@ -2,13 +2,13 @@
 
 namespace catalogs\modules\admin\modules\fields\controllers;
 
-use app\models\Workflow;
 use catalogs\modules\admin\models\Catalog;
 use catalogs\modules\admin\modules\fields\components\traits\Duplicator;
 use catalogs\modules\admin\modules\fields\models\Field;
 use catalogs\modules\admin\modules\fields\models\FieldValidator;
 use catalogs\modules\admin\modules\fields\models\FieldValue;
-use yii\web\HttpException;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class FieldsController
@@ -22,16 +22,37 @@ class FieldsController extends \fields\controllers\FieldsController
      * @var string|\yii\db\ActiveRecord
      */
     public $modelClass = Field::class;
+    /**
+     * @var string
+     */
+    public $validatorClass = FieldValidator::class;
+    /**
+     * @var string
+     */
+    public $valueClass = FieldValue::class;
+    /**
+     * @var Catalog
+     */
+    private $_catalog;
 
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
         if ($isValid) {
+            if (in_array($action->id, ['index', 'create'])) {
+                if (!($catalog_uuid = \Yii::$app->request->get('catalog_uuid'))) {
+                    throw new BadRequestHttpException();
+                }
+
+                if (!($this->_catalog = Catalog::find()->where(['uuid' => $catalog_uuid])->multilingual()->one())) {
+                    throw new NotFoundHttpException('Catalog not found.');
+                }
+            }
+
             $this->setViewPath('@catalogs/modules/admin/modules/fields/views/fields');
         }
 
@@ -39,26 +60,29 @@ class FieldsController extends \fields\controllers\FieldsController
     }
 
     /**
-     * @return string
-     * @throws HttpException
+     * @return array
      */
-    public function actionIndex()
+    public function actions()
     {
-        $catalog_uuid = \Yii::$app->request->get('catalog_uuid');
+        $actions = parent::actions();
+        $actions['create']['modelConfig'] = [
+            'catalog_uuid' => \Yii::$app->request->get('catalog_uuid'),
+            'type' => Field::FIELD_TYPE_DEFAULT,
+            'active' => true,
+            'sort' => 100
+        ];
 
-        if (!$catalog_uuid) {
-            throw new HttpException(400, 'Parameter `catalog_uuid` must be set.');
-        }
+        return $actions;
+    }
 
-        $catalog = Catalog::find()->where(['uuid' => $catalog_uuid])->multilingual()->one();
-
-        if (!$catalog) {
-            throw new HttpException(404, 'Catalog not found.');
-        }
-
+    /**
+     * @return array
+     */
+    public function getIndexParams()
+    {
         $params = [
-            'dataProvider' => Field::search(['catalog_uuid' => $catalog_uuid]),
-            'catalog' => $catalog,
+            'dataProvider' => Field::search(['catalog_uuid' => $this->_catalog->uuid]),
+            'catalog' => $this->_catalog,
         ];
 
         $relations = [
@@ -73,45 +97,6 @@ class FieldsController extends \fields\controllers\FieldsController
                 ->indexBy('field_uuid')->column();
         }
 
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', $params);
-        }
-
-        return $this->render('index', $params);
-    }
-
-    /**
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCreate()
-    {
-        $catalog_uuid = \Yii::$app->request->get('catalog_uuid');
-
-        if (!$catalog_uuid) {
-            throw new HttpException(400, 'Parameter `catalog_uuid` must be set.');
-        }
-
-        $catalog = Catalog::find()->where(['uuid' => $catalog_uuid])->multilingual()->one();
-
-        if (!$catalog) {
-            throw new HttpException(404, 'Catalog not found.');
-        }
-
-        $model = new Field([
-            'catalog_uuid' => $catalog_uuid,
-            'type' => Field::FIELD_TYPE_DEFAULT,
-            'active' => true,
-            'sort' => 100
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-            'workflow' => new Workflow()
-        ]);
+        return $params;
     }
 }

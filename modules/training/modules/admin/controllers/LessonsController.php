@@ -2,72 +2,49 @@
 
 namespace training\modules\admin\controllers;
 
-use app\components\behaviors\ConfirmFilter;
-use app\models\User;
-use app\models\Workflow;
-use app\models\WorkflowStatus;
+use app\components\actions\CopyAction;
+use app\components\actions\CreateAction;
+use app\components\actions\DeleteAction;
+use app\components\actions\EditAction;
+use app\components\BaseController;
 use training\modules\admin\components\traits\Duplicator;
 use training\modules\admin\models\Course;
 use training\modules\admin\models\Lesson;
 use training\modules\admin\models\Question;
-use yii\filters\AjaxFilter;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * Class LessonsController
  *
  * @package training\modules\admin\controllers
  */
-class LessonsController extends Controller
+class LessonsController extends BaseController
 {
     use Duplicator;
+    /**
+     * @var string
+     */
+    public $modelClass = Lesson::class;
 
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['create'])) {
+            if (!($course_uuid = \Yii::$app->request->get('course_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if (!Course::findOne($course_uuid)) {
+                throw new HttpException(404, 'Training course not found.');
+            }
         }
 
         return $isValid;
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
-        ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
     }
 
     /**
@@ -92,130 +69,44 @@ class LessonsController extends Controller
                 ->indexBy('lesson_uuid')->column(),
         ];
 
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', $params);
+        }
+
         return $this->render('index', $params);
     }
 
     /**
-     * @param string $course_uuid
-     * @return array|string
-     * @throws HttpException
+     * @return array
      */
-    public function actionCreate($course_uuid)
+    public function actions()
     {
-        $course = Course::findOne($course_uuid);
-
-        if (!$course) {
-            throw new HttpException(404, 'Training course not found.');
-        }
-
-        $model = new Lesson([
-            'course_uuid' => $course_uuid,
-            'active' => true,
-            'sort' => 100
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-            'workflow' => new Workflow(['status' => WorkflowStatus::WORKFLOW_STATUS_DEFAULT])
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionEdit($uuid)
-    {
-        /* @var Lesson $model */
-        $model = Lesson::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Lesson not found.');
-        }
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('edit', [
-            'model' => $model,
-            'workflow' => $model->workflow ?: new Workflow(['status' => WorkflowStatus::WORKFLOW_STATUS_DEFAULT])
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @param bool $deep
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCopy($uuid, $deep = false)
-    {
-        /* @var Lesson $model */
-        $model = Lesson::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Lesson not found.');
-        }
-
-        // Makes a model`s copy
-        $copy = $model->duplicate();
-
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy, $deep ? $model : null);
-        }
-
-        return $this->renderPartial('copy', [
-            'model' => $copy,
-            'workflow' => new Workflow(['status' => WorkflowStatus::WORKFLOW_STATUS_DEFAULT])
-        ]);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function actionDelete()
-    {
-        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = Lesson::findAll($selected);
-        $counter = 0;
-
-        foreach ($models as $model) {
-            $counter += (int) $model->delete();
-        }
-
-        return $counter === count($models);
+        return [
+            'create' => [
+                'class' => CreateAction::class,
+                'modelConfig' => [
+                    'course_uuid' => \Yii::$app->request->get('course_uuid'),
+                    'active' => true,
+                    'sort' => 100
+                ]
+            ],
+            'edit' => EditAction::class,
+            'copy' => [
+                'class' => CopyAction::class,
+                'useDeepCopy' => (int) \Yii::$app->request->get('deep') === 1
+            ],
+            'delete' => DeleteAction::class,
+        ];
     }
 
     /**
      * @param Lesson $model
      * @param Lesson $original
-     * @return array
      */
-    protected function postCreate($model, $original = null)
+    public function afterCopy($model, $original)
     {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
+        foreach ($original->questions as $question) {
+            $this->duplicateQuestion($question, $model->uuid);
         }
-
-        $result = $model->save(false);
-
-        if ($result && $original) {
-            foreach ($original->questions as $question) {
-                $this->duplicateQuestion($question, $model->uuid);
-            }
-        }
-
-        return $model->attributes;
     }
-
 }

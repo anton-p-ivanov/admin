@@ -2,40 +2,47 @@
 
 namespace forms\modules\admin\controllers;
 
-use app\components\behaviors\ConfirmFilter;
-use app\models\User;
-use app\models\Workflow;
+use app\components\actions\CopyAction;
+use app\components\actions\CreateAction;
+use app\components\actions\DeleteAction;
+use app\components\actions\EditAction;
+use app\components\BaseController;
 use forms\modules\admin\models\Form;
 use forms\modules\admin\models\FormStatus;
-use yii\filters\AjaxFilter;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * Class StatusesController
  *
  * @package forms\modules\admin\controllers
  */
-class StatusesController extends Controller
+class StatusesController extends BaseController
 {
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @var string
+     */
+    public $modelClass = FormStatus::class;
+    /**
+     * @var Form
+     */
+    private $_form;
+
+    /**
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['index', 'create'])) {
+            if (!($form_uuid = \Yii::$app->request->get('form_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if (!($this->_form = Form::findOne($form_uuid))) {
+                throw new HttpException(404, 'Form not found.');
+            }
         }
 
         return $isValid;
@@ -44,44 +51,33 @@ class StatusesController extends Controller
     /**
      * @return array
      */
-    public function behaviors()
+    public function actions()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
+        return [
+            'create' => [
+                'class' => CreateAction::class,
+                'modelConfig' => [
+                    'active' => true,
+                    'sort' => 100,
+                    'form_uuid' => \Yii::$app->request->get('form_uuid')
+                ]
+            ],
+            'edit' => EditAction::class,
+            'copy' => CopyAction::class,
+            'delete' => DeleteAction::class,
         ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
     }
 
     /**
      * @param string $form_uuid
      * @return string
-     * @throws HttpException
      */
     public function actionIndex($form_uuid)
     {
-        $form = Form::findOne($form_uuid);
-
-        if (!$form) {
-            throw new HttpException(404, 'Form not found.');
-        }
-
         $params = [
             'dataProvider' => FormStatus::search($form_uuid),
-            'defaultStatus' => $form->getDefaultStatus(),
-            'form' => $form
+            'defaultStatus' => $this->_form->getDefaultStatus(),
+            'form' => $this->_form
         ];
 
         if (\Yii::$app->request->isAjax) {
@@ -89,120 +85,5 @@ class StatusesController extends Controller
         }
 
         return $this->render('index', $params);
-    }
-
-    /**
-     * @param string $form_uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCreate($form_uuid)
-    {
-        $form = Form::findOne($form_uuid);
-
-        if (!$form) {
-            throw new HttpException(404, 'Form not found.');
-        }
-
-        $model = new FormStatus([
-            'active' => true,
-            'sort' => 100,
-            'form_uuid' => $form_uuid
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-            'workflow' => new Workflow()
-        ]);
-    }
-
-    /**
-     * @param $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionEdit($uuid)
-    {
-        /* @var FormStatus $model */
-        $model = FormStatus::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Status not found.');
-        }
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('edit', [
-            'model' => $model,
-            'workflow' => $model->workflow ?: new Workflow()
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCopy($uuid)
-    {
-        /* @var FormStatus $model */
-        $model = FormStatus::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Status not found.');
-        }
-
-        // Makes a status copy
-        $copy = $model->duplicate();
-
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy);
-        }
-
-        return $this->renderPartial('copy', [
-            'model' => $copy,
-            'workflow' => new Workflow()
-        ]);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function actionDelete()
-    {
-        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = FormStatus::findAll($selected);
-        $counter = 0;
-
-        foreach ($models as $model) {
-            $counter += (int) $model->delete();
-        }
-
-        return $counter === count($models);
-    }
-
-    /**
-     * @param FormStatus $model
-     * @return array
-     */
-    protected function postCreate($model)
-    {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
-        }
-
-        $model->save(false);
-
-        return $model->attributes;
     }
 }

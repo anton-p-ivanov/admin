@@ -2,44 +2,51 @@
 
 namespace catalogs\modules\admin\controllers;
 
-use app\components\behaviors\ConfirmFilter;
-use app\models\User;
-use app\models\Workflow;
+use app\components\actions\CopyAction;
+use app\components\actions\CreateAction;
+use app\components\actions\DeleteAction;
+use app\components\actions\EditAction;
+use app\components\actions\IndexAction;
+use app\components\BaseController;
 use catalogs\modules\admin\models\Catalog;
 use catalogs\modules\admin\models\Type;
 use catalogs\modules\admin\modules\fields\components\traits\Duplicator;
 use catalogs\modules\admin\modules\fields\models\Field;
-use yii\filters\AjaxFilter;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\HttpException;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class CatalogsController
  *
  * @package catalogs\modules\admin\controllers
  */
-class CatalogsController extends Controller
+class CatalogsController extends BaseController
 {
     use Duplicator;
+    /**
+     * @var string
+     */
+    public $modelClass = Catalog::class;
+    /**
+     * @var Type
+     */
+    private $_type;
 
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['index', 'create'])) {
+            if (!($type_uuid = \Yii::$app->request->get('type_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if ($type_uuid && !($this->_type = Type::findOne($type_uuid))) {
+                throw new NotFoundHttpException('Type not found.');
+            }
         }
 
         return $isValid;
@@ -48,176 +55,65 @@ class CatalogsController extends Controller
     /**
      * @return array
      */
-    public function behaviors()
+    public function actions()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
+        return [
+            'index' => [
+                'class' => IndexAction::class,
+                'params' => [$this, 'getIndexParams']
+            ],
+            'create' => [
+                'class' => CreateAction::class,
+                'modelConfig' => [
+                    'active' => 1,
+                    'sort' => 100,
+                    'type_uuid' => $this->_type ? $this->_type->uuid : null
+                ]
+            ],
+            'edit' => EditAction::class,
+            'copy' => [
+                'class' => CopyAction::class,
+                'useDeepCopy' => (int) \Yii::$app->request->get('deep') === 1
+            ],
+            'delete' => DeleteAction::class,
         ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
     }
 
     /**
-     * @param string $type_uuid
-     * @return string
+     * @return array
      */
-    public function actionIndex($type_uuid = null)
+    public function getIndexParams()
     {
-        $type = Type::findOne($type_uuid);
-
-        $params = [
-            'type' => $type,
-            'dataProvider' => Catalog::search(['{{%catalogs}}.[[type_uuid]]' => $type_uuid]),
+        return [
+            'type' => $this->_type,
+            'dataProvider' => Catalog::search(['{{%catalogs}}.[[type_uuid]]' => $this->_type->uuid]),
             'fields' => Field::find()
                 ->select(['count' => 'COUNT(*)'])
                 ->groupBy('catalog_uuid')
                 ->indexBy('catalog_uuid')->column(),
         ];
-
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', $params);
-        }
-
-        return $this->render('index', $params);
-    }
-
-    /**
-     * @param string $type_uuid
-     * @return array|string
-     */
-    public function actionCreate($type_uuid = null)
-    {
-        $model = new Catalog([
-            'active' => 1,
-            'sort' => 100,
-            'type_uuid' => $type_uuid
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-            'workflow' => new Workflow()
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionEdit($uuid)
-    {
-        /* @var Catalog $model */
-        $model = $this->getModel($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Catalog not found.');
-        }
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        return $this->renderPartial('edit', [
-            'model' => $model,
-            'workflow' => $model->workflow ?: new Workflow()
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @param bool $deep
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCopy($uuid, $deep = false)
-    {
-        /* @var Catalog $model */
-        $model = $this->getModel($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'Catalog not found.');
-        }
-
-        // Makes a model`s copy
-        $copy = $model->duplicate();
-
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy, $deep ? $model : null);
-        }
-
-        return $this->renderPartial('copy', [
-            'model' => $copy,
-            'workflow' => new Workflow()
-        ]);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function actionDelete()
-    {
-        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = Catalog::findAll($selected);
-        $counter = 0;
-
-        foreach ($models as $model) {
-            $counter += (int) $model->delete();
-        }
-
-        return $counter === count($models);
     }
 
     /**
      * @param Catalog $model
      * @param Catalog $original
-     * @return array
      */
-    protected function postCreate($model, $original = null)
+    public function afterCopy($model, $original)
     {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
+        foreach ($original->groups as $group) {
+            $this->duplicateGroup($group, $model->uuid);
         }
 
-        $result = $model->save(false);
-
-        if ($result && $original) {
-            foreach ($original->groups as $group) {
-                $this->duplicateGroup($group, $model->uuid);
-            }
-
-            foreach ($original->fields as $field) {
-                $this->duplicateField($field, $model->uuid);
-            }
+        foreach ($original->fields as $field) {
+            $this->duplicateField($field, $model->uuid);
         }
-
-        return $model->attributes;
     }
 
     /**
      * @param string $uuid
      * @return \yii\db\ActiveRecord|Catalog
      */
-    protected function getModel($uuid)
+    public function getModel($uuid)
     {
         return Catalog::find()->multilingual()->where(['uuid' => $uuid])->one();
     }

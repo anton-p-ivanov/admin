@@ -7,7 +7,7 @@ use app\models\User;
 use app\models\Workflow;
 use catalogs\models\Catalog;
 use catalogs\models\Element;
-use catalogs\models\ElementField;
+use catalogs\models\ElementProperty;
 use catalogs\models\ElementTree;
 use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
@@ -94,7 +94,7 @@ class ElementsController extends Controller
             'currentNode' => $currentNode,
             'parentNode' => $parentNode,
             'catalog' => $catalog,
-            'properties' => ElementField::find()
+            'properties' => ElementProperty::find()
                 ->where(['element_uuid' => ArrayHelper::getColumn($dataProvider->models, 'element_uuid')])
                 ->select('COUNT(*)')
                 ->indexBy('element_uuid')

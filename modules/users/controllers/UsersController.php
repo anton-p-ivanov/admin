@@ -2,19 +2,14 @@
 
 namespace users\controllers;
 
-use app\components\behaviors\ConfirmFilter;
+use app\components\actions\IndexAction;
+use app\components\BaseController;
 use app\models\Workflow;
 use users\components\traits\Duplicator;
 use users\models\User;
-use users\models\UserAccount;
 use users\models\UserPassword;
-use users\models\UserRole;
-use users\models\UserSite;
-use yii\filters\AjaxFilter;
 use yii\filters\ContentNegotiator;
-use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -23,29 +18,13 @@ use yii\widgets\ActiveForm;
  * Class UsersController
  * @package users\controllers
  */
-class UsersController extends Controller
+class UsersController extends BaseController
 {
     use Duplicator;
-
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @var string
      */
-    public function beforeAction($action)
-    {
-        $isValid = parent::beforeAction($action);
-
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
-
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
-        }
-
-        return $isValid;
-    }
+    public $modelClass = User::class;
 
     /**
      * @return array
@@ -53,20 +32,6 @@ class UsersController extends Controller
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
-        ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
-        ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
         $behaviors['cn'] = [
             'class' => ContentNegotiator::class,
             'only' => ['list', 'get'],
@@ -79,33 +44,13 @@ class UsersController extends Controller
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function actionIndex()
+    public function actions()
     {
-        $dataProvider = User::search();
-
-        $params = [
-            'dataProvider' => $dataProvider,
-            'accounts' => UserAccount::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('user_uuid')
-                ->indexBy('user_uuid')->column(),
-            'roles' => UserRole::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('user_id')
-                ->indexBy('user_id')->column(),
-            'sites' => UserSite::find()
-                ->select(['count' => 'COUNT(*)'])
-                ->groupBy('user_uuid')
-                ->indexBy('user_uuid')->column(),
+        return [
+            'index' => IndexAction::class
         ];
-
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', $params);
-        }
-
-        return $this->render('index', $params);
     }
 
     /**

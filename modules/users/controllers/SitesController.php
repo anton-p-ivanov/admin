@@ -2,38 +2,48 @@
 
 namespace users\controllers;
 
-use app\components\behaviors\ConfirmFilter;
+use app\components\actions\CopyAction;
+use app\components\actions\CreateAction;
+use app\components\actions\DeleteAction;
+use app\components\actions\EditAction;
+use app\components\actions\IndexAction;
+use app\components\BaseController;
 use users\models\User;
 use users\models\UserSite;
-use yii\filters\AjaxFilter;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\HttpException;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class SitesController
  *
  * @package users\controllers
  */
-class SitesController extends Controller
+class SitesController extends BaseController
 {
     /**
-     * @param \yii\base\Action $action
-     * @return bool
+     * @var string
+     */
+    public $modelClass = UserSite::class;
+    /**
+     * @var User
+     */
+    private $_user;
+
+    /**
+     * @inheritdoc
      */
     public function beforeAction($action)
     {
         $isValid = parent::beforeAction($action);
 
-        if (YII_DEBUG && \Yii::$app->user->isGuest) {
-            \Yii::$app->user->login(User::findOne(['email' => 'guest.user@example.com']));
-        }
+        if ($isValid && in_array($action->id, ['index', 'create'])) {
+            if (!($user_uuid = \Yii::$app->request->get('user_uuid'))) {
+                throw new BadRequestHttpException();
+            }
 
-        if (\Yii::$app->request->isPost) {
-            // Set valid response format
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            if (!($this->_user = User::findOne($user_uuid))) {
+                throw new NotFoundHttpException('User not found.');
+            }
         }
 
         return $isValid;
@@ -42,169 +52,43 @@ class SitesController extends Controller
     /**
      * @return array
      */
-    public function behaviors()
+    public function actions()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['delete'],
-            ]
+        return [
+            'index' => [
+                'class' => IndexAction::class,
+                'params' => [$this, 'getIndexParams']
+            ],
+            'create' => [
+                'class' => CreateAction::class,
+                'modelConfig' => [
+                    'user_uuid' => \Yii::$app->request->get('user_uuid'),
+                    'active_dates' => ['active_from_date' => \Yii::$app->formatter->asDatetime(date('Y-m-d H:i:s'))],
+                ]
+            ],
+            'edit' => EditAction::class,
+            'copy' => CopyAction::class,
+            'delete' => DeleteAction::class,
         ];
-        $behaviors['confirm'] = [
-            'class' => ConfirmFilter::class,
-            'actions' => ['delete']
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexParams()
+    {
+        return [
+            'dataProvider' => UserSite::search(['user_uuid' => $this->_user->uuid]),
+            'user' => $this->_user
         ];
-        $behaviors['ajax'] = [
-            'class' => AjaxFilter::class,
-            'except' => ['index']
-        ];
-
-        return $behaviors;
-    }
-
-    /**
-     * @param string $user_uuid
-     * @return string
-     * @throws HttpException
-     */
-    public function actionIndex($user_uuid)
-    {
-        $user = User::findOne($user_uuid);
-
-        if (!$user) {
-            throw new HttpException(404, 'User not found.');
-        }
-
-        $params = [
-            'dataProvider' => UserSite::search($user_uuid),
-            'user' => $user
-        ];
-
-        if (\Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', $params);
-        }
-
-        return $this->render('index', $params);
-    }
-
-    /**
-     * @param string $user_uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCreate($user_uuid)
-    {
-        $user = User::findOne($user_uuid);
-
-        if (!$user) {
-            throw new HttpException(404, 'User not found.');
-        }
-
-        $model = new UserSite([
-            'user_uuid' => $user_uuid,
-            'active_dates' => ['active_from_date' => \Yii::$app->formatter->asDatetime(date('Y-m-d H:i:s'))],
-        ]);
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        // Format dates into human readable format
-        $model->formatDatesArray();
-
-        return $this->renderPartial('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionEdit($uuid)
-    {
-        /* @var UserSite $model */
-        $model = UserSite::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'User site not found.');
-        }
-
-        if ($model->load(\Yii::$app->request->post())) {
-            return $this->postCreate($model);
-        }
-
-        // Format dates into human readable format
-        $model->formatDatesArray();
-
-        return $this->renderPartial('edit', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param string $uuid
-     * @return array|string
-     * @throws HttpException
-     */
-    public function actionCopy($uuid)
-    {
-        /* @var UserSite $model */
-        $model = UserSite::findOne($uuid);
-
-        if (!$model) {
-            throw new HttpException(404, 'User site not found.');
-        }
-
-        // Makes a status copy
-        $copy = $model->duplicate();
-
-        if ($copy->load(\Yii::$app->request->post())) {
-            return $this->postCreate($copy);
-        }
-
-        // Format dates into human readable format
-        $copy->formatDatesArray();
-
-        return $this->renderPartial('copy', [
-            'model' => $copy,
-        ]);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function actionDelete()
-    {
-        $selected = \Yii::$app->request->post('selection', \Yii::$app->request->get('uuid'));
-        $models = UserSite::findAll($selected);
-        $counter = 0;
-
-        foreach ($models as $model) {
-            $counter += (int) $model->delete();
-        }
-
-        return $counter === count($models);
     }
 
     /**
      * @param UserSite $model
-     * @return array
      */
-    protected function postCreate(UserSite $model)
+    public function beforeRender($model)
     {
-        // Validate user inputs
-        $errors = ActiveForm::validate($model);
-
-        if ($errors) {
-            \Yii::$app->response->statusCode = 206;
-            return $errors;
-        }
-
-        $model->save(false);
-
-        return $model->attributes;
+        // Format dates into human readable format
+        $model->formatDatesArray();
     }
 }
