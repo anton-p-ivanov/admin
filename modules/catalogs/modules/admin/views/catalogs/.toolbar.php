@@ -6,6 +6,17 @@
 return [
     'group-1' => [
         [
+            'label' => '<i class="material-icons">arrow_back</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('catalogs/catalogs', 'Back to types` list'),
+                'data-pjax' => 'false'
+            ],
+            'url' => [
+                'types/index',
+            ],
+        ],
+        [
             'label' => Yii::t('catalogs/catalogs', 'Create'),
             'options' => [
                 'data-toggle' => 'modal',

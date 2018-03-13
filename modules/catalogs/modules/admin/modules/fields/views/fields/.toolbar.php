@@ -14,6 +14,7 @@ return [
             ],
             'url' => [
                 '/catalogs/admin/catalogs/index',
+                'type_uuid' => $catalog->type_uuid
             ],
         ],
         [
