@@ -15,7 +15,7 @@ $this->title = sprintf('%s — %s: %s',
 \users\assets\RolesAsset::register($this);
 
 ?>
-<div class="users-title">
+<div class="section-title">
     <?= Yii::t('users', 'Roles for user'); ?> "<?= $user->getFullName(); ?>"
 </div>
 <div id="roles-pjax" data-pjax-container="true">

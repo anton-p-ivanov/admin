@@ -14,7 +14,7 @@ $this->title = sprintf('%s — %s: %s',
 // Registering assets
 \accounts\assets\AddressesAsset::register($this);
 ?>
-<div class="account-title">
+<div class="section-title">
     <?= Yii::t('accounts/addresses', 'Addresses for account'); ?> "<?= $account->title; ?>"
 </div>
 <div id="addresses-pjax" data-pjax-container="true">

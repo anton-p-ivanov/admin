@@ -15,7 +15,7 @@ $this->title = sprintf('%s — %s: %s',
 \catalogs\modules\admin\modules\fields\assets\GroupsAsset::register($this);
 
 ?>
-<div class="catalog-title">
+<div class="section-title">
     <?= Yii::t('catalogs/fields', 'Fields` groups for catalog'); ?> "<?= $catalog->title; ?>"
 </div>
 <div id="groups-pjax" data-pjax-container="true">

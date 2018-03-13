@@ -17,7 +17,7 @@ $this->title = sprintf('%s — %s: %s',
 \catalogs\modules\admin\modules\fields\assets\FieldsAsset::register($this);
 
 ?>
-<div class="catalog-title">
+<div class="section-title">
     <?= Yii::t('catalogs/fields', 'Fields for catalog'); ?> "<?= $catalog->title; ?>"
 </div>
 <div id="fields-pjax" data-pjax-container="true">

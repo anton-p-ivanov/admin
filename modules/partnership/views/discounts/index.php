@@ -12,7 +12,7 @@ $this->title = sprintf('%s — %s: %s',
 );
 
 ?>
-<div class="status-title">
+<div class="section-title">
     <?= Yii::t('partnership', 'Discounts for status'); ?> "<?= $status->title; ?>"
 </div>
 

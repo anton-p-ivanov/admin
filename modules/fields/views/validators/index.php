@@ -8,7 +8,7 @@
 
 \fields\assets\ValidatorsAsset::register($this);
 ?>
-<div class="field-title">
+<div class="section-title">
     <?= Yii::t('fields/validators', 'Validators for field'); ?> "<?= $field->label; ?>"
 </div>
 <div id="validators-pjax" data-pjax-container="true">

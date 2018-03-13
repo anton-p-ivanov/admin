@@ -18,7 +18,7 @@ $this->title = sprintf('%s — %s: %s',
 \training\modules\admin\modules\tests\assets\QuestionsAsset::register($this);
 
 ?>
-<div class="test-title">
+<div class="section-title">
     <?= Yii::t('training/tests', 'Questions for test'); ?> "<?= $test->title; ?>"
 </div>
 

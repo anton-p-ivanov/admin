@@ -16,7 +16,7 @@ $this->title = sprintf('%s — %s: %s',
 \forms\modules\admin\assets\StatusesAsset::register($this);
 
 ?>
-<div class="form-title">
+<div class="section-title">
     <?= Yii::t('forms/statuses', 'Statuses for form'); ?> "<?= $form->title; ?>"
 </div>
 <div id="statuses-pjax" data-pjax-container="true">

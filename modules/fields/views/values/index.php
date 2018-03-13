@@ -8,7 +8,7 @@
 
 \fields\assets\ValuesAsset::register($this);
 ?>
-<div class="field-title">
+<div class="section-title">
     <?= Yii::t('fields/values', 'Values for field'); ?> "<?= $field->label; ?>"
 </div>
 <div id="values-pjax" data-pjax-container="true">

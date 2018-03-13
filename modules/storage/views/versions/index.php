@@ -14,7 +14,7 @@ $this->title = sprintf('%s — %s: %s',
 // Registering assets
 storage\assets\VersionsAsset::register($this);
 ?>
-<div class="storage-title">
+<div class="section-title">
     <?= Yii::t('storage/versions', 'Versions for file'); ?> "<?= $storage->title; ?>"
 </div>
 <div id="versions-pjax" data-pjax-container="true">

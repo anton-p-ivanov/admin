@@ -16,7 +16,7 @@ $this->title = sprintf('%s — %s: %s',
 \training\modules\admin\assets\LessonsAsset::register($this);
 
 ?>
-<div class="course-title">
+<div class="section-title">
     <?= Yii::t('training/lessons', 'Lessons for course'); ?> "<?= $course->title; ?>"
 </div>
 <div id="lessons-pjax" data-pjax-container="true">

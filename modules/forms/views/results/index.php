@@ -15,7 +15,7 @@ $this->title = sprintf('%s — %s: %s',
 \forms\assets\ResultsAsset::register($this);
 
 ?>
-<div class="form-title">
+<div class="section-title">
     <?= Yii::t('forms/results', 'Results for form'); ?> "<?= $form->title; ?>"
 </div>
 <div id="results-pjax" data-pjax-container="true">

@@ -15,7 +15,7 @@ $this->title = sprintf('%s — %s: %s',
 \users\assets\SitesAsset::register($this);
 
 ?>
-<div class="users-title">
+<div class="section-title">
     <?= Yii::t('users', 'Sites for user'); ?> "<?= $user->getFullName(); ?>"
 </div>
 <div id="sites-pjax" data-pjax-container="true">

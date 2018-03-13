@@ -15,7 +15,7 @@ $this->title = sprintf('%s — %s',
 \catalogs\modules\admin\assets\CatalogsAsset::register($this);
 
 ?>
-<div class="type-title">
+<div class="section-title">
     <?= Yii::t('catalogs/catalogs', 'Catalogs of type'); ?> "<?= $type->title; ?>"
 </div>
 <div id="catalogs-pjax" data-pjax-container="true">
