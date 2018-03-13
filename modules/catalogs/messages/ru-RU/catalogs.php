@@ -4,10 +4,13 @@ return [
     'Catalogs' => 'Каталоги',
     'Elements' => 'Элементы',
     'No description' => 'Нет описания',
+    'Back to types` list' => 'Назад к списку типов',
+    'Delete selected items' => 'Удалить выбранные элементы',
 
     'Title' => 'Название',
     'Description' => 'Описание',
     'Sort' => 'Сортировка',
+    'Sort.' => 'Сорт.',
     'Code' => 'Код',
     'Type' => 'Тип',
     'Is active' => 'Активен',

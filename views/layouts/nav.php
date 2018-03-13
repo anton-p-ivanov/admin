@@ -17,12 +17,7 @@ if ($types) {
 }
 
 $types[] = [
-    'label' => 'Catalogs',
-    'url' => ['/admin/catalogs/catalogs'],
-];
-
-$types[] = [
-    'label' => 'Catalogs: Types',
+    'label' => 'Catalogs: Manage',
     'url' => ['/admin/catalogs/types'],
 ];
 

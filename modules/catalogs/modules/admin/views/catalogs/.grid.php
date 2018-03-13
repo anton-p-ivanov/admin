@@ -29,7 +29,6 @@ return [
         }
     ],
     'code',
-    'type.title',
     [
         'attribute' => 'fields',
         'options' => ['width' => 100],
@@ -58,8 +57,11 @@ return [
         'format' => 'boolean',
     ],
     [
+        'label' => Yii::t('catalogs/catalogs', 'Sort.'),
         'attribute' => 'sort',
         'options' => ['width' => 100],
+        'contentOptions' => ['class' => 'text_right'],
+        'headerOptions' => ['class' => 'text_right'],
     ],
     [
         'class' => \app\widgets\grid\ActionColumn::class,
