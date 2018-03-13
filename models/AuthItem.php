@@ -55,6 +55,7 @@ class AuthItem extends ActiveRecord
 
         return $behaviors;
     }
+
     /**
      * @return array
      */
@@ -62,7 +63,7 @@ class AuthItem extends ActiveRecord
     {
         return self::find()
             ->joinWith('translation')
-            ->select('description')
+            ->select('{{%auth_items_i18n}}.[[description]]')
             ->indexBy('name')
             ->roles()
             ->column();
