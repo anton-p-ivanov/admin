@@ -12,9 +12,7 @@ return [
                 'title' => Yii::t('sales/discounts', 'Back to statuses` list'),
                 'data-pjax' => 'false'
             ],
-            'url' => [
-                'statuses/index'
-            ],
+            'url' => isset($returnUrl) ? $returnUrl : ['statuses/index']
         ],
         [
             'label' => Yii::t('sales/discounts', 'Create'),

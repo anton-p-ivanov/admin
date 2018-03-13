@@ -37,25 +37,25 @@ class FieldRelation extends ActiveRecord
     }
 
     /**
-     * @param string $field_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($field_uuid)
+    public static function search($params = [])
     {
         return new ActiveDataProvider([
-            'query' => static::prepareSearchQuery($field_uuid),
+            'query' => static::prepareSearchQuery($params),
             'sort' => false,
             'pagination' => false
         ]);
     }
 
     /**
-     * @param string $field_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($field_uuid)
+    protected static function prepareSearchQuery($params)
     {
-        return static::find()->where(['field_uuid' => $field_uuid])->orderBy('sort');
+        return static::find()->where($params)->orderBy('sort');
     }
 
     /**

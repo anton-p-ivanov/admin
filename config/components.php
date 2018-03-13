@@ -42,7 +42,7 @@ return [
         // Otherwise set it to your timezone and configure PHP & MySQL timezones to UTC.
         'timeZone' => 'UTC',
         'datetimeFormat' => 'php:d.m.Y H:i',
-//        'dateFormat' => 'php:d.m.Y',
+        'dateFormat' => 'php:d.m.Y',
     ],
     'log' => [
         'traceLevel' => YII_DEBUG ? 3 : 0,

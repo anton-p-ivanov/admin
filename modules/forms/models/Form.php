@@ -94,7 +94,7 @@ class Form extends ActiveRecord
     }
 
     /**
-     * @return null|ActiveRecord
+     * @return null|ActiveRecord|FormStatus
      */
     public function getDefaultStatus()
     {

@@ -17,4 +17,25 @@ $(function(){
     });
 
     $(document).trigger('resize');
+
+    let $nav = $('nav'),
+        isNavOpened = false;
+
+    $('[data-toggle="menu"]').on('click', function (e) {
+        e.preventDefault();
+
+        $nav.animate({'left': isNavOpened ? (0 - $nav.width()) : 0 }, function () {
+            isNavOpened = !isNavOpened;
+        });
+    });
+
+    $(document).on('click.Nav', function (e) {
+        let $target = $(e.target);
+
+        if (isNavOpened && $target.closest('nav').length === 0) {
+            $nav.animate({'left': isNavOpened ? (0 - $nav.width()) : 0 }, function () {
+                isNavOpened = false;
+            });
+        }
+    });
 });

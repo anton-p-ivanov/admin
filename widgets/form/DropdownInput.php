@@ -42,7 +42,6 @@ class DropdownInput extends BaseInput
         $defaultOptions = [
             'data-type-ahead' => false,
             'hiddenInputOptions' => [],
-            'multiple' => false
         ];
 
         $this->options = ArrayHelper::merge($defaultOptions, $this->options);
@@ -55,14 +54,18 @@ class DropdownInput extends BaseInput
     {
         $value = Html::getAttributeValue($this->model, $this->attribute);
         $options = ArrayHelper::merge($this->inputOptions, [
-            'readonly' => $this->options['data-type-ahead'] === true,
+            'readonly' => (bool)$this->options['data-type-ahead'] !== true,
             'autocomplete' => 'off',
-            'value' => array_key_exists($value, $this->items) ? strip_tags($this->items[$value]) : null
+            'placeholder' => \Yii::t('widgets/DropDownInput', 'Nothing selected')
         ]);
 
+        $hiddenOptions = ['value' => $value, 'id' => false];
         $options = ArrayHelper::merge($options, $this->options);
 
-        $hiddenOptions = ['value' => $value, 'id' => false];
+        if (empty($options['value'])) {
+            $options['value'] = array_key_exists($value, $this->items) ? strip_tags($this->items[$value]) : null;
+        }
+
         if ($this->options['hiddenInputOptions']) {
             $hiddenOptions = ArrayHelper::merge($hiddenOptions, $this->options['hiddenInputOptions']);
         }
@@ -99,7 +102,7 @@ class DropdownInput extends BaseInput
      */
     protected function renderDropdown()
     {
-        array_walk($this->items, [$this, 'renderDropdownItem']);
+        array_walk($this->items, [$this, 'renderDropDownItem']);
 
         $classNames = ['dropdown', 'dropdown_wide'];
 
@@ -107,33 +110,20 @@ class DropdownInput extends BaseInput
             $classNames = explode(' ', $this->options['dropdown']['class']);
         }
 
-        if ($this->options['multiple']) {
-            $classNames[] = 'dropdown_checkboxes';
-        }
-
         return Html::ul($this->items, ['class' => implode(' ', $classNames), 'encode' => false]);
     }
 
     /**
-     * @param $value
-     * @param $key
+     * @param string $label
+     * @param string $value
      */
-    protected function renderDropdownItem(&$value, $key)
+    protected function renderDropDownItem(&$label, $value)
     {
-        if ($this->options['multiple']) {
-            $content = Html::activeCheckbox($this->model, $this->attribute, [
-                'label' => $value,
-                'value' => $key,
-                'data-value' => $key,
-                'uncheck' => false
-            ]);
-        }
-        else {
-            $content = Html::a($value, '#', ['data-value' => $key]);
-        }
+        $data = Html::getAttributeValue($this->model, $this->attribute);
+        $content = Html::a($label, '#', ['data-value' => $value]);
 
-        $value = Html::tag('li', $content, [
-            'class' => Html::getAttributeValue($this->model, $this->attribute) == $key ? 'active' : null
+        $label = Html::tag('li', $content, [
+            'class' => $data == $value ? 'active' : null
         ]);
     }
 }

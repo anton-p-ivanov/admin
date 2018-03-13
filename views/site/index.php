@@ -3,7 +3,7 @@
  * @var $this \yii\web\View
  */
 ?>
-<div style="width:600px">
+<div style="width:600px;margin:30px;">
     <p>
         Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum
         используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное
@@ -25,23 +25,24 @@
         <li>Vestibulum at nibh faucibus, vehicula magna malesuada, maximus tellus.</li>
     </ul>
 
-    <a href="#" class="btn">Button</a>
+    <a href="#" class="btn" data-toggle="modal" data-target="#modal">Button</a>
+    <a href="#" class="btn btn_primary" data-toggle="modal" data-target="#modal">Button</a>
 
 </div>
-<div class="modal opened" role="dialog">
+<div id="modal" class="modal" role="dialog">
     <div class="modal__container">
+        <div class="modal__header">
+            Modal dialog heading ...
+        </div>
         <div class="modal__body">
-            <div class="modal__heading">Modal dialog heading ...</div>
-            <div class="modal__content">
-                Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в
-                качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много
-                веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много
-                версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).
-            </div>
+            Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в
+            качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много
+            веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много
+            версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).
         </div>
         <div class="modal__footer">
             <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
-            <button type="button" class="btn" data-dismiss="modal">Выполнить</button>
+            <button type="button" class="btn btn_primary" data-dismiss="modal">Выполнить</button>
         </div>
     </div>
 </div>

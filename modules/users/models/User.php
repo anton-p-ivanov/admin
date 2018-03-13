@@ -5,7 +5,7 @@ use accounts\models\Account;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\models\Workflow;
-use users\validators\PropertiesValidator;
+use fields\validators\PropertiesValidator;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 

@@ -50,6 +50,15 @@
             if ($target.not('.opened')) {
                 $toggle.toggleClass('active', true);
                 $target.toggleClass('opened', true).trigger($.Event('shown.Dropdown', relatedTarget));
+
+                let pos = $target.offset(),
+                    height = $target.outerHeight(),
+                    wHeight = $(window).height();
+
+                // If dropdown is out of window bounds update it position
+                if (pos.top + height > wHeight && pos.top - height > 0) {
+                    $target.css({'top': -height});
+                }
             }
 
             return false;

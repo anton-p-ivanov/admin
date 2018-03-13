@@ -15,5 +15,6 @@ return [
     'Apply' => 'Применить',
     'Change' => 'Изменить',
     'Manage' => 'Управление',
-    'Control panel' => 'Панель управления'
+    'Control panel' => 'Панель управления',
+    'Fields marked with * are mandatory' => '* обязательные поля',
 ];

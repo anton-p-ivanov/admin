@@ -80,6 +80,12 @@ class FormInput extends InputWidget
         $this->field->options['class'] .= ' form-group_list';
         $this->options['class'] = 'list-group';
 
+        if (!$values) {
+            return Html::tag('div', \Yii::t('widgets/FormInput', 'There is no field values to display.'), [
+                'class' => 'alert alert_warning'
+            ]);
+        }
+
         if ($this->formField->multiple) {
             return Html::activeCheckboxList($this->model, $this->attribute, $values, $this->options);
         }
@@ -95,18 +101,32 @@ class FormInput extends InputWidget
     protected function renderListInput()
     {
         $values = ArrayHelper::map($this->formField->fieldValues, 'value', 'label');
-        if ($this->formField->multiple) {
-            $this->options['multiple'] = true;
-            return Html::activeListBox($this->model, $this->attribute, $values, $this->options);
+        if (!$values) {
+            return Html::tag('div', \Yii::t('widgets/FormInput', 'There is no field values to display.'), [
+                'class' => 'alert alert_warning'
+            ]);
         }
-        else {
+
+        $this->field->parts['{actions}'] = null;
+
+//        if ($this->formField->multiple) {
+//            $this->options['multiple'] = true;
+//            return Html::activeListBox($this->model, $this->attribute, $values, $this->options);
+//        }
+//        else {
             $this->field->options['class'] .= ' form-group_dropdown';
+
+            if (!$this->model->{$this->attribute}) {
+                $this->model->{$this->attribute} = $this->formField->default;
+            }
+
             return DropdownInput::widget([
                 'model' => $this->model,
                 'attribute' => $this->attribute,
-                'items' => $values
+                'items' => $values,
+                'options' => ['multiple' => $this->formField->multiple]
             ]);
-        }
+//        }
     }
 
     /**

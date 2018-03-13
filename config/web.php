@@ -10,7 +10,9 @@ return [
     'components' => require __DIR__ . '/components.php',
     'modules' => require __DIR__ . '/modules.php',
     'params' => require __DIR__ . '/params.php',
-
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset'
+    ]
 //    Uncomment next line to `close` site for maintenance
 //    'catchAll' => ['site/offline'],
 ];

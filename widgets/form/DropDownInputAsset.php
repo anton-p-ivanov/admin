@@ -21,6 +21,12 @@ class DropDownInputAsset extends AssetBundle
     /**
      * @var array
      */
+    public $css = [
+        'DropDownInput.css',
+    ];
+    /**
+     * @var array
+     */
     public $js = [
         'DropDownInput.js',
     ];

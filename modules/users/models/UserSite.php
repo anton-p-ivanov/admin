@@ -221,25 +221,25 @@ class UserSite extends ActiveRecord
     }
 
     /**
-     * @param string $user_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($user_uuid)
+    public static function search($params)
     {
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($user_uuid),
+            'query' => self::prepareSearchQuery($params),
             'pagination' => ['defaultPageSize' => 5],
             'sort' => false
         ]);
     }
 
     /**
-     * @param string $user_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($user_uuid)
+    protected static function prepareSearchQuery($params)
     {
-        return self::find()->where(['user_uuid' => $user_uuid])->joinWith('site')
+        return self::find()->where($params)->joinWith('site')
             ->orderBy(['{{%sites}}.[[title]]' => SORT_ASC]);
     }
 

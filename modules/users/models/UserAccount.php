@@ -106,13 +106,13 @@ class UserAccount extends ActiveRecord
     }
 
     /**
-     * @param string $user_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($user_uuid)
+    public static function search($params)
     {
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($user_uuid),
+            'query' => self::prepareSearchQuery($params),
             'pagination' => ['defaultPageSize' => 5],
             'sort' => [
                 'defaultOrder' => ['account.title' => SORT_ASC],
@@ -136,12 +136,12 @@ class UserAccount extends ActiveRecord
     }
 
     /**
-     * @param string $user_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($user_uuid)
+    protected static function prepareSearchQuery($params)
     {
-        return self::find()->where(['user_uuid' => $user_uuid])->joinWith('account');
+        return self::find()->where($params)->joinWith('account');
     }
 
     /**

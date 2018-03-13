@@ -12,9 +12,10 @@ use yii\helpers\Html;
         'id' => 'confirm-form',
         'data-type' => 'active-form'
     ]); ?>
-
-    <div class="modal__body">
+    <div class="modal__header">
         <div class="modal__heading">Confirmation required</div>
+    </div>
+    <div class="modal__body">
         <p>Please type your password to confirm action:</p>
         <!-- Next field is required to workaround google chrome autocomplete issue -->
         <?= \yii\helpers\Html::textInput(null, null, ['style' => 'display:none']); ?>

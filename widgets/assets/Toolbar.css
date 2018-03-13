@@ -53,6 +53,17 @@ a.toolbar-btn:hover {
 .toolbar-btn_back {
     margin-right: 20px;
 }
+.toolbar-btn_primary {
+    background-color: #fff;
+    color: #00aeef;
+}
+.toolbar-btn_primary.toolbar-btn_inverted {
+    background-color: #00aeef;
+    color: #fff;
+}
+.toolbar-btn_circle {
+    border-radius: 24px;
+}
 .toolbar__selected,
 .toolbar__filtered {
     display: flex;
@@ -77,7 +88,7 @@ a.toolbar-btn:hover {
     background-color: #eee;
 }
 .toolbar_light .toolbar-btn {
-    color: black;
+    color: #333;
 }
 .toolbar_light a.toolbar-btn:hover {
     background-color: rgba(0, 0, 0, .06);
@@ -87,4 +98,15 @@ a.toolbar-btn:hover {
 }
 .toolbar_header {
     border: none;
+}
+.toolbar_light .toolbar-btn_primary {
+    color: #00aeef;
+    background-color: #fff;
+}
+.toolbar_light a.toolbar-btn_primary.toolbar-btn_inverted {
+    background-color: #00aeef;
+    color: #fff;
+}
+.toolbar_light a.toolbar-btn_primary.toolbar-btn_inverted:hover {
+    background-color: rgba(0, 174, 239, .48);
 }

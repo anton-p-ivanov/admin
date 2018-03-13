@@ -45,7 +45,7 @@
                     .on('click.Modal', function (e) {
                         if ((e.target === $target.get(0) && $target.is('.opened') && !$target.data('persistent'))
                             || $(e.target).data('dismiss') === 'modal'
-                            || $(e.target).parents('[data-dismiss]').length > 0
+                            || $(e.target).closest('[data-dismiss]').length > 0
                         ) {
                             e.preventDefault();
                             self.hide($target);
@@ -68,7 +68,7 @@
             let $target = $(this.handler),
                 url = this.remoteUrl;
 
-            if (typeof url !== 'undefined' && url !== null && (!$target.data('loaded') || this.forceReload)) {
+            if (typeof url !== 'undefined' && url !== null && url !== '#' && (!$target.data('loaded') || this.forceReload)) {
                 $.ajax({
                     url: url,
                     success: function (response) {

@@ -24,7 +24,7 @@ use yii\helpers\Html;
 <header>
     <div class="toolbar toolbar_header">
         <div class="toolbar__buttons">
-            <a href="#" class="toolbar-btn">
+            <a href="#" class="toolbar-btn" data-toggle="menu">
                 <i class="material-icons">menu</i>
             </a>
         </div>

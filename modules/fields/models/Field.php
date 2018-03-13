@@ -178,7 +178,7 @@ class Field extends ActiveRecord
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             ['label', 'required', 'message' => self::t('{attribute} is required.')],
             [['label', 'default'], 'string', 'max' => 250, 'tooLong' => self::t('Maximum {max, number} characters allowed.')],
             [['active', 'multiple', 'list'], 'boolean'],
@@ -196,10 +196,20 @@ class Field extends ActiveRecord
             ['code', 'match', 'pattern' => '/^[a-z_\-\d]*$/i', 'message' => self::t('Invalid code.')],
             ['type', 'validateValues'],
             ['list', 'validateList'],
-            ['group_uuid', 'exist', 'targetClass' => Group::class, 'targetAttribute' => 'uuid'],
             ['options', JsonValidator::class],
             ['type', 'default', 'value' => self::FIELD_TYPE_DEFAULT],
         ];
+
+        if ($this->hasAttribute('group_uuid')) {
+            $rules[] = [
+                'group_uuid',
+                'exist',
+                'targetClass' => Group::class,
+                'targetAttribute' => 'uuid',
+            ];
+        }
+
+        return $rules;
     }
 
     /**

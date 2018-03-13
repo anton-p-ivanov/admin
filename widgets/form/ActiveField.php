@@ -1,6 +1,7 @@
 <?php
 namespace app\widgets\form;
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
@@ -132,7 +133,11 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function textInput($options = [])
     {
-        $options['autocomplete'] = 'off';
+//        $options['autocomplete'] = 'off';
+        if (empty($options['placeholder'])) {
+            $options['placeholder'] = 'Not set';
+        }
+
         return parent::textInput($options);
     }
 
@@ -178,9 +183,10 @@ class ActiveField extends \yii\widgets\ActiveField
 
     /**
      * @param array $ranges
+     * @param array $options
      * @return $this
      */
-    public function rangeInput($ranges)
+    public function rangeInput($ranges, $options = [])
     {
         $inputs = [];
 
@@ -191,9 +197,11 @@ class ActiveField extends \yii\widgets\ActiveField
                 'form' => $this->form
             ]);
 
+            $defaultOptions = ['value' => $this->model->$name];
+
             $field
                 ->cleanButton()
-                ->textInput(['value' => $this->model->$name])
+                ->textInput(ArrayHelper::merge($defaultOptions, $options))
                 ->label($this->model->getAttributeLabel($name))
                 ->hint($this->model->getAttributeHint($name))
                 ->error();

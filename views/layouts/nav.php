@@ -7,18 +7,23 @@ Yii::setAlias('@catalogs', '@app/modules/catalogs');
 
 foreach (\catalogs\models\Type::getList() as $uuid => $type) {
     $types[] = [
-        'label' => (++$index) . '. ' . $type,
+        'label' => $type,
         'url' => ['/catalogs/catalogs/', 'type_uuid' => $uuid],
     ];
 }
 
 if ($types) {
-    $types[] = '<li class="divider"></li>';
+    $types[] = ['options' => ['class' => 'divider']];
 }
 
 $types[] = [
-    'label' => 'Manage',
-    'url' => ['/admin/catalogs'],
+    'label' => 'Catalogs',
+    'url' => ['/admin/catalogs/catalogs'],
+];
+
+$types[] = [
+    'label' => 'Catalogs: Types',
+    'url' => ['/admin/catalogs/types'],
 ];
 
 return [
@@ -39,30 +44,45 @@ return [
         'items' => [
             [
                 'label' => 'Users',
-                'url' => ['/admin/users'],
+                'url' => ['/users/users/index'],
             ],
             [
-                'label' => 'Roles',
-                'url' => ['/admin/roles'],
-                'options' => ['class' => 'disabled']
+                'label' => 'Users: Fields',
+                'url' => ['/users/admin/fields'],
+            ],
+            [
+                'label' => 'Users: Roles',
+                'url' => ['/users/admin/roles'],
             ],
             [
                 'options' => ['class' => 'divider']
             ],
             [
                 'label' => 'Accounts',
-                'url' => ['/admin/accounts'],
+                'url' => ['/accounts/accounts/index'],
             ],
             [
                 'label' => 'Accounts: Types',
-                'url' => ['/admin/accounts'],
+                'url' => ['/accounts/admin/types'],
+            ],
+            [
+                'label' => 'Accounts: Fields',
+                'url' => ['/accounts/admin/fields'],
             ],
             [
                 'options' => ['class' => 'divider']
             ],
             [
-                'label' => 'Web-forms',
-                'url' => ['/admin/forms'],
+                'label' => 'Forms',
+                'url' => ['/forms'],
+                'options' => ['class' => 'disabled']
+            ],
+            [
+                'label' => 'Forms: Manage',
+                'url' => ['/forms/admin/forms'],
+            ],
+            [
+                'options' => ['class' => 'divider']
             ],
             [
                 'label' => 'Mail: Templates',
@@ -76,9 +96,13 @@ return [
                 'options' => ['class' => 'divider']
             ],
             [
-                'label' => 'Training: Courses',
-                'url' => ['/training/courses'],
+                'label' => 'Training',
+                'url' => ['/training'],
                 'options' => ['class' => 'disabled']
+            ],
+            [
+                'label' => 'Training: Courses',
+                'url' => ['/admin/training/courses'],
             ],
             [
                 'label' => 'Training: Certificates',
@@ -89,9 +113,19 @@ return [
                 'options' => ['class' => 'divider']
             ],
             [
+                'label' => 'Partnership: Statuses',
+                'url' => ['/partnership/statuses'],
+            ],
+            [
+                'label' => 'Sales: Discounts',
+                'url' => ['/sales/discounts/types'],
+            ],
+            [
+                'options' => ['class' => 'divider']
+            ],
+            [
                 'label' => 'Sites',
                 'url' => ['/admin/sites'],
-                'options' => ['class' => 'disabled']
             ],
             [
                 'label' => 'Languages',

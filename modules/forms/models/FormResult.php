@@ -35,6 +35,19 @@ class FormResult extends ActiveRecord
     private $_fields;
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $defaultStatus = $this->form ? $this->form->getDefaultStatus() : null;
+        if ($defaultStatus) {
+            $this->status_uuid = $defaultStatus->uuid;
+        }
+    }
+
+    /**
      * @return string
      */
     public static function tableName()
@@ -43,13 +56,13 @@ class FormResult extends ActiveRecord
     }
 
     /**
-     * @param string $form_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($form_uuid)
+    public static function search($params)
     {
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($form_uuid),
+            'query' => self::prepareSearchQuery($params),
             'pagination' => ['defaultPageSize' => 10],
             'sort' => [
                 'defaultOrder' => ['workflow.modified_date' => SORT_DESC],
@@ -201,14 +214,14 @@ class FormResult extends ActiveRecord
     }
 
     /**
-     * @param string $form_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($form_uuid)
+    protected static function prepareSearchQuery($params)
     {
         return self::find()
             ->joinWith(['status', 'workflow'])
-            ->where(['{{%forms_results}}.[[form_uuid]]' => $form_uuid]);
+            ->where($params);
     }
 
     /**

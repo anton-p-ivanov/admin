@@ -175,25 +175,25 @@ class UserRole extends AuthAssignment
     }
 
     /**
-     * @param string $user_uuid
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public static function search($user_uuid)
+    public static function search($params)
     {
         return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery($user_uuid),
+            'query' => self::prepareSearchQuery($params),
             'pagination' => ['defaultPageSize' => 5],
             'sort' => false
         ]);
     }
 
     /**
-     * @param string $user_uuid
+     * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected static function prepareSearchQuery($user_uuid)
+    protected static function prepareSearchQuery($params)
     {
-        return self::find()->where(['user_id' => $user_uuid])->orderBy(['created_at' => SORT_ASC]);
+        return self::find()->where($params)->orderBy(['created_at' => SORT_ASC]);
     }
 
     /**

@@ -27,4 +27,6 @@ use fields\models\Group;
     </div>
 </div>
 
-<?= $form->field($model, 'group_uuid')->dropDownList(Group::getList()); ?>
+<?php if ($model->hasAttribute('group_uuid')): ?>
+    <?= $form->field($model, 'group_uuid')->dropDownList(Group::getList()); ?>
+<?php endif; ?>

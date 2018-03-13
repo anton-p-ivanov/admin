@@ -17,4 +17,5 @@ $this->title = sprintf('%s — %s: %s',
     'dataProvider' => $dataProvider,
     'validators' => $validators,
     'values' => $values,
+    'useGroups' => false
 ]); ?>

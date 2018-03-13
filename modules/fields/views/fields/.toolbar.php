@@ -31,6 +31,7 @@ return [
             'options' => [
                 'data-pjax' => 'false',
             ],
+            'visible' => !isset($useGroups) || $useGroups === true,
             'url' => [
                 'groups/index',
             ],

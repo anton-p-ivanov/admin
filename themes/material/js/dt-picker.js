@@ -196,15 +196,18 @@
                     // Display picker
                     $('body').append($picker);
 
-                    let height = $picker.height();
+                    let height = $picker.height(),
+                        wHeight = $(window).height();
 
                     // If picker is out of window bounds update it position
-                    if (top + height > $(window).height() && top - height > 0) {
-                        $picker.css({'top': top - height});
+                    if (top + height > wHeight) {
+                        if (top - height > 0) {
+                            $picker.css({'top': top - height});
+                        }
+                        else {
+                            $picker.css({'top': (wHeight - height) / 2});
+                        }
                     }
-                    // else {
-                    //     $picker.css({'top': 0});
-                    // }
 
                     // Remove picker on outside click
                     $(document)

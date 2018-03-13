@@ -6,6 +6,7 @@
     "creocoder/yii2-nested-sets": "^0.9.0",
     "ramsey/uuid": "^3.7",
     "bower-asset/jquery-pjax": "*",
+    "bower-asset/codemirror": "^5.0.0",
     "blueimp/jquery-file-upload": "^9.19",
     "codeception/codeception": "^2.3",
     "codeception/specify": "^1.0",
@@ -25,6 +26,12 @@
       "yii\\composer\\Installer::postCreateProject"
     ]
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
   "extra": {
     "yii\\composer\\Installer::postCreateProject": {
       "setPermission": [
@@ -37,10 +44,6 @@
       "generateCookieValidationKey": [
         "config/web.php"
       ]
-    },
-    "asset-installer-paths": {
-      "npm-asset-library": "vendor/npm",
-      "bower-asset-library": "vendor/bower"
     }
   }
 }
