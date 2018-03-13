@@ -311,6 +311,11 @@ hr {
     background: #eee none;
     border-radius: 0 0 3px 3px;
 }
+.modal__alert {
+    margin: -24px -24px 24px -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
 .modal .btn_default {
     color: #333333;
 }
