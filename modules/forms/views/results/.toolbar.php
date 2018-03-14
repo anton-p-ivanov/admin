@@ -29,6 +29,29 @@ return [
             'url' => [
                 'create', 'form_uuid' => $form->uuid
             ],
+        ],
+        [
+            'label' => '<i class="material-icons">file_download</i>',
+            'encode' => false,
+            'options' => [
+                'title' => Yii::t('forms/results', 'Export results into file'),
+            ],
+            'items' => [
+                [
+                    'label' => Yii::t('forms/results', 'Comma-Separated (CSV)'),
+                    'url' => ['export', 'form_uuid' => $form->uuid, 'format' => 'csv'],
+                    'template' => \yii\helpers\Html::a('{label}', '{url}', [
+                        'data-pjax' => 'false',
+                    ])
+                ],
+                [
+                    'label' => Yii::t('forms/results', 'Microsoft Excel (XLSX)'),
+                    'url' => ['export', 'form_uuid' => $form->uuid, 'format' => 'xlsx'],
+                    'template' => \yii\helpers\Html::a('{label}', '{url}', [
+                        'data-pjax' => 'false',
+                    ])
+                ]
+            ]
         ]
     ],
     'group-2' => [
