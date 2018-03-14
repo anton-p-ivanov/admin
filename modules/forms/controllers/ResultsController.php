@@ -10,6 +10,8 @@ use app\components\actions\IndexAction;
 use app\components\BaseController;
 use forms\models\Form;
 use forms\models\Result;
+use forms\models\ResultProperty;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -77,11 +79,27 @@ class ResultsController extends BaseController
      */
     public function getIndexParams()
     {
+        $dataProvider = Result::search(['{{%forms_results}}.[[form_uuid]]' => $this->_form->uuid]);
+        $fields = array_filter($this->_form->fields, function ($field) {
+            return $field->list === 1;
+        });
+
+        $properties = ResultProperty::findAll([
+            'field_uuid' => ArrayHelper::getColumn($fields, 'uuid'),
+            'result_uuid' => ArrayHelper::getColumn($dataProvider->models, 'uuid')
+        ]);
+
+        $sorted = [];
+
+        foreach ($properties as $property) {
+            $sorted[$property->result_uuid][$property->field_uuid] = $property->value;
+        }
+
         return [
-            'dataProvider' => Result::search([
-                '{{%forms_results}}.[[form_uuid]]' => $this->_form->uuid
-            ]),
-            'form' => $this->_form
+            'dataProvider' => $dataProvider,
+            'form' => $this->_form,
+            'fields' => $fields,
+            'properties' => $sorted
         ];
     }
 
