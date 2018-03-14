@@ -81,4 +81,10 @@ return [
         'showScriptName' => false,
         'rules' => require __DIR__ . "/rules.php"
     ],
+    'response' => [
+        'formatters' => [
+            'csv' => 'app\components\formatters\CSVResponseFormatter',
+            'xlsx' => 'app\components\formatters\XLSXResponseFormatter',
+        ]
+    ],
 ];
