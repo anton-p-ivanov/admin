@@ -11,7 +11,8 @@
     "codeception/codeception": "^2.3",
     "codeception/specify": "^1.0",
     "codeception/verify": "^1.0",
-    "omgdef/yii2-multilingual-behavior": "~2.0"
+    "omgdef/yii2-multilingual-behavior": "~2.0",
+    "phpoffice/phpspreadsheet": "1.2.*"
   },
   "require-dev": {
     "yiisoft/yii2-gii": "~2.0.0",
