@@ -3,11 +3,11 @@
 namespace forms\modules\admin\models;
 
 /**
- * Class FormResult
+ * Class Result
  *
  * @package forms\modules\admin\models
  */
-class FormResult extends \forms\models\FormResult
+class Result extends \forms\models\Result
 {
 
 }

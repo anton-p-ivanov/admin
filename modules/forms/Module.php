@@ -59,6 +59,7 @@ class Module extends \yii\base\Module
             'fileMap' => [
                 'forms' => 'forms.php',
                 'forms/fields' => 'fields.php',
+                'forms/results' => 'results.php',
                 'forms/statuses' => 'statuses.php',
             ]
         ];

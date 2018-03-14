@@ -9,7 +9,7 @@ use app\components\actions\EditAction;
 use app\components\actions\IndexAction;
 use app\components\BaseController;
 use forms\models\Form;
-use forms\models\FormResult;
+use forms\models\Result;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -24,7 +24,7 @@ class ResultsController extends BaseController
     /**
      * @var string
      */
-    public $modelClass = FormResult::class;
+    public $modelClass = Result::class;
     /**
      * @var Form
      */
@@ -78,7 +78,7 @@ class ResultsController extends BaseController
     public function getIndexParams()
     {
         return [
-            'dataProvider' => FormResult::search([
+            'dataProvider' => Result::search([
                 '{{%forms_results}}.[[form_uuid]]' => $this->_form->uuid
             ]),
             'form' => $this->_form

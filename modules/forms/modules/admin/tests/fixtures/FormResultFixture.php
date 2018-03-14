@@ -1,7 +1,7 @@
 <?php
 namespace forms\modules\admin\tests\fixtures;
 
-use forms\modules\admin\models\FormResult;
+use forms\modules\admin\models\Result;
 use yii\test\ActiveFixture;
 
 /**
@@ -14,7 +14,7 @@ class FormResultFixture extends ActiveFixture
     /**
      * @var string
      */
-    public $modelClass = FormResult::class;
+    public $modelClass = Result::class;
     /**
      * @var string
      */

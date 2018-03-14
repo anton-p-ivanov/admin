@@ -1,12 +1,11 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \forms\models\FormResult $model
+ * @var \forms\models\Result $model
  * @var \app\models\Workflow $workflow
  * @var string $title
  */
 
-use app\widgets\form\FormInput;
 use forms\models\FormStatus;
 
 ?>
@@ -24,24 +23,10 @@ use forms\models\FormStatus;
 
         <?= $form->field($model, 'status_uuid')->dropDownList(FormStatus::getList($model->form_uuid)); ?>
 
-        <?php foreach ($model->fields as $code => $field): ?>
-            <?php
-            $f = $form->field($model, 'data[' . $field->code . ']');
-            if ($field->isRequired()) {
-                $f->options['class'] .= ' required';
-            }
-            ?>
-            <?= $f->label($field->label)->hint($field->description)
-                ->widget(FormInput::class, ['formField' => $field]); ?>
-
-        <?php endforeach; ?>
-
     </div>
-    <div class="modal__footer grid">
-        <div class="grid__item">
-            <div class="form-group__required form-group__hint">
-                * <?= Yii::t('forms/statuses', 'Required fields'); ?>
-            </div>
+    <div class="modal__footer">
+        <div class="grid__item text_small">
+            * <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>

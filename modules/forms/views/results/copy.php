@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \forms\models\FormResult $model
+ * @var \forms\models\Result $model
  * @var \app\models\Workflow $workflow
  */
 ?>

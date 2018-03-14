@@ -4,6 +4,7 @@ namespace forms\models;
 
 use app\models\Workflow;
 use forms\modules\admin\modules\fields\models\Field;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 
@@ -22,7 +23,7 @@ use yii\db\Expression;
  * @property string $workflow_uuid
  *
  * @property Workflow $workflow
- * @property FormResult[] $results
+ * @property Result[] $results
  * @property FormStatus[] $statuses
  * @property Field[] $fields
  *
@@ -114,7 +115,7 @@ class Form extends ActiveRecord
      */
     public function getResults()
     {
-        return $this->hasMany(FormResult::class, ['form_uuid' => 'uuid']);
+        return $this->hasMany(Result::class, ['form_uuid' => 'uuid']);
     }
 
     /**
@@ -162,5 +163,46 @@ class Form extends ActiveRecord
                 $this->$attribute = \Yii::$app->formatter->asDatetime($this->$attribute, $format);
             }
         }
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public static function search()
+    {
+        $defaultOrder = ['title' => SORT_ASC];
+
+        return new ActiveDataProvider([
+            'query' => self::prepareSearchQuery(),
+            'sort' => [
+                'defaultOrder' => $defaultOrder,
+                'attributes' => self::getSortAttributes()
+            ]
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected static function getSortAttributes()
+    {
+        $attributes = (new self())->attributes();
+        $attributes['workflow.modified_date'] = [
+            'asc' => ['{{%workflow}}.[[modified_date]]' => SORT_ASC],
+            'desc' => ['{{%workflow}}.[[modified_date]]' => SORT_DESC],
+        ];
+
+        return $attributes;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    protected static function prepareSearchQuery()
+    {
+        /* @var \yii\db\ActiveQuery $query */
+        $query = self::find()->joinWith('workflow');
+
+        return $query;
     }
 }

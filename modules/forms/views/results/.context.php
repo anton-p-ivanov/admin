@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \forms\models\FormResult $model
+ * @var \forms\models\Result $model
  */
 return [
     [
@@ -23,6 +23,14 @@ return [
             'data-pjax' => 'false',
             'data-reload' => 'true',
             'data-persistent' => 'true'
+        ]),
+    ],
+    ['options' => ['class' => 'dropdown__divider']],
+    [
+        'label' => Yii::t('forms/results', 'Custom fields'),
+        'url' => ['properties/index', 'result_uuid' => $model->uuid],
+        'template' => \yii\helpers\Html::a('{label}', '{url}', [
+            'data-pjax' => 'false',
         ]),
     ],
     ['options' => ['class' => 'dropdown__divider']],

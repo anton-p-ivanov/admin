@@ -6,16 +6,13 @@ use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\models\Workflow;
 use forms\modules\admin\modules\fields\models\Field;
-use forms\validators\PropertiesValidator;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
-use yii\helpers\Json;
 
 /**
- * Class FormResult
+ * Class Result
  *
  * @property string $uuid
- * @property string $data
  * @property string $form_uuid
  * @property string $status_uuid
  * @property string $workflow_uuid
@@ -27,7 +24,7 @@ use yii\helpers\Json;
 *
  * @package forms\models
  */
-class FormResult extends ActiveRecord
+class Result extends ActiveRecord
 {
     /**
      * @var Field[]
@@ -97,8 +94,6 @@ class FormResult extends ActiveRecord
                 'targetAttribute' => 'uuid',
                 'message' => self::t('Invalid status.')
             ],
-            ['data', 'safe'],
-            ['data', PropertiesValidator::class]
         ];
     }
 
@@ -121,7 +116,8 @@ class FormResult extends ActiveRecord
             'uuid' => 'Identifier',
             'status_uuid' => 'Status',
             'status.title' => 'Status',
-            'workflow.modified_date' => 'Modified'
+            'workflow.modified_date' => 'Date',
+            'workflow.created.fullname' => 'Owner'
         ];
 
         return array_map('self::t', $labels);
@@ -134,26 +130,11 @@ class FormResult extends ActiveRecord
      */
     public static function t($message, $params = [])
     {
-        return \Yii::t('forms', $message, $params);
+        return \Yii::t('forms/results', $message, $params);
     }
 
     /**
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if ($isValid = parent::beforeSave($insert)) {
-            if (is_array($this->data)) {
-                $this->data = Json::encode($this->data);
-            }
-        }
-
-        return $isValid;
-    }
-
-    /**
-     * @return FormResult|bool
+     * @return Result|bool
      */
     public function duplicate()
     {
@@ -167,7 +148,8 @@ class FormResult extends ActiveRecord
             }
         }
 
-        $clone->data = Json::decode($this->data);
+        /* @todo cloning properties */
+//        $clone->data = Json::decode($this->data);
 
         return $clone;
     }
@@ -182,7 +164,6 @@ class FormResult extends ActiveRecord
                 ->where(['form_uuid' => $this->form_uuid])
                 ->orderBy(['sort' => SORT_ASC])
                 ->indexBy('code')
-                /*->with('fieldValidators')*/
                 ->all();
         }
 
@@ -237,6 +218,10 @@ class FormResult extends ActiveRecord
         $attributes['workflow.modified_date'] = [
             'asc' => ['{{%workflow}}.[[modified_date]]' => SORT_ASC],
             'desc' => ['{{%workflow}}.[[modified_date]]' => SORT_DESC],
+        ];
+        $attributes['workflow.created.fullname'] = [
+            'asc' => ['{{%workflow}}.[[created_by]]' => SORT_ASC],
+            'desc' => ['{{%workflow}}.[[created_by]]' => SORT_DESC],
         ];
 
         return $attributes;

@@ -2,7 +2,7 @@
 /**
  * @var \forms\models\Form $form
  */
-use forms\models\FormResult;
+use forms\models\Result;
 use forms\modules\admin\modules\fields\models\Field;
 
 $columns = [];
@@ -12,9 +12,11 @@ foreach ($fields as $field) {
     $columns[] = [
         'format' => 'raw',
         'label' => $field->label,
-        'value' => function (FormResult $model) use ($field) {
-            $data = \yii\helpers\Json::decode($model->data);
-            return $data[$field->code];
+        'value' => function (Result $model) use ($field) {
+//        @todo display field data
+//            $data = \yii\helpers\Json::decode($model->data);
+//            return $data[$field->code];
+            return null;
         }
     ];
 }
@@ -24,7 +26,7 @@ return \yii\helpers\ArrayHelper::merge(
         [
             'class' => \app\widgets\grid\CheckboxColumn::class,
             'options' => ['width' => 72],
-            'checkboxOptions' => function (FormResult $model) {
+            'checkboxOptions' => function (Result $model) {
                 return ['value' => $model->uuid];
             }
         ]
@@ -35,6 +37,11 @@ return \yii\helpers\ArrayHelper::merge(
         [
             'attribute' => 'workflow.modified_date',
             'format' => 'datetime',
+            'options' => ['width' => 200]
+        ],
+        [
+            'attribute' => 'workflow.created.fullname',
+            'format' => 'text',
             'options' => ['width' => 200]
         ],
         [

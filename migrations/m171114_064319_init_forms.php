@@ -44,7 +44,6 @@ class m171114_064319_init_forms extends Migration
 
         $this->createTable('{{%forms_results}}', [
             'uuid' => 'char(36) not null',
-            'data' => 'text',
             'form_uuid' => 'char(36) not null',
             'status_uuid' => 'char(36) not null',
             'workflow_uuid' => 'char(36) null default null',
@@ -93,6 +92,15 @@ class m171114_064319_init_forms extends Migration
             'PRIMARY KEY (`uuid`)',
             'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%forms_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
+
+        $this->createTable('{{%forms_results_properties}}', [
+            'result_uuid' => 'char(36) not null',
+            'field_uuid' => 'char(36) not null',
+            'value' => 'text not null',
+            'PRIMARY KEY (`result_uuid`, `field_uuid`)',
+            'CONSTRAINT FOREIGN KEY (`result_uuid`) REFERENCES {{%forms_results}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT FOREIGN KEY (`field_uuid`) REFERENCES {{%forms_fields}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ], 'ENGINE InnoDB');
     }
 
     /**
@@ -100,6 +108,7 @@ class m171114_064319_init_forms extends Migration
      */
     public function safeDown()
     {
+        $this->dropTable('{{%forms_results_properties}}');
         $this->dropTable('{{%forms_fields_values}}');
         $this->dropTable('{{%forms_fields_validators}}');
         $this->dropTable('{{%forms_fields}}');

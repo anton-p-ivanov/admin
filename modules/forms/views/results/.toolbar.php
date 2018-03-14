@@ -14,7 +14,7 @@ return [
                 'data-pjax' => 'false'
             ],
             'url' => [
-                'forms/admin/forms/index',
+                'forms/index',
             ],
         ],
         [

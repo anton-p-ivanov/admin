@@ -9,13 +9,12 @@ use forms\models\FormEvent;
 use forms\modules\admin\modules\fields\models\Field;
 use mail\modules\admin\models\Type;
 use yii\behaviors\SluggableBehavior;
-use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
 /**
  * Class Form
  *
- * @property FormResult[] $results
+ * @property Result[] $results
  * @property FormStatus[] $statuses
  * @property Field[] $fields
  *
@@ -257,22 +256,6 @@ class Form extends \forms\models\Form
     }
 
     /**
-     * @return ActiveDataProvider
-     */
-    public static function search()
-    {
-        $defaultOrder = ['title' => SORT_ASC];
-
-        return new ActiveDataProvider([
-            'query' => self::prepareSearchQuery(),
-            'sort' => [
-                'defaultOrder' => $defaultOrder,
-                'attributes' => self::getSortAttributes()
-            ]
-        ]);
-    }
-
-    /**
      * @return Form|false
      */
     public function duplicate()
@@ -323,31 +306,6 @@ class Form extends \forms\models\Form
     public function setEvent($type)
     {
         $this->_event = $type;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getSortAttributes()
-    {
-        $attributes = (new self())->attributes();
-        $attributes['workflow.modified_date'] = [
-            'asc' => ['{{%workflow}}.[[modified_date]]' => SORT_ASC],
-            'desc' => ['{{%workflow}}.[[modified_date]]' => SORT_DESC],
-        ];
-
-        return $attributes;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    protected static function prepareSearchQuery()
-    {
-        /* @var \yii\db\ActiveQuery $query */
-        $query = self::find()->joinWith('workflow');
-
-        return $query;
     }
 
     /**

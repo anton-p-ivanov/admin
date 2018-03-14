@@ -6,7 +6,7 @@ use app\models\Workflow;
 use Codeception\Test\Unit;
 use Faker\Factory;
 use forms\models\Form;
-use forms\modules\admin\models\FormResult;
+use forms\modules\admin\models\Result;
 use forms\modules\admin\modules\fields\models\Field;
 use forms\modules\admin\modules\fields\models\FieldValidator;
 use forms\modules\admin\modules\fields\models\FieldValue;
@@ -144,8 +144,8 @@ class FieldsTest extends Unit
         $field->update();
 
         // we expect that old field code was replaced with new one
-        $this->assertTrue((int)FormResult::find()->where(['like', 'data', 'FORM_FIELD_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() === 0);
-        $this->assertTrue((int)FormResult::find()->where(['like', 'data', 'FORM_FIELD_UPDATE_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() > 0);
+        $this->assertTrue((int)Result::find()->where(['like', 'data', 'FORM_FIELD_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() === 0);
+        $this->assertTrue((int)Result::find()->where(['like', 'data', 'FORM_FIELD_UPDATE_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() > 0);
 
         // we expect that all values assigned will be removed
         $this->assertTrue((int)$field->getFieldValues()->count() === 0);
@@ -213,6 +213,6 @@ class FieldsTest extends Unit
      */
     protected function getResults(Field $field)
     {
-        return FormResult::find()->where(['like', 'data', $field->code])->andWhere(['form_uuid' => $field->form_uuid]);
+        return Result::find()->where(['like', 'data', $field->code])->andWhere(['form_uuid' => $field->form_uuid]);
     }
 }

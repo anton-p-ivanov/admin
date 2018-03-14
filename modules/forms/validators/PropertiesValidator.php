@@ -1,7 +1,7 @@
 <?php
 namespace forms\validators;
 
-use forms\models\FormResult;
+use forms\models\Result;
 use fields\models\FieldValidator;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -50,7 +50,7 @@ class PropertiesValidator extends Validator
     ];
 
     /**
-     * @param FormResult $model
+     * @param Result $model
      * @param string $attribute
      * @throws InvalidConfigException
      */
