@@ -1,17 +1,13 @@
 <?php
 namespace accounts\models;
 
-use app\components\behaviors\PrimaryKeyBehavior;
 use partnership\models\Status;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
  * Class AccountSite
  *
- * @property string $uuid
- * @property string $account_uuid
  * @property string $status_uuid
  * @property \DateTime $issue_date
  * @property \DateTime $expire_date
@@ -20,7 +16,7 @@ use yii\db\Expression;
  *
  * @package accounts\models
  */
-class AccountStatus extends ActiveRecord
+class AccountStatus extends AccountRelation
 {
     /**
      * @var array
@@ -85,7 +81,7 @@ class AccountStatus extends ActiveRecord
     {
         return [
             [
-                ['discount_uuid', 'value'],
+                'status_uuid',
                 'required',
                 'message' => self::t('{attribute} is required.')
             ],
@@ -198,25 +194,6 @@ class AccountStatus extends ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(Status::class, ['uuid' => 'status_uuid']);
-    }
-
-    /**
-     * @return array
-     */
-    public function transactions()
-    {
-        return [self::SCENARIO_DEFAULT => self::OP_ALL];
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::class;
-
-        return $behaviors;
     }
 
     /**

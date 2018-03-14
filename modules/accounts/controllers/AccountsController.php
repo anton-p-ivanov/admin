@@ -2,6 +2,7 @@
 
 namespace accounts\controllers;
 
+use accounts\components\traits\Duplicator;
 use accounts\models\Account;
 use app\components\BaseController;
 use yii\filters\ContentNegotiator;
@@ -13,6 +14,8 @@ use yii\web\Response;
  */
 class AccountsController extends BaseController
 {
+    use Duplicator;
+
     /**
      * @var string
      */
@@ -78,6 +81,18 @@ class AccountsController extends BaseController
      */
     public function afterCopy($model, $original)
     {
-        /* @todo deep copy */
+        $relations = ['contacts', 'managers', 'statuses'];
+        foreach ($relations as $name) {
+            $name = 'account' . ucfirst($name);
+            foreach ($original->$name as $relation) {
+                $this->cloneRelation($relation, $model->uuid);
+            }
+        }
+
+        // Cloning addresses
+        $this->cloneAddresses($model, $original);
+
+        // Cloning custom fields
+        $this->cloneProperties($model, $original);
     }
 }

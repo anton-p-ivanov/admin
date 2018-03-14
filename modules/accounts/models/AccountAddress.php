@@ -2,7 +2,6 @@
 
 namespace accounts\models;
 
-use app\models\Address;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 

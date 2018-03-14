@@ -8,6 +8,7 @@ use app\models\Workflow;
 use partnership\models\Status;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Account
@@ -47,6 +48,10 @@ class Account extends ActiveRecord
      * @var Status[]
      */
     private $_statuses;
+    /**
+     * @var array
+     */
+    private $_delete;
 
     /**
      * @return string
@@ -238,6 +243,22 @@ class Account extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getAccountContacts()
+    {
+        return $this->hasMany(AccountContact::class, ['account_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccountManagers()
+    {
+        return $this->hasMany(AccountManager::class, ['account_uuid' => 'uuid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getParent()
     {
         return $this->hasOne(self::class, ['uuid' => 'parent_uuid']);
@@ -348,6 +369,9 @@ class Account extends ActiveRecord
             }
         }
 
+        $copy->setSites(ArrayHelper::getColumn($this->getSites(), 'uuid'));
+        $copy->setTypes(ArrayHelper::getColumn($this->getTypes(), 'uuid'));
+
         return $copy;
     }
 
@@ -396,6 +420,43 @@ class Account extends ActiveRecord
 
         foreach ($modelClass::findAll($models) as $model) {
             $this->link($name, $model);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function beforeDelete()
+    {
+        $isValid = parent::beforeDelete();
+
+        if ($isValid) {
+            $this->_delete['addresses'] = AccountAddress::find()
+                ->where(['account_uuid' => $this->uuid])
+                ->select('address_uuid')
+                ->column();
+        }
+
+        return $isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        if ($this->_delete) {
+            foreach ($this->_delete as $type => $items) {
+                switch ($type) {
+                    case 'addresses':
+                        Address::deleteAll(['uuid' => $items]);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

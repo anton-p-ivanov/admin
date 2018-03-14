@@ -2,25 +2,21 @@
 
 namespace accounts\models;
 
-use app\components\behaviors\PrimaryKeyBehavior;
 use app\models\User;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 
 /**
  * Class AccountManager
  *
  * @property string $uuid
  * @property string $account_uuid
- * @property string $manager_uuid
- * @property string $comments
  *
  * @property User $manager
  * @property Account $account
  *
  * @package account\models
  */
-class AccountManager extends ActiveRecord
+class AccountManager extends AccountRelation
 {
     /**
      * @return string
@@ -111,25 +107,6 @@ class AccountManager extends ActiveRecord
     }
 
     /**
-     * @return array
-     */
-    public function transactions()
-    {
-        return [self::SCENARIO_DEFAULT => self::OP_ALL];
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::class;
-
-        return $behaviors;
-    }
-
-    /**
      * @param array $params
      * @return ActiveDataProvider
      */
@@ -164,36 +141,10 @@ class AccountManager extends ActiveRecord
     }
 
     /**
-     * @return AccountManager
-     */
-    public function duplicate()
-    {
-        $copy = new self([
-            'account_uuid' => $this->account_uuid
-        ]);
-
-        foreach ($this->attributes as $name => $value) {
-            if ($copy->isAttributeSafe($name)) {
-                $copy->$name = $value;
-            }
-        }
-
-        return $copy;
-    }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getManager()
     {
         return $this->hasOne(User::class, ['uuid' => 'manager_uuid']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAccount()
-    {
-        return $this->hasOne(Account::class, ['uuid' => 'account_uuid']);
     }
 }

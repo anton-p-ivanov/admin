@@ -2,25 +2,20 @@
 
 namespace accounts\models;
 
-use app\components\behaviors\PrimaryKeyBehavior;
 use app\models\User;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 
 /**
  * Class AccountContact
  *
- * @property string $uuid
- * @property string $account_uuid
  * @property string $user_uuid
  * @property string $email
  * @property string $fullname
  * @property string $position
- * @property integer $sort
  *
  * @package account\models
  */
-class AccountContact extends ActiveRecord
+class AccountContact extends AccountRelation
 {
     /**
      * @return string
@@ -128,30 +123,16 @@ class AccountContact extends ActiveRecord
      */
     public function validateUnique($attribute)
     {
-        $count = self::find()->where(['email' => $this->$attribute])->count();
+        $conditions = [
+            'email' => $this->$attribute,
+            'account_uuid' => $this->account_uuid
+        ];
+
+        $count = self::find()->where($conditions)->count();
 
         if ($count > 0) {
             $this->addError($attribute, self::t('Contact has already exists.'));
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function transactions()
-    {
-        return [self::SCENARIO_DEFAULT => self::OP_ALL];
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors[] = PrimaryKeyBehavior::class;
-
-        return $behaviors;
     }
 
     /**
@@ -189,24 +170,6 @@ class AccountContact extends ActiveRecord
     }
 
     /**
-     * @return AccountContact
-     */
-    public function duplicate()
-    {
-        $copy = new self([
-            'account_uuid' => $this->account_uuid
-        ]);
-
-        foreach ($this->attributes as $name => $value) {
-            if ($copy->isAttributeSafe($name)) {
-                $copy->$name = $value;
-            }
-        }
-
-        return $copy;
-    }
-
-    /**
      * @param bool $insert
      * @return bool
      */
@@ -239,13 +202,5 @@ class AccountContact extends ActiveRecord
     public function hasUser()
     {
         return $this->user_uuid !== null;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAccount()
-    {
-        return $this->hasOne(Account::class, ['uuid' => 'account_uuid']);
     }
 }
