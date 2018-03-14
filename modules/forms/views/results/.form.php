@@ -26,7 +26,7 @@ use forms\models\FormStatus;
     </div>
     <div class="modal__footer">
         <div class="grid__item text_small">
-            * <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
+            <?= Yii::t('app', 'Fields marked with * are mandatory'); ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', $model->isNewRecord ? 'Create' : 'Update'); ?></button>

@@ -10,6 +10,9 @@ $(function () {
         // Enable interactive form
         $modal.find('#results-form').Form();
 
+        // Enable dropdowns
+        $modal.find('.form-group_dropdown input:text').dropDownInput();
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#results-form')

@@ -17,5 +17,9 @@ return [
     'Delete' => 'Удалить',
     'Custom fields' => 'Настраиваемые поля',
 
-    'Delete selected items' => 'Удалить выбранные элементы'
+    'Delete selected items' => 'Удалить выбранные элементы',
+
+    'New result' => 'Новый результат',
+    'Edit result' => 'Изменить результат',
+    'Copy result' => 'Копировать результат'
 ];

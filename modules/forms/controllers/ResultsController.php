@@ -12,7 +12,6 @@ use forms\models\Form;
 use forms\models\Result;
 use forms\models\ResultProperty;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -69,7 +68,10 @@ class ResultsController extends BaseController
                 ]
             ],
             'edit' => EditAction::class,
-            'copy' => CopyAction::class,
+            'copy' => [
+                'class' => CopyAction::class,
+                'useDeepCopy' => true,
+            ],
             'delete' => DeleteAction::class,
         ];
     }
@@ -104,12 +106,27 @@ class ResultsController extends BaseController
     }
 
     /**
-     * @param $model
+     * @param Result $model
+     * @param Result $original
      */
-    public function beforeRender($model)
+    public function afterCopy($model, $original)
     {
-        if ($model->data && is_string($model->data)) {
-            $model->data = Json::decode($model->data);
+        $insert = [];
+        $properties = ResultProperty::findAll(['result_uuid' => $original->uuid]);
+
+        foreach ($properties as $property) {
+            $insert[] = [
+                'result_uuid' => $model->uuid,
+                'field_uuid' => $property->field_uuid,
+                'value' => $property->value
+            ];
+        }
+
+        if ($insert) {
+            \Yii::$app->db
+                ->createCommand()
+                ->batchInsert(ResultProperty::tableName(), array_keys($insert[0]), $insert)
+                ->execute();
         }
     }
 }
