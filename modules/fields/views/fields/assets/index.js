@@ -17,23 +17,22 @@ $(function () {
         $modal.find('.form-group_dropdown > input:text').dropDownInput();
 
         // Trigger on change field type
-        $modal.on('change', '#field-type:hidden', function () {
+        $modal.on('change', '[name="Field[type]"]:hidden', function () {
             let self = $(this),
-                value = self.val(),
+                value = parseInt(self.val()),
                 parent = self.closest('.tabs'),
                 condition = value < 3 || value > 4;
 
             parent.find('[name="Field[multiple]"]:checkbox')
                 .attr('disabled', condition)
                 .closest('.form-group').toggleClass('disabled', condition);
+
             parent.find('[name="Field[list]"]:checkbox')
-                .attr('disabled', parseInt(value) !== 1)
-                .closest('.form-group').toggleClass('disabled', parseInt(value) !== 1);
+                .attr('disabled', value !== 1)
+                .closest('.form-group').toggleClass('disabled', value !== 1);
         });
 
-        $modal.find('#field-type:hidden').trigger('change');
-
-        $('#field-type').trigger('change');
+        $modal.find('[name="Field[type]"]:hidden').trigger('change');
 
         // After submit form handler
         $modal
