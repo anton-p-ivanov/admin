@@ -22,17 +22,4 @@ return [
             ],
         ]
     ],
-    'group-2' => [
-        [
-            'label' => '<i class="material-icons">more_vert</i>',
-            'encode' => false,
-            'menuOptions' => ['class' => 'dropdown dropdown_right'],
-            'items' => [
-                [
-                    'label' => Yii::t('users/properties', 'Refresh'),
-                    'url' => \yii\helpers\Url::current()
-                ]
-            ]
-        ],
-    ],
 ];

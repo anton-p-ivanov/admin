@@ -21,5 +21,7 @@ return [
 
     'New result' => 'Новый результат',
     'Edit result' => 'Изменить результат',
-    'Copy result' => 'Копировать результат'
+    'Copy result' => 'Копировать результат',
+
+    'Form result properties' => 'Свойства результата формы',
 ];

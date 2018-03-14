@@ -49,7 +49,8 @@ class Module extends \yii\base\Module
             'fileMap' => [
                 'fields' => 'fields.php',
                 'fields/validators' => 'validators.php',
-                'fields/values' => 'values.php'
+                'fields/values' => 'values.php',
+                'fields/properties' => 'properties.php'
             ]
         ];
 

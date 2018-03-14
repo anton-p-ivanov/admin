@@ -22,7 +22,10 @@
     color: white;
 }
 .toolbar-btn_title {
-    max-width: 50%;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+#properties-pjax .toolbar__buttons {
+    width: 100%;
 }
