@@ -64,6 +64,9 @@ a.toolbar-btn:hover {
 .toolbar-btn_circle {
     border-radius: 24px;
 }
+.toolbar-btn__container {
+    position: relative;
+}
 .toolbar__selected,
 .toolbar__filtered {
     display: flex;

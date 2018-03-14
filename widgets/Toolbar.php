@@ -138,8 +138,10 @@ class Toolbar extends Widget
             else {
                 if ($btn['items']) {
                     $options = ArrayHelper::merge($btn['options'], ['data-toggle' => 'dropdown']);
+                    $result .= Html::beginTag('div', ['class' => 'toolbar-btn__container']);
                     $result .= Html::a($btn['label'], '#', $options);
                     $result .= Menu::widget(['items' => $btn['items'], 'options' => $btn['menuOptions']]);
+                    $result .= Html::endTag('div');
                 }
                 else {
                     $result .= Html::tag('span', $btn['label'], $btn['options']);
