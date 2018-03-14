@@ -69,8 +69,7 @@ return [
             ],
             [
                 'label' => 'Forms',
-                'url' => ['/forms'],
-                'options' => ['class' => 'disabled']
+                'url' => ['/forms/forms/index'],
             ],
             [
                 'label' => 'Forms: Manage',
