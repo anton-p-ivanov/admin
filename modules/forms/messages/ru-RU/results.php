@@ -27,4 +27,5 @@ return [
     'Comma-Separated (CSV)' => 'С разделителями (CSV)',
     'Microsoft Excel (XLSX)' => 'Microsoft Excel (XLSX)',
     'Export results into file' => 'Экспорт результатов в файл',
+    'Back to forms` list' => 'Назад к списку форм',
 ];
