@@ -6,7 +6,6 @@ use forms\models\Form;
 use forms\modules\admin\modules\fields\validators\UniqueCodeValidator;
 use yii\behaviors\SluggableBehavior;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Json;
 
 /**
  * Class Field
@@ -69,45 +68,6 @@ class Field extends \fields\models\Field
         ];
 
         return $behaviors;
-    }
-
-    /**
-     * @param bool $insert
-     * @param array $changedAttributes
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        // If field code was changed update all form results
-        if (array_key_exists('code', $changedAttributes)) {
-            foreach ($this->form->results as $result) {
-                $data = Json::decode($result->data);
-                if (isset($data[$changedAttributes['code']])) {
-                    $data[$this->code] = $data[$changedAttributes['code']];
-                    unset($data[$changedAttributes['code']]);
-                }
-
-                $result->updateAttributes(['data' => Json::encode($data)]);
-            }
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterDelete()
-    {
-        parent::afterDelete();
-
-        foreach ($this->form->results as $result) {
-            $data = Json::decode($result->data);
-            if (isset($data[$this->code])) {
-                unset($data[$this->code]);
-            }
-
-            $result->updateAttributes(['data' => Json::encode($data)]);
-        }
     }
 
     /**

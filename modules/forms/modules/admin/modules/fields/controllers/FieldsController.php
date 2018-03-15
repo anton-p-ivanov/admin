@@ -60,6 +60,22 @@ class FieldsController extends \fields\controllers\FieldsController
     /**
      * @return array
      */
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['create']['modelConfig'] = [
+            'active' => true,
+            'sort' => 100,
+            'type' => Field::FIELD_TYPE_DEFAULT,
+            'form_uuid' => \Yii::$app->request->get('form_uuid')
+        ];
+
+        return $actions;
+    }
+
+    /**
+     * @return array
+     */
     public function getIndexParams()
     {
         $params = parent::getIndexParams();
