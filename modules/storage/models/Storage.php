@@ -169,7 +169,6 @@ class Storage extends ActiveRecord
     }
 
     /**
-     * @return bool
      * @throws HttpException
      */
     public function beforeDelete()
