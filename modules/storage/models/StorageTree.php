@@ -131,16 +131,16 @@ class StorageTree extends ActiveRecord
     {
         return [
             'storage.title' => [
-                'asc' => ['{{%storage}}.[[title]]' => SORT_ASC],
-                'desc' => ['{{%storage}}.[[title]]' => SORT_DESC],
+                'asc' => ['{{%storage}}.[[type]]' => SORT_ASC, '{{%storage}}.[[title]]' => SORT_ASC],
+                'desc' => ['{{%storage}}.[[type]]' => SORT_ASC, '{{%storage}}.[[title]]' => SORT_DESC],
             ],
             'storage.file.size' => [
-                'asc' => ['{{%storage_files}}.[[size]]' => SORT_ASC],
-                'desc' => ['{{%storage_files}}.[[size]]' => SORT_DESC],
+                'asc' => ['{{%storage}}.[[type]]' => SORT_ASC, '{{%storage_files}}.[[size]]' => SORT_ASC],
+                'desc' => ['{{%storage}}.[[type]]' => SORT_ASC, '{{%storage_files}}.[[size]]' => SORT_DESC],
             ],
             'storage.workflow.modified_date' => [
-                'asc' => ['{{%workflow}}.[[modified_date]]' => SORT_ASC],
-                'desc' => ['{{%workflow}}.[[modified_date]]' => SORT_DESC]
+                'asc' => ['{{%storage}}.[[type]]' => SORT_ASC, '{{%workflow}}.[[modified_date]]' => SORT_ASC],
+                'desc' => ['{{%storage}}.[[type]]' => SORT_ASC, '{{%workflow}}.[[modified_date]]' => SORT_DESC]
             ]
         ];
     }
@@ -204,6 +204,6 @@ class StorageTree extends ActiveRecord
 
         return $query
             ->joinWith(['storage', 'storage.workflow', 'storage.file'])
-            ->orderBy(['{{%storage}}.[[type]]' => SORT_ASC]);
+            ->orderBy([]);
     }
 }

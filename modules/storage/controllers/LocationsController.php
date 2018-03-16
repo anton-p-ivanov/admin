@@ -53,7 +53,6 @@ class LocationsController extends Controller
         $parent = $node ? $node->parents(1)->one() : null;
 
         $dataProvider = StorageTree::search();
-        $dataProvider->sort = false;
         $dataProvider->pagination->pageSize = 50;
 
         if (!$withFiles) {
