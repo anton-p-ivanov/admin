@@ -29,9 +29,6 @@
 .grid-view__table thead th .material-icons {
     display: block;
 }
-.grid-view__table_light thead th a {
-    color: #666;
-}
 .grid-view__table thead th a:hover {
     text-decoration: none;
     color: #ffffff;
@@ -40,9 +37,10 @@
 .grid-view__table thead th a.desc {
     color: white;
 }
+.grid-view__table_light thead th a,
 .grid-view__table_light thead th a.asc,
 .grid-view__table_light thead th a.desc {
-    color: black;
+    color: #666;
 }
 .grid-view__table thead th a[data-sort]::before {
     content: '';
