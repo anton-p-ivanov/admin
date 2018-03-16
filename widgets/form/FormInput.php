@@ -68,6 +68,7 @@ class FormInput extends InputWidget
     protected function renderTextInput()
     {
         $this->field->options['class'] .= ' form-group_text';
+        $this->options['data-toggle'] = 'editor';
         return Html::activeTextarea($this->model, $this->attribute, $this->options);
     }
 
@@ -96,7 +97,6 @@ class FormInput extends InputWidget
 
     /**
      * @return string
-     * @todo: redesign of multiple field needed
      */
     protected function renderListInput()
     {
@@ -108,33 +108,27 @@ class FormInput extends InputWidget
         }
 
         $this->field->parts['{actions}'] = null;
+        $this->field->options['class'] .= ' form-group_dropdown';
 
-//        if ($this->formField->multiple) {
-//            $this->options['multiple'] = true;
-//            return Html::activeListBox($this->model, $this->attribute, $values, $this->options);
-//        }
-//        else {
-            $this->field->options['class'] .= ' form-group_dropdown';
+        if (!$this->model->{$this->attribute}) {
+            $this->model->{$this->attribute} = $this->formField->default;
+        }
 
-            if (!$this->model->{$this->attribute}) {
-                $this->model->{$this->attribute} = $this->formField->default;
-            }
-
-            return DropdownInput::widget([
-                'model' => $this->model,
-                'attribute' => $this->attribute,
-                'items' => $values,
-                'options' => ['multiple' => $this->formField->multiple]
-            ]);
-//        }
+        return DropdownInput::widget([
+            'model' => $this->model,
+            'attribute' => $this->attribute,
+            'items' => $values,
+        ]);
     }
 
     /**
      * @return string
-     * @todo: redesign needed
      */
     protected function renderFileInput()
     {
-        return Html::activeTextInput($this->model, $this->attribute, $this->options);
+        return File::widget([
+            'model' => $this->model,
+            'attribute' => $this->attribute,
+        ]);
     }
 }
