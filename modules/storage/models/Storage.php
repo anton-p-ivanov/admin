@@ -362,7 +362,7 @@ class Storage extends ActiveRecord
             // Delete old tree nodes
             foreach ($tree as $node) {
                 $node->detachBehavior('storage');
-                $node->delete();
+                $node->isRoot() ? $node->deleteWithChildren() : $node->delete();
             }
 
             // Insert new tree nodes

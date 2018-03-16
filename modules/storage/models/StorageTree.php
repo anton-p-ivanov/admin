@@ -27,6 +27,7 @@ use yii\db\ActiveRecord;
  * @method StorageTreeQuery appendTo($node)
  * @method StorageTreeQuery makeRoot()
  * @method StorageTreeQuery isRoot()
+ * @method StorageTreeQuery deleteWithChildren()
  *
  * @package storage\models
  * @see https://github.com/creocoder/yii2-nested-sets
