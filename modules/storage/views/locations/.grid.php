@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var bool $withFiles
+ */
 
 use yii\helpers\Html;
 
@@ -7,17 +10,23 @@ return [
         'class' => \app\widgets\grid\CheckboxColumn::class,
         'options' => ['width' => 72],
         'multiple' => false,
-        'checkboxOptions' => function ($data) {
-            $value = ['title' => $data['storage']['title'], 'uuid' => $data['tree_uuid']];
-            return ['value' => \yii\helpers\Json::encode($value)];
+        'checkboxOptions' => function ($data) use ($withFiles) {
+            return [
+                'value' => \yii\helpers\Json::encode(['title' => $data['storage']['title'], 'uuid' => $data['tree_uuid']]),
+                'disabled' => $withFiles && ($data['storage']['type'] === \storage\models\Storage::STORAGE_TYPE_DIR)
+            ];
         }
     ],
     [
         'attribute' => 'storage.title',
-        'label' => 'Папка',
+        'label' => Yii::t('storage', 'Folder / file'),
         'format' => 'raw',
-        'value' => function ($data) {
-            $title = Html::a($data['storage']['title'], ['index', 'tree_uuid' => $data['tree_uuid']]);
+        'value' => function ($data) use ($withFiles) {
+            $title = $data['storage']['title'];
+            if ($data['storage']['type'] === \storage\models\Storage::STORAGE_TYPE_DIR) {
+                $title = Html::a($title, ['index', 'tree_uuid' => $data['tree_uuid'], 'withFiles' => $withFiles]);
+            }
+
             return Html::tag('span', $title, [
                 'class' => 'storage__title storage__title_' . strtolower($data['storage']['type'])
             ]);
@@ -25,12 +34,12 @@ return [
     ],
     [
         'attribute' => 'storage.workflow.created.fullname',
-        'label' => 'Владелец',
+        'label' => Yii::t('storage', 'Owner'),
         'options' => ['width' => 200],
     ],
     [
         'attribute' => 'storage.workflow.modified_date',
-        'label' => 'Изменено',
+        'label' => Yii::t('storage', 'Modified'),
         'format' => 'datetime',
         'options' => ['width' => 200],
     ]

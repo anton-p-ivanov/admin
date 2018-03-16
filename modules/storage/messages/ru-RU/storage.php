@@ -24,6 +24,7 @@ return [
     'Versions' => 'Версии',
     'Add version' => 'Добавить версию',
     'Select location' => 'Выберите расположение',
+    'Select file' => 'Выберите файл',
     'Field\'s value must not be empty.' => 'Обязательное поле не заполнено.',
     'Open' => 'Открыть',
     'Edit' => 'Изменить',
@@ -68,5 +69,7 @@ return [
     'Archive' => 'Архив',
     'Image' => 'Изображение',
     'Video' => 'Видео',
-    'File' => 'Файл'
+    'File' => 'Файл',
+    'Modified' => 'Изменено',
+    'Folder / file' => 'Папка / файл'
 ];

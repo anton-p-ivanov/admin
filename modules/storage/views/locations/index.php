@@ -4,15 +4,18 @@
  * @var \yii\data\ActiveDataProvider $dataProvider
  * @var \storage\models\StorageTree $parentNode
  * @var \storage\models\StorageTree $currentNode
+ * @var boolean $withFiles
  */
 
 $tree_uuid = Yii::$app->request->get("tree_uuid");
 $updateUrl = \yii\helpers\Url::to(['locations', 'tree_uuid' => $tree_uuid]);
+
+\storage\assets\LocationsAsset::register($this);
 ?>
 
 <div class="modal__container">
     <div class="modal__header">
-        <div class="modal__heading"><?= Yii::t('storage', 'Select location'); ?></div>
+        <div class="modal__heading"><?= Yii::t('storage', $withFiles ? 'Select file' : 'Select location'); ?></div>
     </div>
     <div class="modal__body">
         <div id="locations-pjax" data-pjax-container="true" data-pjax-url="<?= $updateUrl; ?>">

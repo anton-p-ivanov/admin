@@ -2,6 +2,7 @@
 /**
  * @var \storage\models\StorageTree $currentNode
  * @var \storage\models\StorageTree $parentNode
+ * @var bool $withFiles
  */
 $tree_uuid = Yii::$app->request->get('tree_uuid');
 
@@ -10,7 +11,7 @@ return [
         [
             'label' => $tree_uuid ? '<i class="material-icons">arrow_back</i>' : '<i class="material-icons">apps</i>',
             'encode' => false,
-            'url' => ['index', 'tree_uuid' => $parentNode ? $parentNode->tree_uuid : null],
+            'url' => ['index', 'tree_uuid' => $parentNode ? $parentNode->tree_uuid : null, 'withFiles' => $withFiles],
             'options' => [
                 'title' => Yii::t('storage', 'Up to previous level')
             ],

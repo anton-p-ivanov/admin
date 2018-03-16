@@ -44,22 +44,27 @@ class LocationsController extends Controller
 
     /**
      * @param string $tree_uuid
+     * @param bool $withFiles
      * @return string
      */
-    public function actionIndex($tree_uuid = null)
+    public function actionIndex($tree_uuid = null, $withFiles = false)
     {
         $node = StorageTree::findOne(['tree_uuid' => $tree_uuid]);
         $parent = $node ? $node->parents(1)->one() : null;
 
         $dataProvider = StorageTree::search();
         $dataProvider->sort = false;
-        $dataProvider->pagination->pageSize = 10;
-        $dataProvider->query->andFilterWhere(['{{%storage}}.[[type]]' => Storage::STORAGE_TYPE_DIR]);
+        $dataProvider->pagination->pageSize = 50;
+
+        if (!$withFiles) {
+            $dataProvider->query->andFilterWhere(['{{%storage}}.[[type]]' => Storage::STORAGE_TYPE_DIR]);
+        }
 
         $params = [
             'dataProvider' => $dataProvider,
             'currentNode' => $node,
-            'parentNode' => $parent
+            'parentNode' => $parent,
+            'withFiles' => $withFiles
         ];
 
         return $this->renderPartial('index', $params);
