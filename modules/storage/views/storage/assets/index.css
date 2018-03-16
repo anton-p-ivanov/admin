@@ -9,19 +9,10 @@ input[type="file"] {
 #storage-file-modal textarea {
     min-height: 6rem;
 }
-#locations-modal .modal__container {
-    min-width: 900px;
-}
-#locations-modal .toolbar__title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 800px;
-}
 #storage-file-modal .tabs-pane {
     min-height: 355px;
 }
-#versions-pjax,
-#locations-pjax {
+#versions-pjax {
     margin: -24px;
 }
 .storage__title {
@@ -31,10 +22,6 @@ input[type="file"] {
 .storage__title > a:hover {
     text-decoration: none;
     color: #ffffff;
-}
-.grid-view__table_light .storage__title > a,
-.grid-view__table_light .storage__title > a:hover {
-    color: rgb(0, 174, 239);
 }
 .storage__title_f,
 .storage__title_d {

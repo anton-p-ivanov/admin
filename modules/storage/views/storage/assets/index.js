@@ -63,34 +63,6 @@ $(function () {
             });
     });
 
-    // This handler will trigger after `#locations-modal` loads
-    $(document).on('loaded.Modal', '#locations-modal', function (e) {
-
-        let $modal = $(e.currentTarget);
-
-        grid.pjaxUrls.add('#locations-pjax', e.url);
-
-        // Form handlers
-        $modal
-            .on('change', '[name="selection[]"]', function () {
-                let state = $modal.find('[name="selection[]"]:checked').length === 0;
-                $modal.find('[data-toggle="select"]').attr('disabled', state);
-            })
-            .on('click', '[data-toggle="select"]', function (e) {
-                e.preventDefault();
-
-                let value = JSON.parse($modal.find('[name="selection[]"]:checked:eq(0)').val());
-                $('[name^="Storage[locations]"]:text').val(value.title);
-                $('[name^="Storage[locations]"]:hidden').val(value.uuid);
-
-                $modal.Modal().hide();
-            })
-            .on('click', '[data-toggle="locations-clear"]', function (e) {
-                e.preventDefault();
-                $modal.find('[name^="Storage[locations]"]').val('');
-            });
-    });
-
     // This handler will trigger after `#version-modal` loads
     $(document).on('loaded.Modal', '#version-modal', function (e) {
         let $modal = $(e.currentTarget);

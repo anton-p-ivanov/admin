@@ -12,6 +12,7 @@ $this->title = 'Панель управления — Библиотека фа�
 
 // Registering assets
 storage\assets\StorageAsset::register($this);
+storage\assets\LocationsAsset::register($this);
 ?>
 <div id="storage-pjax" data-pjax-container="true">
 
