@@ -6,7 +6,7 @@
 
 // Registering assets
 \fields\assets\PropertiesAsset::register($this);
-
+\storage\assets\LocationsAsset::register($this);
 ?>
 <div id="properties-pjax" data-pjax-container="true">
 

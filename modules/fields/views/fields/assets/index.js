@@ -21,7 +21,7 @@ $(function () {
             let self = $(this),
                 value = parseInt(self.val()),
                 parent = self.closest('.tabs'),
-                condition = value < 3 || value > 4;
+                condition = value !== 3;
 
             parent.find('[name="Field[multiple]"]:checkbox')
                 .attr('disabled', condition)

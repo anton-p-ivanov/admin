@@ -3,8 +3,10 @@
 namespace fields\controllers;
 
 use app\models\User;
+use storage\models\StorageTree;
 use yii\filters\AjaxFilter;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -47,6 +49,24 @@ class PropertiesController extends Controller
         ];
 
         return $behaviors;
+    }
+
+    /**
+     * @param $tree_uuid
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionGetFileInfo($tree_uuid)
+    {
+        $tree = StorageTree::findOne(['tree_uuid' => $tree_uuid]);
+
+        if (!$tree) {
+            throw new NotFoundHttpException('Invalid tree identifier.');
+        }
+
+        return $this->renderPartial('@app/widgets/form/views/File.Info.php', [
+            'file' => $tree->storage->file
+        ]);
     }
 
     /**

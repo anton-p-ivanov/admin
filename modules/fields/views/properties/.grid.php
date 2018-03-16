@@ -25,10 +25,10 @@ return [
     ],
     [
         'label' => Yii::t('fields/properties', 'Value'),
-        'format' => 'raw',
+        'format' => 'text',
         'value' => function ($model) use ($properties) {
             if (array_key_exists($model->uuid, $properties)) {
-                return $properties[$model->uuid]->value;
+                return $properties[$model->uuid]->value ?: null;
             }
 
             return null;

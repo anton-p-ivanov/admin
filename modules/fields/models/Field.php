@@ -229,7 +229,7 @@ class Field extends ActiveRecord
      */
     public function validateValues($attribute)
     {
-        if (!$this->hasValues() && $this->multiple) {
+        if ($this->type !== self::FIELD_TYPE_SELECT && $this->multiple) {
             $this->addError($attribute, self::t('{type} can not be assigned to `multiple` fields.'));
         }
     }

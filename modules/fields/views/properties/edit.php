@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \users\models\Field $model
+ * @var \fields\models\Property $model
  */
 
 use app\widgets\form\ActiveForm;
@@ -29,7 +29,14 @@ use app\widgets\form\FormInput;
     </div>
     <div class="modal__footer">
         <div class="grid__item">
-
+            <?php if ($model->field->type == \fields\models\Field::FIELD_TYPE_FILE): ?>
+                <?= \yii\helpers\Html::a(Yii::t('app', 'Select'), ['/storage/locations/index', 'withFiles' => true], [
+                    'class' => 'btn btn_default',
+                    'data-toggle' => 'modal',
+                    'data-target' => '#locations-modal',
+                    'data-reload' => 'true'
+                ]); ?>
+            <?php endif; ?>
         </div>
         <div class="grid__item text_right">
             <button type="submit" class="btn btn_primary"><?= Yii::t('app', 'Update'); ?></button>

@@ -29,3 +29,6 @@
 #properties-pjax .toolbar__buttons {
     width: 100%;
 }
+.CodeMirror {
+    height: 250px;
+}
