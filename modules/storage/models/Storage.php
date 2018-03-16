@@ -102,6 +102,7 @@ class Storage extends ActiveRecord
             ['type', 'in', 'range' => self::$types],
             ['title', 'string', 'max' => 200],
             ['description', 'string', 'max' => 500],
+            ['description', 'default', 'value' => ''],
         ];
 
         if (!$this->isDirectory()) {
