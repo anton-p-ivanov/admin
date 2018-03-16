@@ -118,29 +118,6 @@ class StorageController extends Controller
     }
 
     /**
-     * @param string $tree_uuid
-     * @return string
-     */
-    public function actionLocations($tree_uuid = null)
-    {
-        $node = StorageTree::findOne(['tree_uuid' => $tree_uuid]);
-        $parent = $node ? $node->parents(1)->one() : null;
-
-        $dataProvider = StorageTree::search();
-        $dataProvider->sort = false;
-        $dataProvider->pagination->pageSize = 10;
-        $dataProvider->query->andFilterWhere(['type' => Storage::STORAGE_TYPE_DIR]);
-
-        $params = [
-            'dataProvider' => $dataProvider,
-            'currentNode' => $node,
-            'parentNode' => $parent
-        ];
-
-        return $this->renderPartial('locations', $params);
-    }
-
-    /**
      * @param string $parent_uuid
      * @return string|array
      */
