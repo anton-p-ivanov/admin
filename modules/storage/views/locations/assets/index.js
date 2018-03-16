@@ -50,10 +50,6 @@ $(function () {
                 $(this).trigger($.Event('select'));
 
                 $modal.Modal().hide();
-            })
-            .on('click', '[data-toggle="locations-clear"]', function (e) {
-                e.preventDefault();
-                $modal.find('[name^="Storage[locations]"]').val('');
             });
     });
 });

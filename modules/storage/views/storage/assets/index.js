@@ -58,6 +58,12 @@ $(function () {
             $modal.find('[name^="Storage[locations]"]:hidden').val(selected.uuid);
         });
 
+        $modal.on('click', '[data-toggle="locations-clear"]', function (e) {
+            e.preventDefault();
+            $modal.find('[name^="Storage[locations]"]').val('');
+            $modal.find('[name^="Storage[locations]"]:text').val('Media library');
+        });
+
         // After submit form handler
         $modal
             .off('afterSubmit.Form', '#storage-form')
