@@ -46,10 +46,6 @@ $(function () {
             .on('click', '[data-toggle="select"]', function (e) {
                 e.preventDefault();
 
-                // let value = JSON.parse($modal.find('[name="selection[]"]:checked:eq(0)').val());
-                // $('[name^="Storage[locations]"]:text').val(value.title);
-                // $('[name^="Storage[locations]"]:hidden').val(value.uuid);
-
                 $(this).data('value', JSON.parse($modal.find('[name="selection[]"]:checked:eq(0)').val()));
                 $(this).trigger($.Event('select'));
 

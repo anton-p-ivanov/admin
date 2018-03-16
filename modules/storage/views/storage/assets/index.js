@@ -51,8 +51,12 @@ $(function () {
         // Enable interactive form
         $modal.find('#storage-form').Form();
 
-        // Enable tabs
-        $('[data-toggle="tab"]').tabs();
+        $(document).on('click.select', '[data-toggle="select"]', function () {
+            let selected = $(this).data('value');
+
+            $modal.find('[name^="Storage[locations]"]:text').val(selected.title);
+            $modal.find('[name^="Storage[locations]"]:hidden').val(selected.uuid);
+        });
 
         // After submit form handler
         $modal
