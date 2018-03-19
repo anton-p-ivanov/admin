@@ -6,7 +6,6 @@ use app\models\Workflow;
 use forms\modules\admin\modules\fields\models\Field;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 
 /**
  * Class Form
@@ -66,22 +65,6 @@ class Form extends ActiveRecord
         ];
 
         return array_map('self::t', $labels);
-    }
-
-    /**
-     * Using `FROM_UNIXTIME()` MySQL function to sets date attributes.
-     */
-    protected function parseActiveDates()
-    {
-        foreach ($this->active_dates as $name => $date) {
-            if (is_int($date)) {
-                $expression = new Expression("FROM_UNIXTIME(:$name)", [":$name" => $date]);
-                $this->setAttribute($name, $expression);
-            }
-            else {
-                $this->setAttribute($name, null);
-            }
-        }
     }
 
     /**
@@ -150,19 +133,6 @@ class Form extends ActiveRecord
         }
 
         return $isActive;
-    }
-
-    /**
-     * @param array $dates
-     * @param null|string $format
-     */
-    public function formatDatesArray(array $dates, $format = null)
-    {
-        foreach ($dates as $attribute) {
-            if ($this->$attribute) {
-                $this->$attribute = \Yii::$app->formatter->asDatetime($this->$attribute, $format);
-            }
-        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace forms\modules\admin\models;
 
+use app\components\behaviors\DateRangeBehavior;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\WorkflowBehavior;
 use app\models\Workflow;
@@ -79,14 +80,6 @@ class Form extends \forms\models\Form
                 'tooSmall' => self::t('Value must be greater than 0.'),
                 'message' => self::t('Value must be a integer.')
             ],
-            // Date fields
-            ['active_dates', 'each', 'rule' => [
-                'date',
-                'format' => \Yii::$app->formatter->datetimeFormat,
-                'timestampAttribute' => 'active_dates',
-                'message' => self::t('Invalid date format.')
-            ]],
-            ['active_dates', 'validateDateRange'],
         ];
 
         $className = '\mail\models\Type';
@@ -106,19 +99,6 @@ class Form extends \forms\models\Form
         }
 
         return $rules;
-    }
-
-    /**
-     * @param string $attribute
-     */
-    public function validateDateRange($attribute)
-    {
-        $value = $this->$attribute;
-        if (!empty($value['active_to_date'])
-            && ($value['active_from_date'] > $value['active_to_date'])
-        ) {
-            $this->addError($attribute . '[active_to_date]', self::t('This date must be greater than first one.'));
-        }
     }
 
     /**
@@ -173,10 +153,6 @@ class Form extends \forms\models\Form
         $isValid = parent::beforeSave($insert);
 
         if ($isValid) {
-            if (is_array($this->active_dates)) {
-                $this->parseActiveDates();
-            }
-
             if ($this->hasAttribute('mail_template_uuid')) {
                 $this->{'mail_template_uuid'} = $this->{'mail_template_uuid'} && $this->_event ? $this->{'mail_template_uuid'} : null;
             }
@@ -250,6 +226,11 @@ class Form extends \forms\models\Form
             'slugAttribute' => 'code',
             'ensureUnique' => true,
             'immutable' => true
+        ];
+        $behaviors[] = [
+            'class' => DateRangeBehavior::class,
+            'attribute' => 'active_dates',
+            'targetAttributes' => ['active_from_date', 'active_to_date']
         ];
 
         return $behaviors;
