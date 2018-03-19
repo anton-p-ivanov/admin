@@ -2,6 +2,7 @@
 
 namespace catalogs\models;
 
+use app\components\behaviors\DateRangeBehavior;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\components\behaviors\PurifyBehavior;
 use app\components\behaviors\WorkflowBehavior;
@@ -9,7 +10,6 @@ use app\models\Site;
 use app\models\Workflow;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\web\HttpException;
 
 /**
@@ -33,6 +33,8 @@ use yii\web\HttpException;
  * @property Catalog $catalog
  * @property Workflow $workflow
  * @property array $locations
+ *
+ * @method formatDatesArray($format = null)
  *
  * @package catalogs\models
  */
@@ -152,29 +154,9 @@ class Element extends ActiveRecord
                 'integer',
                 'min' => 0,
             ],
-            // Date fields
-            ['active_dates', 'each', 'rule' => [
-                'date',
-                'format' => \Yii::$app->formatter->datetimeFormat,
-                'timestampAttribute' => 'active_dates',
-            ]],
-            ['active_dates', 'validateDateRange'],
         ];
 
         return $rules;
-    }
-
-    /**
-     * @param string $attribute
-     */
-    public function validateDateRange($attribute)
-    {
-        $value = $this->$attribute;
-        if (!empty($value['active_to_date'])
-            && ($value['active_from_date'] > $value['active_to_date'])
-        ) {
-            $this->addError($attribute . '[active_to_date]', self::t('This date must be greater than first one.'));
-        }
     }
 
     /**
@@ -248,6 +230,11 @@ class Element extends ActiveRecord
                 'HTML.Allowed' => 'a[href],b,strong,i,em,span,*[class]'
             ]
         ];
+        $behaviors['dates'] = [
+            'class' => DateRangeBehavior::class,
+            'attribute' => 'active_dates',
+            'targetAttributes' => ['active_from_date', 'active_to_date']
+        ];
 
         return $behaviors;
     }
@@ -296,10 +283,6 @@ class Element extends ActiveRecord
 
         if ($result) {
             $this->_transaction = $this->getDb()->beginTransaction();
-
-            if (is_array($this->active_dates)) {
-                $this->parseActiveDates();
-            }
         }
 
         return $result;
@@ -545,33 +528,5 @@ class Element extends ActiveRecord
         }
 
         return $clone;
-    }
-
-    /**
-     * @param string $format
-     */
-    public function formatDatesArray($format = null)
-    {
-        foreach (['active_from_date', 'active_to_date'] as $attribute) {
-            if ($this->$attribute) {
-                $this->$attribute = \Yii::$app->formatter->asDatetime($this->$attribute, $format);
-            }
-        }
-    }
-
-    /**
-     * Using `FROM_UNIXTIME()` MySQL function to sets date attributes.
-     */
-    protected function parseActiveDates()
-    {
-        foreach ($this->active_dates as $name => $date) {
-            if (is_int($date)) {
-                $expression = new Expression("FROM_UNIXTIME(:$name)", [":$name" => $date]);
-                $this->setAttribute($name, $expression);
-            }
-            else {
-                $this->setAttribute($name, null);
-            }
-        }
     }
 }
