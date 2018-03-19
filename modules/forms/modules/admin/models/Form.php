@@ -19,6 +19,8 @@ use yii\helpers\ArrayHelper;
  * @property FormStatus[] $statuses
  * @property Field[] $fields
  *
+ * @method formatDatesArray($format = null)
+ *
  * @package forms\modules\admin\models
  */
 class Form extends \forms\models\Form
