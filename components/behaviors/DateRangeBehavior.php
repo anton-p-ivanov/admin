@@ -46,15 +46,14 @@ class DateRangeBehavior extends Behavior
     }
 
     /**
-     * @param array $dates
      * @param null|string $format
      */
-    public function formatDatesArray(array $dates, $format = null)
+    public function formatDatesArray($format = null)
     {
         /* @var \yii\db\ActiveRecord $owner */
         $owner = $this->owner;
 
-        foreach ($dates as $attribute) {
+        foreach ($this->targetAttributes as $attribute) {
             if ($owner->$attribute) {
                 $owner->$attribute = \Yii::$app->formatter->asDatetime($owner->$attribute, $format);
             }
