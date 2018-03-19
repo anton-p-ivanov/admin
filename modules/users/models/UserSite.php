@@ -2,11 +2,11 @@
 namespace users\models;
 
 use accounts\models\Account;
+use app\components\behaviors\DateRangeBehavior;
 use app\components\behaviors\PrimaryKeyBehavior;
 use app\models\Site;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 
 /**
  * Class UserSite
@@ -22,6 +22,8 @@ use yii\db\Expression;
  *
  * @property Account $account
  * @property Site $site
+ *
+ * @method formatDatesArray($format = null)
  *
  * @package users\models
  */
@@ -65,6 +67,11 @@ class UserSite extends ActiveRecord
     {
         $behaviors = parent::behaviors();
         $behaviors[] = PrimaryKeyBehavior::class;
+        $behaviors[] = [
+            'class' => DateRangeBehavior::class,
+            'attribute' => 'active_dates',
+            'targetAttributes' => ['active_from_date', 'active_to_date']
+        ];
 
         return $behaviors;
     }
@@ -114,14 +121,6 @@ class UserSite extends ActiveRecord
                 'message' => self::t('Invalid site.')
             ],
             ['active', 'boolean'],
-            // Date fields
-            ['active_dates', 'each', 'rule' => [
-                'date',
-                'format' => \Yii::$app->formatter->datetimeFormat,
-                'timestampAttribute' => 'active_dates',
-                'message' => self::t('Invalid date format.')
-            ]],
-            ['active_dates', 'validateDateRange'],
             // Unique fields
             [
                 'site_uuid',
@@ -130,36 +129,6 @@ class UserSite extends ActiveRecord
                 'message' => self::t('This site already assigned.')
             ],
         ];
-    }
-
-    /**
-     * @param string $attribute
-     */
-    public function validateDateRange($attribute)
-    {
-        $value = $this->$attribute;
-        if (!empty($value['active_to_date'])
-            && ($value['active_from_date'] > $value['active_to_date'])
-        ) {
-            $this->addError($attribute . '[active_to_date]', self::t('Second date must be greater than first one.'));
-        }
-    }
-
-    /**
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        $isActive = parent::beforeSave($insert);
-
-        if ($isActive) {
-            if (is_array($this->active_dates)) {
-                $this->parseActiveDates();
-            }
-        }
-
-        return $isActive;
     }
 
     /**
@@ -186,18 +155,6 @@ class UserSite extends ActiveRecord
         }
 
         return $isActive;
-    }
-
-    /**
-     * @param string $format
-     */
-    public function formatDatesArray($format = null)
-    {
-        foreach (['active_from_date', 'active_to_date'] as $attribute) {
-            if ($this->$attribute) {
-                $this->$attribute = \Yii::$app->formatter->asDatetime($this->$attribute, $format);
-            }
-        }
     }
 
     /**
@@ -241,21 +198,5 @@ class UserSite extends ActiveRecord
     {
         return self::find()->where($params)->joinWith('site')
             ->orderBy(['{{%sites}}.[[title]]' => SORT_ASC]);
-    }
-
-    /**
-     * Using `FROM_UNIXTIME()` MySQL function to sets date attributes.
-     */
-    protected function parseActiveDates()
-    {
-        foreach ($this->active_dates as $name => $date) {
-            if (is_int($date)) {
-                $expression = new Expression("FROM_UNIXTIME(:$name)", [":$name" => $date]);
-                $this->setAttribute($name, $expression);
-            }
-            else {
-                $this->setAttribute($name, null);
-            }
-        }
     }
 }
