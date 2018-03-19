@@ -9,11 +9,11 @@ use yii\db\Expression;
 use yii\validators\Validator;
 
 /**
- * Class DatesArrayBehavior
+ * Class DateRangeBehavior
  *
  * @package app\components\behaviors
  */
-class DatesArrayBehavior extends Behavior
+class DateRangeBehavior extends Behavior
 {
     /**
      * @var string
@@ -23,36 +23,6 @@ class DatesArrayBehavior extends Behavior
      * @var array
      */
     public $targetAttributes = ['begin_date', 'end_date'];
-//    /**
-//     * @var mixed
-//     */
-//    private $_dates = [];
-//
-//    /**
-//     * @param string $name
-//     * @return mixed
-//     */
-//    public function __get($name)
-//    {
-//        if ($name == $this->attribute) {
-//            return array_key_exists($name, $this->_dates) ? $this->_dates[$name] : null;
-//        }
-//
-//        return parent::__get($name);
-//    }
-//
-//    /**
-//     * @param string $name
-//     * @param mixed $value
-//     */
-//    public function __set($name, $value)
-//    {
-//        if ($name === $this->attribute) {
-//            $this->_dates[$name] = $value;
-//        }
-//
-//        parent::__set($name, $value);
-//    }
 
     /**
      * @param \yii\base\Component|\yii\db\ActiveRecord $owner
