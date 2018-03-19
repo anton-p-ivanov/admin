@@ -50,6 +50,7 @@ class Module extends \yii\base\Module
                 'training/questions' => 'questions.php',
                 'training/answers' => 'answers.php',
                 'training/tests' => 'tests.php',
+                'training/attempts' => 'attempts.php',
             ],
         ];
     }

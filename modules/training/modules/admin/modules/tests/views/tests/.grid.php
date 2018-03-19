@@ -60,7 +60,7 @@ return [
                 $count = $attempts[$model->uuid];
             }
 
-            return Html::a($count, ['attempts/index', 'test_uuid' => $model->uuid], [
+            return Html::a($count, ['/training/attempts/index', 'test_uuid' => $model->uuid], [
                 'data-pjax' => 'false'
             ]);
         }
