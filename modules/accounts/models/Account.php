@@ -129,11 +129,11 @@ class Account extends ActiveRecord
             ['parent_uuid', 'exist', 'targetClass' => self::class, 'targetAttribute' => 'uuid', 'message' => self::t('Invalid value.')],
             ['types', 'exist', 'targetClass' => Type::class, 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
             ['sites', 'exist', 'targetClass' => Site::class, 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
-            ['statuses', 'exist', 'targetClass' => Status::class, 'targetAttribute' => 'uuid', 'allowArray' => true, 'message' => self::t('Invalid value.')],
             ['parent_uuid', 'validateParent'],
             // Default values
             [['details', 'description'], 'default', 'value' => ''],
             ['parent_uuid', 'default', 'value' => null],
+            ['sort', 'default', 'value' => 100],
         ];
     }
 
@@ -396,15 +396,18 @@ class Account extends ActiveRecord
         foreach ($links as $link) {
             $this->linkAll($link . 'Relation', $this->{'_' . $link});
         }
-//
-//        if ($insert || $this->change_code) {
-//            $this->changeRegistrationCode($insert);
-//        }
-//
-//        if ($this->notify) {
-//            // Sends message to account email
-//            $this->sendMessage($insert ? 'ACCOUNT_CREATED' : 'ACCOUNT_UPDATED');
-//        }
+
+        if ($insert) {
+            $this->setRegistrationCode();
+        }
+    }
+
+    /**
+     * Sets a new registration code
+     */
+    protected function setRegistrationCode()
+    {
+        return (new AccountCode(['account_uuid' => $this->uuid]))->insert();
     }
 
     /**

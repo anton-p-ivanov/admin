@@ -45,12 +45,13 @@ class m171201_131006_init_accounts extends Migration
         ], 'ENGINE InnoDB');
 
         $this->createTable('{{%accounts_codes}}', [
+            'uuid' => 'char(36) not null',
             'account_uuid' => 'char(36) not null',
             'code' => 'char(60) not null',
             'valid' => 'boolean not null default \'1\'',
             'issue_date' => 'timestamp null default null',
             'valid_date' => 'timestamp null default null',
-            'PRIMARY KEY (`account_uuid`)',
+            'PRIMARY KEY (`uuid`)',
             'CONSTRAINT FOREIGN KEY (`account_uuid`) REFERENCES {{%accounts}} (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE',
         ], 'ENGINE InnoDB');
 

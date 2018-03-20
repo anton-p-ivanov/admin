@@ -4,8 +4,10 @@ namespace accounts\controllers;
 
 use accounts\components\traits\Duplicator;
 use accounts\models\Account;
+use accounts\models\AccountCode;
 use app\components\BaseController;
 use yii\filters\ContentNegotiator;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -27,6 +29,11 @@ class AccountsController extends BaseController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
+        $behaviors['verbs']['actions'] = [
+            'delete' => ['delete'],
+            'code' => ['put']
+        ];
+        $behaviors['confirm']['actions'] = ['delete', 'code'];
         $behaviors['cn'] = [
             'class' => ContentNegotiator::class,
             'only' => ['list'],
@@ -45,6 +52,7 @@ class AccountsController extends BaseController
         $actions['copy']['useDeepCopy'] = (int) \Yii::$app->request->get('deep') === 1;
         $actions['create']['modelConfig'] = [
             'active' => true,
+            'sort' => 100
         ];
 
         return $actions;
@@ -94,5 +102,25 @@ class AccountsController extends BaseController
 
         // Cloning custom fields
         $this->cloneProperties($model, $original);
+    }
+
+    /**
+     * @param $account_uuid
+     * @return bool
+     * @throws NotFoundHttpException
+     */
+    public function actionCode($account_uuid)
+    {
+        $account = Account::findOne($account_uuid);
+
+        if (!$account) {
+            throw new NotFoundHttpException('Invalid account identifier.');
+        }
+
+        $model = new AccountCode([
+            'account_uuid' => $account_uuid,
+        ]);
+
+        return $model->insert();
     }
 }
