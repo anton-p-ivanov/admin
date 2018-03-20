@@ -18,8 +18,7 @@ $(function () {
                 container.find('.tabs-nav:first .tabs-nav__link').toggleClass('active', false);
 
                 // Enable active states for selected tab
-                $(target).toggleClass('active', true);
-                //$(this).parent().toggleClass('active', true);
+                $(target).toggleClass('active', true).trigger($.Event('shown.Tabs'));
                 self.toggleClass('active', true);
 
                 if (self.data('remote')) {
