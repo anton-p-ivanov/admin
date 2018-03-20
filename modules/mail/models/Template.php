@@ -143,28 +143,23 @@ class Template extends ActiveRecord
 
     /**
      * @param string $code
-     * @param \yii\db\ActiveRecord $model
+     * @param array $params
+     * @return bool
      * @throws NotFoundHttpException
      */
-    public static function send($code, $model = null)
+    public static function send($code, $params = [])
     {
         $template = Template::findOne(['code' => $code]);
         if (!$template) {
             throw new NotFoundHttpException('Invalid template identifier.');
         }
 
-        $params = [];
-
-        if ($model !== null) {
-            foreach ($model->attributes as $key => $value) {
-                $className = (new \ReflectionClass($model))->getShortName();
-                $params[strtoupper($className . '_' . $key)] = $value;
-            }
-        }
-
-        if (!Mail::send($template, $params)) {
+        $isSent = Mail::send($template, $params);
+        if (!$isSent) {
             $message = 'Message with template `%s` has been composed but does not sent.';
             \Yii::debug(sprintf($message, $code), 'mail');
         }
+
+        return $isSent;
     }
 }
