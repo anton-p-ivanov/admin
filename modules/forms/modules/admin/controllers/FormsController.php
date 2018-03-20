@@ -79,7 +79,7 @@ class FormsController extends BaseController
     public function beforeRender($model)
     {
         // Format dates into human readable format
-        $model->formatDatesArray(['active_from_date', 'active_to_date']);
+        $model->formatDatesArray();
     }
 
     /**
