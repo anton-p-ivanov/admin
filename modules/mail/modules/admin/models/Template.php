@@ -26,10 +26,10 @@ class Template extends \mail\models\Template
             'code' => 'Code',
             'from' => 'From',
             'to' => 'To',
-            'reply_to' => 'Reply to',
-            'copy' => 'Copy',
-            'text' => 'Plain text',
-            'html' => 'HTML',
+            'replyTo' => 'Reply to',
+            'bcc' => 'Copy',
+            'textBody' => 'Plain text',
+            'htmlBody' => 'HTML',
             'format' => 'Message format',
             'type' => 'Type',
             'sites' => 'Sites',
@@ -48,8 +48,8 @@ class Template extends \mail\models\Template
             'subject' => 'Up to 250 characters length.',
             'from' => 'Specify the sender of this template.',
             'to' => 'List the recipients of this template.',
-            'reply_to' => 'List E-Mail addresses to reply to.',
-            'copy' => 'List E-Mail addresses to which send a message`s copy.',
+            'replyTo' => 'List E-Mail addresses to reply to.',
+            'bcc' => 'List E-Mail addresses to which send a message`s copy.',
             'sites' => 'Choose sites which can use that template.',
             'code' => 'Only latin letters, digits, dash and underscore characters are valid. Will be generated if empty.',
         ];
@@ -65,9 +65,9 @@ class Template extends \mail\models\Template
         return [
             [['subject', 'to', 'type'], 'required', 'message' => self::t('{attribute} is required.')],
             ['from', 'email', 'allowName' => true, 'message' => self::t('Invalid E-Mail.')],
-            [['to', 'reply_to', 'copy'], 'validateRecipient'],
+            [['to', 'replyTo', 'bcc'], 'validateRecipient'],
             ['subject', 'string', 'max' => 250, 'tooLong' => self::t('Maximum (max, number) characters allowed.')],
-            [['text', 'html'], 'safe'],
+            [['textBody', 'htmlBody'], 'safe'],
             ['sites', 'exist', 'targetClass' => Site::class, 'targetAttribute' => 'uuid', 'allowArray' => true],
             ['type', 'exist', 'targetClass' => Type::class, 'targetAttribute' => 'uuid'],
             ['code', 'unique', 'message' => self::t('Template with code `{value}` is already exist.')]
@@ -139,7 +139,7 @@ class Template extends \mail\models\Template
             $this->code = mb_strtoupper($this->code);
 
             // Purify HTML-content
-            $this->html = \Yii::$app->formatter->asHtml($this->html);
+            $this->htmlBody = \Yii::$app->formatter->asHtml($this->htmlBody);
         }
 
         return $isValid;

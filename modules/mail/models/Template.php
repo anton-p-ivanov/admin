@@ -4,7 +4,9 @@ namespace mail\models;
 
 use app\models\Site;
 use app\models\Workflow;
+use mail\helpers\Mail;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class Template
@@ -13,11 +15,11 @@ use yii\db\ActiveRecord;
  * @property string $code
  * @property string $from
  * @property string $to
- * @property string $reply_to
- * @property string $copy
+ * @property string $replyTo
+ * @property string $bcc
  * @property string $subject
- * @property string $text
- * @property string $html
+ * @property string $textBody
+ * @property string $htmlBody
  * @property string $workflow_uuid
  *
  * @property Site[] $sites
@@ -32,7 +34,7 @@ class Template extends ActiveRecord
      * Message format switch.
      * @var string
      */
-    public $format = 'text';
+    public $format = 'textBody';
     /**
      * @var string
      */
@@ -137,5 +139,32 @@ class Template extends ActiveRecord
             ->select('subject')
             ->indexBy('uuid')
             ->column();
+    }
+
+    /**
+     * @param string $code
+     * @param \yii\db\ActiveRecord $model
+     * @throws NotFoundHttpException
+     */
+    public static function send($code, $model = null)
+    {
+        $template = Template::findOne(['code' => $code]);
+        if (!$template) {
+            throw new NotFoundHttpException('Invalid template identifier.');
+        }
+
+        $params = [];
+
+        if ($model !== null) {
+            foreach ($model->attributes as $key => $value) {
+                $className = (new \ReflectionClass($model))->getShortName();
+                $params[strtoupper($className . '_' . $key)] = $value;
+            }
+        }
+
+        if (!Mail::send($template, $params)) {
+            $message = 'Message with template `%s` has been composed but does not sent.';
+            \Yii::debug(sprintf($message, $code), 'mail');
+        }
     }
 }

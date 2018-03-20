@@ -14,7 +14,7 @@
         <?= \app\widgets\form\FieldSelector::widget([
             'form' => $form,
             'model' => $model,
-            'attributes' => ['from', 'reply_to', 'copy']
+            'attributes' => ['from', 'replyTo', 'bcc']
         ]); ?>
     </div>
 </div>

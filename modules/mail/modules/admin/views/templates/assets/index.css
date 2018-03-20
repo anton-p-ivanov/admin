@@ -2,9 +2,38 @@
     min-height: 345px;
 }
 .form-group_text .form-group__input {
-    min-height: 12em;
+    min-height: 17em;
 }
 textarea.form-group__input {
     font-family: monospace;
     font-size: 17px;
+}
+#template-format {
+    display: flex;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 18px;
+    z-index: 100;
+}
+#template-format li {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+#template-format li > a {
+    padding: 8px;
+    margin-right: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    color: #333;
+}
+#template-format li.active > a,
+#template-format li > a:hover {
+    background-color: #00aeef;
+    color: white;
+}
+.CodeMirror {
+    height: 300px;
 }

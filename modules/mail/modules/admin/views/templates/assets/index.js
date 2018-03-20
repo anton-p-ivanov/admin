@@ -22,13 +22,38 @@ $(function () {
         // Focus on element
         $('#template-subject').focus();
 
-        $modal.on('change', '#template-format input:radio', function () {
-            let value = $modal.find('#template-format input:checked').val(),
-                fields = ['text', 'html'];
+        let cm = {};
+
+        $modal.on('click', '#template-format a', function (e) {
+            e.preventDefault();
+
+            let value = $(this).data('value'),
+                fields = ['textBody', 'htmlBody'];
 
             for (let i = 0; i < fields.length; i++) {
-                $modal.find('.field-template-' + fields[i]).toggleClass('form-group_hidden', value !== fields[i]);
+                $('#template-format').find('[data-value="' + fields[i] + '"]').parent().toggleClass('active', value === fields[i]);
+                $modal.find('.field-template-' + fields[i].toLowerCase()).toggleClass('form-group_hidden', value !== fields[i]);
+
+                cm[i].refresh();
+                cm[i].focus();
             }
+        });
+
+        // Enable code editor
+        $modal.find('[data-toggle="editor"]').each(function (index, item) {
+            cm[index] = CodeMirror.fromTextArea(item, {
+                lineNumbers: true,
+                lineWrapping: true
+            });
+
+            cm[index].on('blur', function () {
+                cm[index].save();
+            });
+        });
+
+        $modal.on('shown.Tabs', '#content', function () {
+            cm[0].refresh();
+            cm[0].focus();
         });
 
         // After submit form handler

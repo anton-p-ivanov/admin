@@ -33,6 +33,7 @@ class TemplatesAsset extends AssetBundle
         'app\themes\material\assets\AppAsset',
         'app\themes\material\assets\FormAsset',
         'app\themes\material\assets\GridAsset',
+        'app\themes\material\assets\CodeMirrorThemeAsset',
         'app\widgets\form\FieldSelectorAsset',
         'app\widgets\form\DropDownInputAsset',
         'app\widgets\TabsAsset',
