@@ -2,22 +2,24 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=7.0.0",
-    "yiisoft/yii2": "~2.0.11",
-    "creocoder/yii2-nested-sets": "^0.9.0",
     "ramsey/uuid": "^3.7",
+    "yiisoft/yii2": "~2.0.11",
+    "yiisoft/yii2-swiftmailer": "*",
+    "yiisoft/yii2-twig": "~2.0.0",
+    "creocoder/yii2-nested-sets": "^0.9.0",
+    "omgdef/yii2-multilingual-behavior": "~2.0",
     "bower-asset/jquery-pjax": "*",
     "bower-asset/codemirror": "^5.0.0",
     "blueimp/jquery-file-upload": "^9.19",
-    "codeception/codeception": "^2.3",
-    "codeception/specify": "^1.0",
-    "codeception/verify": "^1.0",
-    "omgdef/yii2-multilingual-behavior": "~2.0",
     "phpoffice/phpspreadsheet": "1.2.*"
   },
   "require-dev": {
     "yiisoft/yii2-gii": "~2.0.0",
     "yiisoft/yii2-debug": "~2.0.0",
-    "yiisoft/yii2-faker": "~2.0.0"
+    "yiisoft/yii2-faker": "~2.0.0",
+    "codeception/codeception": "^2.3",
+    "codeception/specify": "^1.0",
+    "codeception/verify": "^1.0"
   },
   "config": {
     "process-timeout": 1800

@@ -70,6 +70,13 @@ return [
             ],
         ],
     ],
+    'mailer' => [
+        'class' => 'yii\swiftmailer\Mailer',
+        'transport' => [
+            'class' => 'Swift_SmtpTransport',
+            'host' => 'mail.aladdin.ru',
+        ]
+    ],
     'db' => require __DIR__ . "/db.php",
     'user' => [
         'enableAutoLogin' => true,
