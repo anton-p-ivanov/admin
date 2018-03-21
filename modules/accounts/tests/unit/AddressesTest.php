@@ -81,6 +81,7 @@ class AddressesTest extends Unit
             'type_uuid' => AddressType::find()->orderBy(new Expression('RAND()'))->one()->{'uuid'},
             'country_code' => AddressCountry::find()->orderBy(new Expression('RAND()'))->one()->{'code'},
             'region' => '',
+            'district' => '',
             'city' => $this->faker->city,
             'zip' => $this->faker->postcode,
             'address' => $this->faker->address,

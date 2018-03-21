@@ -83,11 +83,11 @@ class MailTemplateTest extends Unit
             'code' => 'TEMPLATE_CREATE_TEST',
             'from' => $this->faker->email,
             'to' => $this->faker->email,
-            'reply_to' => $this->faker->email,
-            'copy' => $this->faker->email,
+            'replyTo' => $this->faker->email,
+            'bcc' => $this->faker->email,
             'subject' => $this->faker->text(),
-            'text' => $this->faker->text(500),
-            'html' => $this->faker->randomHtml(),
+            'textBody' => $this->faker->text(500),
+            'htmlBody' => $this->faker->randomHtml(),
             'type' => Type::findOne(['code' => 'MAIL_TYPE_0'])->uuid,
             'sites' => Site::find()->select('uuid')->column()
         ]);

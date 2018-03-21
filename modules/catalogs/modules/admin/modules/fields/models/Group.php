@@ -53,6 +53,14 @@ class Group extends \fields\models\Group
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFields()
+    {
+        return $this->hasMany(Field::class, ['group_uuid' => 'uuid']);
+    }
+
+    /**
      * @return Group
      */
     public function duplicate()

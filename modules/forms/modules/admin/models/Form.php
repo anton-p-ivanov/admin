@@ -73,6 +73,7 @@ class Form extends \forms\models\Form
             [['active', 'template_active'], 'boolean'],
             // Text fields
             [['description', 'template'], 'safe'],
+            ['description', 'default', 'value' => ''],
             ['template', 'validateTemplate'],
             // Sort field
             [

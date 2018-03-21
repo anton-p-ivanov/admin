@@ -52,6 +52,7 @@ class Type extends \mail\models\Type
             ['code', 'string', 'max' => 100, 'tooLong' => self::t('Maximum (max, number) characters allowed.')],
             ['title', 'string', 'max' => 250, 'tooLong' => self::t('Maximum (max, number) characters allowed.')],
             ['description', 'safe'],
+            ['description', 'default', 'value' => ''],
             ['code', 'unique', 'message' => self::t('Type with code `{value}` is already exist.')]
         ];
     }

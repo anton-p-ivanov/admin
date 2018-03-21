@@ -73,6 +73,7 @@ class RolesTest extends Unit
     {
         $role = new Role([
             'name' => 'new-role',
+            'type' => 1,
             'description' => $this->faker->text(50),
             'description_ru_ru' => $this->faker->text(50),
             'description_en_us' => $this->faker->text(50),
@@ -121,6 +122,7 @@ class RolesTest extends Unit
         // Creating user field clone
         $clone = $role->duplicate();
         $clone->name = 'new-group';
+        $clone->type = 1;
         $clone->description = 'New group';
 
         $result = $clone->save();

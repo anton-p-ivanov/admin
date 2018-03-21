@@ -11,6 +11,7 @@ return [
     'type_uuid' => \app\models\AddressType::find()->orderBy(new \yii\db\Expression('RAND()'))->select('uuid')->scalar(),
     'country_code' => \app\models\AddressCountry::find()->orderBy(new \yii\db\Expression('RAND()'))->select('code')->scalar(),
     'region' => '',
+    'district' => '',
     'city' => $faker->city,
     'zip' => $faker->postcode,
     'address' => $faker->address,

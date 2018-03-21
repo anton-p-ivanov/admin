@@ -77,6 +77,7 @@ class MailTypesTest extends Unit
     {
         $type = new Type([
             'title' => $this->faker->text(50),
+            'description' => ''
         ]);
 
         $result = $type->insert();

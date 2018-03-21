@@ -9,10 +9,10 @@ return [
     'active' => true,
     'from' => $faker->unique()->email,
     'to' => $faker->unique()->email,
-    'reply_to' => $faker->unique()->email,
-    'copy' => $faker->unique()->email,
+    'replyTo' => $faker->unique()->email,
+    'bcc' => $faker->unique()->email,
     'subject' => $faker->text(),
-    'text' => $faker->text(),
-    'html' => $faker->randomHtml(),
+    'textBody' => $faker->text(),
+    'htmlBody' => $faker->randomHtml(),
     'workflow_uuid' => \Ramsey\Uuid\Uuid::uuid3(\Ramsey\Uuid\Uuid::NAMESPACE_URL, 'workflow-' . $index)->toString()
 ];

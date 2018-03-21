@@ -70,7 +70,8 @@ class FieldsTest extends Unit
         $field = new Field([
             'label' => 'Test field ' . date('YmdHis'),
             'type' => Field::FIELD_TYPE_DEFAULT,
-            'multiple' => false
+            'multiple' => false,
+            'default' => ''
         ]);
 
         $result = $field->insert();

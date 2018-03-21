@@ -5,4 +5,5 @@
  */
 return [
     'uuid' => \Ramsey\Uuid\Uuid::uuid3(\Ramsey\Uuid\Uuid::NAMESPACE_URL, 'workflow-' . $index)->toString(),
+    'status' => \app\models\WorkflowStatus::WORKFLOW_STATUS_DEFAULT
 ];

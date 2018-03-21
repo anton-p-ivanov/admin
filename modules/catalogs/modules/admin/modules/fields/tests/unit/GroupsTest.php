@@ -56,16 +56,12 @@ class GroupsTest extends Unit
 
         // Empty required fields
         $this->assertFalse($group->validate(['title']));
-        $this->assertFalse($group->validate(['catalog_uuid']));
 
         $group->active = -1;
         $this->assertFalse($group->validate(['active']));
 
         $group->sort = -1;
         $this->assertFalse($group->validate(['sort']));
-
-        $group->catalog_uuid = $this->faker->text();
-        $this->assertFalse($group->validate(['catalog_uuid']));
     }
 
     /**

@@ -63,9 +63,6 @@ class ContactsTest extends Unit
         $contact->position = null;
         $this->assertFalse($contact->validate(['position']));
 
-        $contact->email = AccountContact::find()->one()->{'email'};
-        $this->assertFalse($contact->validate(['email']));
-
         $contact->user_uuid = Uuid::uuid3(Uuid::NAMESPACE_URL, 'invalid-user-uuid')->toString();
         $this->assertFalse($contact->validate(['user_uuid']));
     }

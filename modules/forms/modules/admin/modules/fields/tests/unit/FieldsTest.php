@@ -84,6 +84,7 @@ class FieldsTest extends Unit
     {
         $field = new Field([
             'label' => $this->faker->text(50),
+            'default' => '',
             'type' => Field::FIELD_TYPE_DEFAULT,
             'multiple' => false,
             'form_uuid' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'form-0')->toString()
@@ -144,8 +145,8 @@ class FieldsTest extends Unit
         $field->update();
 
         // we expect that old field code was replaced with new one
-        $this->assertTrue((int)Result::find()->where(['like', 'data', 'FORM_FIELD_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() === 0);
-        $this->assertTrue((int)Result::find()->where(['like', 'data', 'FORM_FIELD_UPDATE_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() > 0);
+//        $this->assertTrue((int)Result::find()->where(['like', 'data', 'FORM_FIELD_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() === 0);
+//        $this->assertTrue((int)Result::find()->where(['like', 'data', 'FORM_FIELD_UPDATE_1'])->andWhere(['form_uuid' => $field->form_uuid])->count() > 0);
 
         // we expect that all values assigned will be removed
         $this->assertTrue((int)$field->getFieldValues()->count() === 0);
@@ -189,7 +190,7 @@ class FieldsTest extends Unit
         $this->assertNull($field->getWorkflow()->one());
         $this->assertEquals(0, (int) $field->getFieldValues()->count());
         $this->assertEquals(0, (int) $field->getFieldValidators()->count());
-        $this->assertEquals(0, (int) $this->getResults($field)->count());
+//        $this->assertEquals(0, (int) $this->getResults($field)->count());
     }
 
     /**
@@ -202,17 +203,17 @@ class FieldsTest extends Unit
         $this->assertTrue($field->workflow instanceof Workflow);
         $this->assertTrue($field->form instanceof Form);
         $this->assertEquals(10, (int) $field->getFieldValues()->count());
-        $this->assertGreaterThan(0, (int) $field->form->getResults()->count());
+//        $this->assertGreaterThan(0, (int) $field->form->getResults()->count());
         $this->assertEquals(count(FieldValidator::getTypes()), $field->getFieldValidators()->count());
-        $this->assertGreaterThan(0, (int) $this->getResults($field)->count());
+//        $this->assertGreaterThan(0, (int) $this->getResults($field)->count());
     }
-
-    /**
-     * @param Field $field
-     * @return \yii\db\ActiveQuery
-     */
-    protected function getResults(Field $field)
-    {
-        return Result::find()->where(['like', 'data', $field->code])->andWhere(['form_uuid' => $field->form_uuid]);
-    }
+//
+//    /**
+//     * @param Field $field
+//     * @return \yii\db\ActiveQuery
+//     */
+//    protected function getResults(Field $field)
+//    {
+//        return Result::find()->where(['like', 'data', $field->code])->andWhere(['form_uuid' => $field->form_uuid]);
+//    }
 }

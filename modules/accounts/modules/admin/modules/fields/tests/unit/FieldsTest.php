@@ -69,6 +69,7 @@ class FieldsTest extends Unit
         $field = new Field([
             'label' => 'Test field ' . date('YmdHis'),
             'type' => Field::FIELD_TYPE_DEFAULT,
+            'default' => '',
             'multiple' => false
         ]);
 
