@@ -103,7 +103,8 @@ class m171004_132506_init extends Migration
             'uuid' => new \yii\db\Expression('UUID()'),
             'email' => 'guest.user@example.com',
             'fname' => 'Guest',
-            'lname' => 'User'
+            'lname' => 'User',
+            'sname' => ''
         ]);
 
         $this->createTable('{{%users_passwords}}', [
