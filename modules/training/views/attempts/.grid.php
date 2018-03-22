@@ -14,6 +14,18 @@ return [
         }
     ],
     'user.fullname',
+    'user.email:email',
+    [
+        'format' => 'html',
+        'label' => Yii::t('training/attempts', 'Account'),
+        'value' => function (Attempt $model) {
+            if ($model->user->account) {
+                return $model->user->account->title;
+            }
+
+            return '&mdash;';
+        }
+    ],
     [
         'attribute' => 'success',
         'options' => ['width' => 150],
@@ -23,11 +35,6 @@ return [
     ],
     [
         'attribute' => 'begin_date',
-        'format' => 'datetime',
-        'options' => ['width' => 200],
-    ],
-    [
-        'attribute' => 'end_date',
         'format' => 'datetime',
         'options' => ['width' => 200],
     ],

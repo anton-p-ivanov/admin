@@ -1,6 +1,8 @@
 <?php
 namespace app\models;
 
+use accounts\models\Account;
+use users\models\UserAccount;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -14,6 +16,8 @@ use yii\web\IdentityInterface;
  * @property string $lname
  * @property string $sname
  * @property string $workflow_uuid
+ *
+ * @property Account $account
  *
  * @package app\models
  */
@@ -86,5 +90,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function getFullName()
     {
         return $this->fname . ' ' . $this->lname;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccount()
+    {
+        return $this->hasOne(Account::class, ['uuid' => 'account_uuid'])
+            ->viaTable(UserAccount::tableName(), ['user_uuid' => 'uuid']);
     }
 }
