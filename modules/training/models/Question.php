@@ -86,4 +86,12 @@ class Question extends ActiveRecord
     {
         return $this->hasMany(Answer::class, ['question_uuid' => 'uuid']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTest()
+    {
+        return $this->hasOne(TestQuestion::class, ['question_uuid' => 'uuid']);
+    }
 }

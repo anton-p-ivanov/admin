@@ -28,7 +28,7 @@ return [
     ['options' => ['class' => 'dropdown__divider']],
     [
         'label' => Yii::t('training/attempts', 'Custom fields'),
-        'url' => ['properties/index', 'result_uuid' => $model->uuid],
+        'url' => ['properties/index', 'attempt_uuid' => $model->uuid],
         'template' => \yii\helpers\Html::a('{label}', '{url}', [
             'data-pjax' => 'false',
         ]),

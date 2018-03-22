@@ -17,12 +17,9 @@ return [
     [
         'attribute' => 'success',
         'options' => ['width' => 150],
-        'contentOptions' => ['class' => 'text_center text_success'],
+        'contentOptions' => ['class' => 'text_center'],
         'headerOptions' => ['class' => 'text_center'],
-        'format' => 'raw',
-        'value' => function (Attempt $data) {
-            return $data->isSuccessful() ? '<i class="material-icons">check</i>' : '';
-        }
+        'format' => 'boolean',
     ],
     [
         'attribute' => 'begin_date',

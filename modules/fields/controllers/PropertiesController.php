@@ -2,9 +2,11 @@
 
 namespace fields\controllers;
 
+use app\components\behaviors\ConfirmFilter;
 use app\models\User;
 use storage\models\StorageTree;
 use yii\filters\AjaxFilter;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -43,6 +45,16 @@ class PropertiesController extends Controller
     public function behaviors()
     {
         $behaviors = parent::behaviors();
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'delete' => ['delete'],
+            ]
+        ];
+        $behaviors['confirm'] = [
+            'class' => ConfirmFilter::class,
+            'actions' => ['delete']
+        ];
         $behaviors['ajax'] = [
             'class' => AjaxFilter::class,
             'except' => ['index']

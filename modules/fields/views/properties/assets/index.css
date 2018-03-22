@@ -32,3 +32,23 @@
 .CodeMirror {
     height: 250px;
 }
+#properties-grid td > ul,
+#properties-grid td > ul > li {
+    margin: 0;
+    padding: 0;
+}
+#properties-grid td > ul > li {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    padding-left: 16px;
+}
+#properties-grid td > ul > li::before {
+    content: "\25CF";
+    color: #999;
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

@@ -52,4 +52,12 @@ class Answer extends ActiveRecord
     {
         return $this->hasOne(Question::class, ['uuid' => 'question_uuid']);
     }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return (int) $this->valid === 1;
+    }
 }

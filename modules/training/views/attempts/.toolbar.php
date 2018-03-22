@@ -13,7 +13,7 @@ return [
                 'data-pjax' => 'false'
             ],
             'url' => [
-                'tests/index',
+                'tests/index', 'course_uuid' => $test->course_uuid,
             ],
         ],
         [
