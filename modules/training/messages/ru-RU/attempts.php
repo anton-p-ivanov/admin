@@ -3,7 +3,8 @@
 return [
     'Attempts' => 'Попытки',
 
-    'User' => 'Пользователь',
+    'Student' => 'Учащийся',
+    'Account' => 'Компания',
     'Is successful' => 'Пройдено',
     'Begin date' => 'Дата начала',
     'End date' => 'Дата конца',
@@ -31,7 +32,8 @@ return [
     'Valid' => 'Прав.',
     'Score' => 'Баллы',
     'Export attempt into file' => 'Экспорт результатов попытки в файл',
-    'Comma-separated (CSV)' => 'С разделителями (CSV)',
+    'Export attempts into file' => 'Экспорт попыток в файл',
+    'Comma-Separated (CSV)' => 'С разделителями (CSV)',
     'Microsoft Excel (XLS)' => 'Microsoft Excel (XLS)',
     'Attempt answers' => 'Ответы пользователя'
 ];

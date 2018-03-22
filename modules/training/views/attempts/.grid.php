@@ -17,7 +17,7 @@ return [
     'user.email:email',
     [
         'format' => 'html',
-        'label' => Yii::t('training/attempts', 'Account'),
+        'attribute' => 'user.account',
         'value' => function (Attempt $model) {
             if ($model->user->account) {
                 return $model->user->account->title;

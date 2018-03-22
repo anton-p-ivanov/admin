@@ -76,8 +76,10 @@ class Attempt extends ActiveRecord
     {
         $labels = [
             'success' => 'Is successful',
-            'user_uuid' => 'User',
-            'user.fullname' => 'User',
+            'user_uuid' => 'Student',
+            'user.fullname' => 'Student',
+            'user.email' => 'E-Mail',
+            'user.account' => 'Account',
             'begin_date' => 'Begin date',
             'end_date' => 'End date',
         ];
