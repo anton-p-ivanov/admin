@@ -133,6 +133,7 @@ class Attempt extends ActiveRecord
     public function duplicate()
     {
         $clone = new self([
+            'test_uuid' => $this->test_uuid,
             'begin_date' => $this->begin_date,
             'end_date' => $this->end_date,
         ]);

@@ -9,6 +9,7 @@ use app\components\actions\EditAction;
 use app\components\actions\IndexAction;
 use app\components\BaseController;
 use training\models\Attempt;
+use training\models\AttemptData;
 use training\models\Test;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -124,31 +125,32 @@ class AttemptsController extends BaseController
 //            'properties' => $sorted
         ];
     }
-//
-//    /**
-//     * @param Result $model
-//     * @param Result $original
-//     */
-//    public function afterCopy($model, $original)
-//    {
-//        $insert = [];
-//        $properties = ResultProperty::findAll(['result_uuid' => $original->uuid]);
-//
-//        foreach ($properties as $property) {
-//            $insert[] = [
-//                'result_uuid' => $model->uuid,
-//                'field_uuid' => $property->field_uuid,
-//                'value' => $property->value
-//            ];
-//        }
-//
-//        if ($insert) {
-//            \Yii::$app->db
-//                ->createCommand()
-//                ->batchInsert(ResultProperty::tableName(), array_keys($insert[0]), $insert)
-//                ->execute();
-//        }
-//    }
+
+    /**
+     * @param Attempt $model
+     * @param Attempt $original
+     */
+    public function afterCopy($model, $original)
+    {
+        $insert = [];
+        $properties = AttemptData::findAll(['attempt_uuid' => $original->uuid]);
+
+        foreach ($properties as $property) {
+            $insert[] = [
+                'attempt_uuid' => $model->uuid,
+                'question_uuid' => $property->question_uuid,
+                'answer_uuid' => $property->answer_uuid,
+                'value' => $property->value
+            ];
+        }
+
+        if ($insert) {
+            \Yii::$app->db
+                ->createCommand()
+                ->batchInsert(AttemptData::tableName(), array_keys($insert[0]), $insert)
+                ->execute();
+        }
+    }
 //
 //    /**
 //     * @param string $form_uuid
