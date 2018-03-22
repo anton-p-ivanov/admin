@@ -36,7 +36,7 @@ class AnswersController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!Question::findOne($question_uuid)) {
+            if (!Question::findOne(['uuid' => $question_uuid])) {
                 throw new HttpException(404, 'Question not found.');
             }
         }

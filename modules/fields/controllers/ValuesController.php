@@ -42,7 +42,7 @@ class ValuesController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!($this->_field = $this->fieldClass::findOne($field_uuid))) {
+            if (!($this->_field = $this->fieldClass::findOne(['uuid' => $field_uuid]))) {
                 throw new NotFoundHttpException('Field not found.');
             }
         }

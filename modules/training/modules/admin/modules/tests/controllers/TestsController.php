@@ -42,7 +42,7 @@ class TestsController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!($this->_course = Course::findOne($course_uuid))) {
+            if (!($this->_course = Course::findOne(['uuid' => $course_uuid]))) {
                 throw new HttpException(404, 'Training course not found.');
             }
         }

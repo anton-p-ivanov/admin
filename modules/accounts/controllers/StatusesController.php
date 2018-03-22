@@ -42,7 +42,7 @@ class StatusesController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!($this->_account = Account::findOne($account_uuid))) {
+            if (!($this->_account = Account::findOne(['uuid' => $account_uuid]))) {
                 throw new NotFoundHttpException('Account not found.');
             }
         }

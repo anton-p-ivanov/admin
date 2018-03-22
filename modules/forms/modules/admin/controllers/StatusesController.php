@@ -40,7 +40,7 @@ class StatusesController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!($this->_form = Form::findOne($form_uuid))) {
+            if (!($this->_form = Form::findOne(['uuid' => $form_uuid]))) {
                 throw new HttpException(404, 'Form not found.');
             }
         }

@@ -165,7 +165,7 @@ class UserFilter extends Filter
     public function getAccount()
     {
         if ($this->_account === null) {
-            $this->_account = Account::findOne($this->account_uuid);
+            $this->_account = Account::findOne(['uuid' => $this->account_uuid]);
         }
 
         return $this->_account;

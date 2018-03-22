@@ -131,7 +131,7 @@ class Mail extends BaseObject
                 $this->_clientSite = $this->template->sites[$clientId];
             }
             else {
-                $this->_clientSite = Site::findOne(\Yii::$app->id);
+                $this->_clientSite = Site::findOne(['uuid' => \Yii::$app->id]);
             }
         }
 
@@ -144,7 +144,7 @@ class Mail extends BaseObject
     public function getAdminSite()
     {
         if ($this->_adminSite === null) {
-            $this->_adminSite = Site::findOne(\Yii::$app->id);
+            $this->_adminSite = Site::findOne(['uuid' => \Yii::$app->id]);
         }
 
         return $this->_adminSite;

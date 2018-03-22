@@ -37,7 +37,7 @@ class QuestionsController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!Lesson::findOne($lesson_uuid)) {
+            if (!Lesson::findOne(['uuid' => $lesson_uuid])) {
                 throw new HttpException(404, 'Lesson not found.');
             }
         }

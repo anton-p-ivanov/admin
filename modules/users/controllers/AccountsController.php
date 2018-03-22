@@ -44,7 +44,7 @@ class AccountsController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!($this->_user = User::findOne($user_uuid))) {
+            if (!($this->_user = User::findOne(['uuid' => $user_uuid]))) {
                 throw new NotFoundHttpException('User not found.');
             }
         }

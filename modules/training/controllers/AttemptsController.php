@@ -41,7 +41,7 @@ class AttemptsController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if (!($this->_test = Test::findOne($test_uuid))) {
+            if (!($this->_test = Test::findOne(['uuid' => $test_uuid]))) {
                 throw new NotFoundHttpException('Test not found.');
             }
         }

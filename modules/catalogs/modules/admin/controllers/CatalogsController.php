@@ -44,7 +44,7 @@ class CatalogsController extends BaseController
                 throw new BadRequestHttpException();
             }
 
-            if ($type_uuid && !($this->_type = Type::findOne($type_uuid))) {
+            if ($type_uuid && !($this->_type = Type::findOne(['uuid' => $type_uuid]))) {
                 throw new NotFoundHttpException('Type not found.');
             }
         }

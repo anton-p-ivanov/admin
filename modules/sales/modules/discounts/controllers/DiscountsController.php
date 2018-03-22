@@ -68,7 +68,7 @@ class DiscountsController extends BaseController
             }
 
             $modelClass = $this->modelClass;
-            $status = ($modelClass::$statusModel)::findOne($status_uuid);
+            $status = ($modelClass::$statusModel)::findOne(['uuid' => $status_uuid]);
 
             if (!$status) {
                 throw new HttpException(404, 'Status not found.');
@@ -86,7 +86,7 @@ class DiscountsController extends BaseController
     public function actionIndex($status_uuid)
     {
         $modelClass = $this->modelClass;
-        $status = ($modelClass::$statusModel)::findOne($status_uuid);
+        $status = ($modelClass::$statusModel)::findOne(['uuid' => $status_uuid]);
 
         if (!$status) {
             throw new HttpException(404, 'Status not found.');
