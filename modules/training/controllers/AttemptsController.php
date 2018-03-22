@@ -102,27 +102,9 @@ class AttemptsController extends BaseController
      */
     public function getIndexParams()
     {
-        $dataProvider = Attempt::search(['test_uuid' => $this->_test->uuid]);
-//        $fields = array_filter($this->_test->fields, function ($field) {
-//            return $field->list === 1;
-//        });
-//
-//        $properties = ResultProperty::findAll([
-//            'field_uuid' => ArrayHelper::getColumn($fields, 'uuid'),
-//            'result_uuid' => ArrayHelper::getColumn($dataProvider->models, 'uuid')
-//        ]);
-//
-//        $sorted = [];
-//
-//        foreach ($properties as $property) {
-//            $sorted[$property->result_uuid][$property->field_uuid] = $property->value;
-//        }
-
         return [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => Attempt::search(['test_uuid' => $this->_test->uuid]),
             'test' => $this->_test,
-//            'fields' => $fields,
-//            'properties' => $sorted
         ];
     }
 
@@ -151,75 +133,54 @@ class AttemptsController extends BaseController
                 ->execute();
         }
     }
-//
-//    /**
-//     * @param string $form_uuid
-//     * @param string $format
-//     * @return array
-//     * @throws NotFoundHttpException
-//     */
-//    public function actionExport($form_uuid, $format = 'csv')
-//    {
-//        // Set response format
-//        \Yii::$app->response->format = $format;
-//
-//        /* @var Form $form */
-//        $form = Form::findOne($form_uuid);
-//        if (!$form) {
-//            throw new NotFoundHttpException('Form not found.');
-//        }
-//
-//        $results = Result::findAll(['form_uuid' => $form_uuid]);
-//
-//        $data = [];
-//        foreach ($results as $model) {
-//            $data[$model->uuid] = $this->prepareResultArray($model);
-//        }
-//
-//        return $data;
-//    }
-//
-//    /**
-//     * @param Result $model
-//     * @return array
-//     */
-//    protected function prepareResultArray(Result $model)
-//    {
-//        $workflow = $model->workflow ?: new Workflow();
-//
-//        $results = [];
-//        $data = [
-//            'status.title' => $model->status->title,
-//            'workflow.created.fullname' => $workflow->created ? $workflow->created->getFullName() : null,
-//            'workflow.modified_date' => \Yii::$app->formatter->asDatetime($workflow->modified_date),
-//        ];
-//
-//        foreach ($data as $label => $value) {
-//            $results[$model->getAttributeLabel($label)] = $value;
-//        }
-//
-//        return ArrayHelper::merge($this->getResultData($model), $results);
-//    }
-//
-//    /**
-//     * @param Result $model
-//     * @return array
-//     */
-//    protected function getResultData(Result $model)
-//    {
-//        $fields = ArrayHelper::map($model->form->fields, 'uuid', 'label');
-//        $properties = ResultProperty::find()
-//            ->where(['result_uuid' => $model->uuid])
-//            ->indexBy('field_uuid')
-//            ->select('value')
-//            ->column();
-//
-//        $sorted = [];
-//
-//        foreach ($fields as $uuid => $label) {
-//            $sorted[$label] = $properties[$uuid];
-//        }
-//
-//        return $sorted;
-//    }
+
+    /**
+     * @param string $test_uuid
+     * @param string $format
+     * @return array
+     * @throws NotFoundHttpException
+     */
+    public function actionExport($test_uuid, $format = 'csv')
+    {
+        // Set response format
+        \Yii::$app->response->format = $format;
+
+        /* @var Test $form */
+        $test = Test::findOne($test_uuid);
+        if (!$test) {
+            throw new NotFoundHttpException('Invalid test identifier.');
+        }
+
+        $attempts = Attempt::findAll(['test_uuid' => $test_uuid]);
+
+        $data = [];
+        foreach ($attempts as $model) {
+            $data[$model->uuid] = $this->prepareResultArray($model);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param Attempt $model
+     * @return array
+     */
+    protected function prepareResultArray(Attempt $model)
+    {
+        $results = [];
+        $data = [
+            'user.fullname' => $model->user->getFullName(),
+            'user.email' => $model->user->email,
+            'user.account' => $model->user->account ? $model->user->account->title : null,
+            'success' => \Yii::$app->formatter->asBoolean($model->success),
+            'begin_date' => $model->begin_date ? \Yii::$app->formatter->asDatetime($model->begin_date) : null,
+            'end_date' => $model->end_date ? \Yii::$app->formatter->asDatetime($model->end_date) : null,
+        ];
+
+        foreach ($data as $label => $value) {
+            $results[$model->getAttributeLabel($label)] = $value;
+        }
+
+        return $results;
+    }
 }
